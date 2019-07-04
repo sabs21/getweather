@@ -40,6 +40,7 @@ document.getElementById("header--weather-form-input").oninput = function() {
       // This check prevents errors when the input is cleared using backspace.
       if (this.value[0] != undefined)
       {
+        console.log("City: " + city + " State: " + state);
         getSuggestions(city, state, lastCharTyped, function(callback) {
           console.log(callback);
           showSuggestions(callback, 15, function() {
@@ -66,14 +67,15 @@ function getSuggestions(city, state, lastCharTyped, callback) {
   // Check if the user has typed at least three VALID characters before throwing suggestions.
   if (city.length >= 3 && isValid(lastCharTyped))
   {
+    var url = "";
     // If statements that handle when the user doesn't input a state.
     if (state != null)
     {
-      var url = phpPath + "citySearch.php?cityInput=" + city + "&stateInput=" + state;
+      url = phpPath + "citySearch.php?cityInput=" + city + "&stateInput=" + state;
     }
     else
     {
-      var url = phpPath + "citySearch.php?cityInput=" + city;
+      url = phpPath + "citySearch.php?cityInput=" + city;
     }
 
     var suggestion = new XMLHttpRequest();
@@ -123,8 +125,6 @@ function showSuggestions(suggestionString, limit = null, callback) {
     console.log("limit = " + limit);
 
     var suggestionArray = JSON.parse(suggestionString);
-    console.log(suggestionArray);
-    console.log(suggestionArray[1]);
     var suggestLimit = suggestionArray.length;
 
     if (limit != null)

@@ -63,37 +63,50 @@
     // This for loop checks to see if the user input matches the city name substring.
     for ($i = 0; $i < $inputLength; $i++)
     {
-      $inputCharCode = ord($inputArr[$i]);
-      $indexedCharCode = ord($indexed[$i]);
-      // Note: For some reason, I can't put the logical expression that's
-      // in $spaces into the if statement condition itself without getting
-      // unexpected results.
-
-      $spaces = $inputCharCode === 32 && $indexedCharCode === 32;
-
-      // This if statement filters out any spaces from both inputs.
-      // Doing this avoids both unexpected results and suggestions
-      // without spaces even if the user input contains a space.
-      if (!$spaces)
+      // In certain cases, the indexed city length will be shorter than our input.
+      // Since $i < $inputLength, we know that $inputArr[$i] can't ever be null.
+      // This is why we only have to check to see if $indexed[$i] is defined.
+      if (isset($indexed[$i]))
       {
-        // Note: ord() is the PHP equivalent of charCodeAt().
-        if ($inputCharCode > $indexedCharCode)
-        {
-          $index += $diff;
-          $i = $inputLength;
-        }
-        else if ($inputCharCode < $indexedCharCode)
-        {
-          $index -= $diff;
-          $i = $inputLength;
-        }
+        $inputCharCode = ord($inputArr[$i]);
+        $indexedCharCode = ord($indexed[$i]);
+        // Note: For some reason, I can't put the logical expression that's
+        // in $spaces into the if statement condition itself without getting
+        // unexpected results.
 
-        // If every character compared matches, then $matched = true.
-        if ($i == $inputLength - 1)
+        $spaces = $inputCharCode === 32 && $indexedCharCode === 32;
+
+        // This if statement filters out any spaces from both inputs.
+        // Doing this avoids both unexpected results and suggestions
+        // without spaces even if the user input contains a space.
+        if (!$spaces)
         {
-          $matched = true;
-          $oneLastLoop = false;
+          // Note: ord() is the PHP equivalent of charCodeAt().
+          if ($inputCharCode > $indexedCharCode)
+          {
+            $index += $diff;
+            $i = $inputLength;
+          }
+          else if ($inputCharCode < $indexedCharCode)
+          {
+            $index -= $diff;
+            $i = $inputLength;
+          }
+
+          // If every character compared matches, then $matched = true.
+          if ($i == $inputLength - 1)
+          {
+            $matched = true;
+            $oneLastLoop = false;
+          }
         }
+      }
+      // Since input is longer than indexed, that means that input will surely
+      // be ahead of the current index.
+      else
+      {
+        $index += $diff;
+        $i = $inputLength;
       }
     }
 
@@ -101,13 +114,11 @@
     // If $oneLastLoop is true, that means no matches have been found.
     if ($oneLastLoop)
     {
-      //$resultArr[0] = null;
       $done = true;
     }
 
     if ($matched)
     {
-      //$resultArr[0] = $US_cities[$index];
       $done = true;
     }
     // If no matches have been found and $diff(erence) = 1, then the next
