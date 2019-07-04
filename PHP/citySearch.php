@@ -1,8 +1,9 @@
 <?php
   // Imports city list.
-  $json_data = file_get_contents("US_city_list_complete_fixed.json");
-  $US_cities = json_decode($json_data);
-  $US_cities_length = 19971;
+  $jsonData = file_get_contents("US_city_list_complete_fixed.json");
+  // This contains every U.S. city (provided by openweathermap)
+  $allCities = json_decode($jsonData);
+  $allCitiesLength = 19971;
 
   $cityInput = cleanInput($_GET["cityInput"]);
   $stateInput = null;
@@ -22,24 +23,24 @@
   To find suggestions quickly, a binary search is performed.
   Two strings are compared; The user input and some city name substring from US_cities.
   First, the beginning letters (index 0) of both the user input and city name are compared.
-  If user input (or $inputArr[0]) is larger, then add the $diff(erence) to the $index by a rounded up ($US_cities_length / 4).
+  If user input (or $cityInputSplit[0]) is larger, then add the $diff(erence) to the $index by a rounded up ($allCitiesLength / 4).
     Note: $diff(erence) keeps dividing itself by 2 after the first two strings are compared.
-  Else if city name (or $indexed) is larger, then subtract $diff(erence) from the $index by a rounded up ($US_cities_length / 4).
+  Else if city name (or $cityJson) is larger, then subtract $diff(erence) from the $index by a rounded up ($allCitiesLength / 4).
   */
 
-  // $resultArr will store all matches found.
-  $resultArr = [];
+  // $results will store all matches found.
+  $results = [];
   // $index is initially set as half of the US_cities_length,
   // but its used to keep track of which index in US_cities to search next.
-  $index = round($US_cities_length / 2, 0, PHP_ROUND_HALF_UP);
+  $index = round($allCitiesLength / 2, 0, PHP_ROUND_HALF_UP);
   // The $diff(erence) governs how much to add or subtract from the current $index.
-  $diff = round($US_cities_length / 2, 0, PHP_ROUND_HALF_UP);
-  // $inputLength will be used to compare $cityInput length amount of letters.
-  $inputLength = strlen(str_replace(" ", "", $cityInput));
-  // $inputArr is an array of $cityInput characters. Spaces are removed here
+  $diff = round($allCitiesLength / 2, 0, PHP_ROUND_HALF_UP);
+  // $cityInputLength will be used to compare $cityInput length amount of letters.
+  $cityInputLength = strlen(str_replace(" ", "", $cityInput));
+  // $cityInputSplit is an array of $cityInput characters. Spaces are removed here
   // instead of in cleanInput because the original spaces will be useful in
   // the search around the $anchor.
-  $inputArr = str_split(str_replace(" ", "", $cityInput));
+  $cityInputSplit = str_split(str_replace(" ", "", $cityInput));
   // $direction governs whether to add or subtract the $diff(erence) from $index.
   // true = add; false = subtract.
   $direction = true;
@@ -55,26 +56,26 @@
     $diff = round($diff / 2, 0, PHP_ROUND_HALF_UP);
     // The json city name is made lowercase to promote expected results from ord().
     // Spaces are removed to ensure expected results.
-    $indexed = cleanInput($US_cities[$index]->name, true);
-    $indexed = str_split($indexed);
+    $cityJson = cleanInput($allCities[$index]->name, true);
+    $cityJsonSplit = str_split($cityJson);
     // This flag montiors whether the first match was ever found.
     $matched = false;
 
     // This for loop checks to see if the user input matches the city name substring.
-    for ($i = 0; $i < $inputLength; $i++)
+    for ($i = 0; $i < $cityInputLength; $i++)
     {
       // In certain cases, the indexed city length will be shorter than our input.
-      // Since $i < $inputLength, we know that $inputArr[$i] can't ever be null.
-      // This is why we only have to check to see if $indexed[$i] is defined.
-      if (isset($indexed[$i]))
+      // Since $i < $cityInputLength, we know that $cityInputSplit[$i] can't ever be null.
+      // This is why we only have to check to see if $cityJson[$i] is defined.
+      if (isset($cityJsonSplit[$i]))
       {
-        $inputCharCode = ord($inputArr[$i]);
-        $indexedCharCode = ord($indexed[$i]);
+        $cityInputCharCode = ord($cityInputSplit[$i]);
+        $cityJsonCharCode = ord($cityJsonSplit[$i]);
         // Note: For some reason, I can't put the logical expression that's
         // in $spaces into the if statement condition itself without getting
         // unexpected results.
 
-        $spaces = $inputCharCode === 32 && $indexedCharCode === 32;
+        $spaces = $cityInputCharCode === 32 && $cityJsonCharCode === 32;
 
         // This if statement filters out any spaces from both inputs.
         // Doing this avoids both unexpected results and suggestions
@@ -82,19 +83,19 @@
         if (!$spaces)
         {
           // Note: ord() is the PHP equivalent of charCodeAt().
-          if ($inputCharCode > $indexedCharCode)
+          if ($cityInputCharCode > $cityJsonCharCode)
           {
             $index += $diff;
-            $i = $inputLength;
+            $i = $cityInputLength;
           }
-          else if ($inputCharCode < $indexedCharCode)
+          else if ($cityInputCharCode < $cityJsonCharCode)
           {
             $index -= $diff;
-            $i = $inputLength;
+            $i = $cityInputLength;
           }
 
           // If every character compared matches, then $matched = true.
-          if ($i == $inputLength - 1)
+          if ($i == $cityInputLength - 1)
           {
             $matched = true;
             $oneLastLoop = false;
@@ -106,7 +107,7 @@
       else
       {
         $index += $diff;
-        $i = $inputLength;
+        $i = $cityInputLength;
       }
     }
 
@@ -158,9 +159,9 @@
       $noSpaceInput = str_replace(" ", "", $cityInput);
 
       // First, clean the input for expected results.
-      $city = cleanInput($US_cities[$offset]->name, true);
-      // Next, make the indexed city name as long as the $inputLength.
-      // Note: For some reason, $inputLength must be added by 1
+      $city = cleanInput($allCities[$offset]->name, true);
+      // Next, make the indexed city name as long as the $cityInputLength.
+      // Note: For some reason, $cityInputLength must be added by 1
       // in order for all possible suggestions to appear.
       $city = substr($city, 0, strlen($noSpaceInput));
 
@@ -170,16 +171,16 @@
       {
         if ($stateInput !== null)
         {
-          $state = cleanInput($US_cities[$offset]->state);
+          $state = cleanInput($allCities[$offset]->state);
           if (strpos($state, $stateInput) === 0)
           {
-            $resultArr[$counter] = $US_cities[$offset];
+            $results[$counter] = $allCities[$offset];
             $counter += 1;
           }
         }
         else
         {
-          $resultArr[$counter] = $US_cities[$offset];
+          $results[$counter] = $allCities[$offset];
           $counter += 1;
         }
       }
@@ -194,7 +195,7 @@
       else
       {
         $filled = true;
-        echo json_encode($resultArr);
+        echo json_encode($results);
       }
     }
   }
@@ -207,22 +208,21 @@
   // $cleanSpaces is a boolean.
   function cleanInput($str, $cleanSpaces = false) {
     $input = strtolower($str);
-    $first_char = substr($input, 0, 1);
-    $last_char = substr($input, strlen($input) - 1, 1);
-    //var_dump($last_char);
+    $firstChar = substr($input, 0, 1);
+    $lastChar = substr($input, strlen($input) - 1, 1);
 
     // Checking for extra spaces or ' in front of the input.
-    while ($first_char == " " || $first_char == "'")
+    while ($firstChar == " " || $firstChar == "'")
     {
       $input = substr($input, 1, strlen($input));
-      $first_char = substr($input, 0, 1);
+      $firstChar = substr($input, 0, 1);
     }
 
     // Checking for extra spaces or ' at the end of the input.
-    while ($last_char == " " || $last_char == "'")
+    while ($lastChar == " " || $lastChar == "'")
     {
       $input = substr($input, 0, strlen($input) - 1);
-      $last_char = substr($input, strlen($input) - 1, 1);
+      $lastChar = substr($input, strlen($input) - 1, 1);
     }
 
     if ($cleanSpaces)

@@ -2,35 +2,36 @@
 var phpPath = "./PHP/";
 
 // Keeps track of whether or not the suggestions dropdown is visible.
-var visible = false;
-
+var isVisible = false;
 
 document.getElementById("header--weather-form-input").oninput = function() {
-
+  var input = this.value;
   // This if statement helps avoid errors when hitting backspace on a string within the form.
   // Also, this ensures that the input contains at least one letter character.
-  if (this.value.length > 0 && this.value.search(/[a-zA-Z]/) != -1)
+  if (input.length > 0 && input.search(/[a-zA-Z]/) != -1)
   {
     // If the last character typed was invalid, erase it automatically.
-    var lastCharTyped = this.value[this.value.length - 1];
-    this.value = this.value.replace(/[^a-z' ,-]/gi, "");
+    var lastCharTyped = input[input.length - 1];
+    input = input.replace(/[^a-z' ,-]/gi, "");
 
     // Keeps track of whether or not the suggestions dropdown is visible.
     var suggestionItems = document.getElementById("header--weather-suggestions-items");
-    visible = suggestionItems.hasChildNodes();
+    // Checks whether or not the suggestions dropdown is visible.
+    isVisible = suggestionItems.hasChildNodes();
 
     // if there is a comma delimiter within the input string...
-    if (this.value.search(",") != -1)
+    if (input.search(",") != -1)
     {
       // Split up the input into an array to fill the state and city variables.
-      // The limit is set to 3 so that no garbage collects in the second array element (in case more commas were added after state)
-      var inputArray = this.value.split(",", 3);
-      var city = inputArray[0];
-      var state = inputArray[1];
+      // The limit is set to 3 so that no garbage collects in the
+      // second array element (in case more commas were added after state).
+      var inputArgs = input.split(",", 3);
+      var city = inputArgs[0];
+      var state = inputArgs[1];
     }
     else
     {
-      var city = this.value;
+      var city = input;
       var state = null;
     }
 
@@ -40,9 +41,7 @@ document.getElementById("header--weather-form-input").oninput = function() {
       // This check prevents errors when the input is cleared using backspace.
       if (this.value[0] != undefined)
       {
-        console.log("City: " + city + " State: " + state);
         getSuggestions(city, state, lastCharTyped, function(callback) {
-          console.log(callback);
           showSuggestions(callback, 15, function() {
             addListeners(false); // Remove all previous listeners...
             addListeners(true); // Then add all the new ones in.
@@ -54,12 +53,10 @@ document.getElementById("header--weather-form-input").oninput = function() {
   }
 }
 
-
-
 // Tests the last typed character to see if it's valid. Returns boolean.
 function isValid(str) {
-  var exp = new RegExp("[a-z' ,-]", "gi");
-  return exp.test(str[str.length - 1]);
+  var isValidChar = new RegExp("[a-z' ,-]", "gi");
+  return isValidChar.test(str[str.length - 1]);
 }
 
 // Retrieves a max of 15 city suggestions
@@ -68,6 +65,7 @@ function getSuggestions(city, state, lastCharTyped, callback) {
   if (city.length >= 3 && isValid(lastCharTyped))
   {
     var url = "";
+
     // If statements that handle when the user doesn't input a state.
     if (state != null)
     {
@@ -78,42 +76,38 @@ function getSuggestions(city, state, lastCharTyped, callback) {
       url = phpPath + "citySearch.php?cityInput=" + city;
     }
 
-    var suggestion = new XMLHttpRequest();
-    suggestion.open("GET", url, true);
-    suggestion.onreadystatechange = function() {
-      if (suggestion.readyState == 4)
+    // Requests to retreive all possible suggestions.
+    var request = new XMLHttpRequest();
+    request.open("GET", url, true);
+    request.onreadystatechange = function() {
+      if (request.readyState == 4)
       {
-        if (suggestion.status == 200)
+        if (request.status == 200)
         {
-          var suggest_list = this.responseText;
-          console.log(suggest_list);
-
-          callback(suggest_list);
+          var suggestions = this.responseText;
+          callback(suggestions);
         }
       }
     }
-    suggestion.send();
+    request.send();
   }
   else if (city.length < 3)
   {
     // Closes the suggestions drop down.
     animate(false);
-
     // Clear any previous error messsages from the error bar.
     document.getElementById("error").innerHTML = "";
   }
 }
 
-function showSuggestions(suggestionString, limit = null, callback) {
+function showSuggestions(suggestionStr, limit = null, callback) {
+  suggestionItems = document.getElementById("header--weather-suggestions-items");
   // Clears all previous suggestions to make way for new ones.
-  document.getElementById("header--weather-suggestions-items").innerHTML = "";
-  console.log("limit = " + limit);
+  suggestionItems.innerHTML = "";
 
-  var list = document.getElementById("header--weather-suggestions-items");
-
-  // If the suggestionString is false (false is a string, not a boolean), then
+  // If the suggestionStr is false (false is a string, not a boolean), then
   // display an error message as a suggestion.
-  if (suggestionString == "false")
+  if (suggestionStr == "false")
   {
     document.getElementById("error").innerHTML = "No cities found.";
   }
@@ -122,37 +116,33 @@ function showSuggestions(suggestionString, limit = null, callback) {
     // Clear any previous error messsages from the error bar.
     document.getElementById("error").innerHTML = "";
 
-    console.log("limit = " + limit);
-
-    var suggestionArray = JSON.parse(suggestionString);
-    var suggestLimit = suggestionArray.length;
+    var suggestions = JSON.parse(suggestionStr);
+    var totalSuggestions = suggestions.length;
 
     if (limit != null)
     {
-      console.log("limit = " + limit);
-      console.log("limit = " + suggestLimit);
       // If the amount of items in the array exceed the limit, enforce the limit.
-      if (limit < suggestLimit)
+      if (limit > totalSuggestions)
       {
-        suggestLimit = limit;
-        console.log("limit = " + suggestLimit);
+        limit = totalSuggestions;
       }
     }
-
-    console.log("limit = " + suggestLimit);
+    else
+    {
+      limit = totalSuggestions;
+    }
 
     // This loop fills the 'header--weather-suggestions-items' element with new suggestions.
-    for (var i = 0; i < suggestLimit; i++)
+    for (var i = 0; i < limit; i++)
     {
-      console.log("new suggestion created");
-      // Each suggestion will be a button.
+      // Each suggestion will be a button element.
       var newSuggestion = document.createElement("button");
       // The button's innerHTML syntax will be [city name], [state]
-      newSuggestion.innerHTML = suggestionArray[i].name + ", " + suggestionArray[i].state;
-      // Put the new suggestion within the 'results_lvl5' class for easy DOM access.
-      newSuggestion.className = "results_lvl5";
+      newSuggestion.innerHTML = suggestions[i].name + ", " + suggestions[i].state;
+      // Put the new suggestion within the 'items' class for easy DOM access.
+      newSuggestion.className = "items";
       // Add this new element to the DOM.
-      list.appendChild(newSuggestion);
+      suggestionItems.appendChild(newSuggestion);
     }
   }
   callback();
@@ -161,7 +151,7 @@ function showSuggestions(suggestionString, limit = null, callback) {
 // If true, add event listeners. If false, remove event listeners.
 function addListeners(bool) {
   var input = document.getElementById("header--weather-form-input").value;
-  var suggestions = document.getElementsByClassName("results_lvl5");
+  var suggestions = document.getElementsByClassName("items");
 
   if (input.length >= 3)
   {
@@ -169,12 +159,13 @@ function addListeners(bool) {
     {
       // This is the function that will be used for each event listener.
       var suggestionClick = function(event) {
-        var citystate = event.target.innerHTML;
+        // 'item' refers to a suggestion within the suggestion-item container.
+        var item = event.target.innerHTML;
 
         // Clears all previous suggestions to make way for new ones.
         document.getElementById("header--weather-suggestions-items").innerHTML = "";
         // Replace the text within the input field to the suggestion that was clicked.
-        document.getElementById("header--weather-form-input").value = citystate;
+        document.getElementById("header--weather-form-input").value = item;
         // Simulate clicking submit in order to get weather data.
         document.getElementById("header--weather-form-submit").click();
       };
@@ -192,32 +183,34 @@ function addListeners(bool) {
 }
 
 function animate(bool) {
-  // CSS elements are assigned to 'suggestStyle' innerHTML.
-  var suggestStyle = document.createElement("style");
+  // The 'style' var holds styling for each suggestion item.
+  // CSS elements are assigned to 'style' innerHTML.
+  var style = document.createElement("style");
   // Then the style tag is appended to the head of the HTML document.
   var ref = document.querySelector("head");
   // Finally, we add the element to the HTML.
-  ref.appendChild(suggestStyle);
+  ref.appendChild(style);
 
   if (bool)
   {
-    var list = document.getElementsByClassName("results_lvl5");
-    var listLen = list.length;
+    // 'items' refers to each suggestion within the suggestion-item container.
+    var items = document.getElementsByClassName("items");
+    var totalItems = items.length;
     // The first and last child have margins that extend 12px.
     // Every child that isnt the first or last extend their margin 8px.
-    var margin = 24 + 8 * (listLen - 1);
+    var margin = 24 + 8 * (totalItems - 1);
     // Each button has a height of 26px.
-    var buttonHeight = listLen * 26;
+    var buttonHeight = totalItems * 26;
     var totalHeight = margin + buttonHeight;
 
-    suggestStyle.innerHTML =
+    style.innerHTML =
       "#header--weather-suggestions {" +
         "height: " + totalHeight + "px" +
       "}";
   }
   else
   {
-    suggestStyle.innerHTML =
+    style.innerHTML =
       "#header--weather-suggestions {" +
         "height: 0px" +
       "}";
