@@ -1,0 +1,291 @@
+@font-face {
+	font-family: 'Acari Sans';
+	src: url('./Fonts/AcariSans/AcariSans_Light.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Acari Sans';
+	src: url('./Fonts/AcariSans/AcariSans_LightItalic.ttf') format('truetype');
+	font-weight: 300;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Acari Sans';
+	src: url('./Fonts/AcariSans/AcariSans_Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Acari Sans';
+	src: url('./Fonts/AcariSans/AcariSans_Italic.ttf') format('truetype');
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Acari Sans';
+	src: url('./Fonts/AcariSans/AcariSans_Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Acari Sans';
+	src: url('./Fonts/AcariSans/AcariSans_MediumItalic.ttf') format('truetype');
+	font-weight: 500;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Cooper Hewitt';
+	src: url('./Fonts/CooperHewitt/CooperHewitt_Thin.otf') format('opentype');
+	font-weight: 100;
+	font-style: normal;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	background-color: rgb(2, 83, 126);
+}
+
+body {
+	margin: 0px 3% 15px 3%; /* margin-top right bottom left*/
+	height: 90%;
+	font-family: Arial, sans-serif;
+	background-color: rgba(2, 83, 126, 0);
+	color: rgb(232,231,225);
+}
+
+input:focus, select:focus, textarea:focus, button:focus {
+	outline: none;
+}
+#header {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+	#header--title {
+		display: flex;
+		flex-direction: row;
+		opacity: 0;
+		transition: opacity 400ms ease-out;
+	}
+		#header--title-get {
+			background-image: url("./Images/getWeather_img.png");
+			width: 119px;
+			height: 94px;
+			transition: background-position 400ms ease-out, margin-right 800ms ease-in-out;
+		}
+		#header--title-seperate {
+			background-color: rgb(255,255,255);
+			margin-left: 10px;
+			margin-right: 10px;
+			width: 2px;
+			height: 94px;
+			transition: height 500ms ease-in-out, margin-top 500ms ease-in-out;
+		}
+		#header--title-weather {
+			background-image: url("./Images/getWeather_img.png");
+			width: 311px;
+			height: 94px;
+			background-position: -549px 0px;
+			transition: background-position 400ms ease-out, margin-left 800ms ease-in-out;
+		}
+
+	#header--puddle {
+		display: flex;
+		flex-direction: row-reverse;
+		margin-top: -2px;
+	}
+		#header--puddle-right {
+			overflow: hidden;
+			width: 346px;
+			height: 2px;
+		}
+		#header--puddle-left {
+			overflow: hidden;
+			width: 154px;
+			height: 2px;
+		}
+			#header--puddle-right-line {
+				opacity: 0;
+				background-color: white;
+				float: left;
+				width: 1px;
+				height: 2px;
+				transition: width 800ms ease-out;
+			}
+			#header--puddle-left-line {
+				opacity: 0;
+				background-color: white;
+				float: right;
+				width: 1px;
+				height: 2px;
+				transition: width 800ms ease-out;
+			}
+
+	#header--weather {
+		opacity: 0;
+		margin-top: -38px;
+		width: 500px;
+		margin-right: auto;
+		margin-left: auto;
+		transition: opacity 1s ease-in;
+	}
+			#header--weather-form-input {
+				overflow: hidden;
+				font-family: 'Acari Sans', Arial, sans-serif;
+				font-weight: 400;
+				font-style: normal;
+				font-size: 30px;
+				text-align: center;
+				border-style: solid;
+				border-color: white;
+				border-width: 0px 0px 2px 0px;
+				width: 100%;
+				background-color: rgba(2, 83, 126, 0.5);
+				color: white;
+			}
+			#header--weather-form-input::placeholder {
+				color: grey;
+				font-family: 'Acari Sans', Arial, sans-serif;
+				font-weight: 300;
+				font-style: italic;
+				font-size: 30px;
+			}
+			#header--weather-form-input:hover {
+				background-color: rgba(1, 50, 100, 0.5);
+			}
+			#header--weather-form-input:focus {
+				background-color: rgb(1, 50, 100, 0.5);
+			}
+			#header--weather-form-submit {
+				display: none;
+			}
+
+
+#header--weather-suggestions {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 0px;
+	transition: height 400ms ease-out;
+	overflow: hidden;
+}
+	#header--weather-suggestions-items {
+		height: 0px;
+	}
+	/*
+	If you change any of the margins or height of each button,
+	you must reflect those changes in the math of the animate function in
+	activeInputValidation.js
+	*/
+	#header--weather-suggestions-items p {
+		height: 26px;
+		background-color: rgb(32, 113, 156);
+		padding: 2px;
+	}
+	#header--weather-suggestions-items button {
+		height: 26px;
+		width: 100%;
+		font-family: 'Acari Sans', sans-serif;
+		font-weight: 300;
+		font-style: normal;
+		font-size: 18px;
+		text-align: left;
+		color: white;
+		border: none;
+		background-color: rgb(32, 113, 156);
+		margin-top: 8px;
+		padding: 2px;
+	}
+	#header--weather-suggestions-items button:hover {
+		background-color: rgb(1, 50, 100);
+	}
+	#header--weather-suggestions-items button:first-child {
+		margin-top: 12px;
+	}
+	#header--weather-suggestions-items button:last-child {
+		margin-bottom: 12px;
+	}
+
+#table {
+	display: grid;
+	grid-template-rows: 15% 85%;
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+#table div {
+}
+	#table--head-data {
+		display: grid;
+		grid-template-columns: 149px 40%;
+		padding-top: 5px;
+		padding-left: 10px;
+		padding-bottom: 10px;
+		width: 100%;
+	}
+	#table--body {
+		display: grid;
+		grid-template-columns: 33.3% 33.3% 33.3%;
+	}
+	#table--body div {
+		border: white solid 1px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+		.table--head-data-desc {
+			font-family: 'Acari Sans', Arial, sans-serif;
+			font-size: 24px;
+			font-weight: 500;
+			font-style: italic;
+		}
+		.table--head-data-output {
+			font-family: 'Acari Sans', Arial, sans-serif;
+			font-size: 16px;
+			font-weight: 300;
+			font-style: normal;
+			padding-top: 7px;
+			padding-left: 5px;
+		}
+		.table--body-data {
+			display: grid;
+			grid-template-rows: 32px 32px;
+		}
+			.table--body-data-desc {
+				font-family: 'Acari Sans', Arial, sans-serif;
+				font-size: 24px;
+				font-weight: 500;
+				font-style: italic;
+				padding-left: 10px;
+			}
+			.table--body-data-output {
+				font-family: 'Acari Sans', Arial, sans-serif;
+				font-size: 16px;
+				font-weight: 300;
+				font-style: normal;
+				padding-top: 7px;
+				padding-left: 10px;
+			}
+
+#error {
+	width: 100%;
+	font-family: "Acari Sans", Arial, sans-serif;
+	font-size: 24px;
+	font-weight: 400;
+	font-style: italic;
+}
