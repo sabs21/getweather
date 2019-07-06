@@ -15,7 +15,7 @@ document.getElementById("header--weather-form-input").oninput = function() {
     var lastCharTyped = input[input.length - 1];
     input = input.replace(/[^a-z' ,-]/gi, "");
 
-    var suggestionItems = document.getElementById("header--weather-suggestions-items");
+    var suggestionItems = document.getElementById("header--weather-suggestions-container");
     // Checks whether or not the suggestions dropdown is visible.
     isVisible = suggestionItems.hasChildNodes();
 
@@ -171,7 +171,7 @@ function stackSuggestions(suggestionStr, callback) {
 }
 
 function showSuggestions(suggestions, limit = null, callback) {
-  suggestionItems = document.getElementById("header--weather-suggestions-items");
+  var suggestionItems = document.getElementById("header--weather-suggestions-container");
   // Clears all previous suggestions to make way for new ones.
   suggestionItems.innerHTML = "";
 
@@ -194,27 +194,84 @@ function showSuggestions(suggestions, limit = null, callback) {
     limit = totalSuggestions;
   }
 
-  var state = "";
+  var itemClass = "header--weather-suggestions-container-item";
+  var cityText = "";
+  var stateText = "";
+  var addressElement = "";
+  var manyStateElement = "div";
+  var addressClass = "";
+  // If manyStateStyle is displayed, then create the buttons for it.
+  var manyStateClass = "";
 
-  // This loop fills the 'header--weather-suggestions-items' element with new suggestions.
+  // This loop fills the 'header--weather-suggestions-container' element with
+  // new suggestions.
   for (var i = 0; i < limit; i++)
   {
+    // This div is used to hold the content of each individual suggestion.
+    var item = document.createElement("div");
+    item.className = itemClass;
+    suggestionItems.appendChild(item);
+
+    item = document.getElementsByClassName(itemClass);
+    item = item[i];
+
+    cityText = suggestions[i].name;
+
     if (suggestions[i].states.length > 1)
     {
-      state = "...";
+      stateText = "...";
+      addressElement = "p";
+      addressClass = itemClass + "-city-half";
+      manyStateClass = itemClass + "-states-show";
     }
     else
     {
-      state = suggestions[i].states[0];
+      stateText = suggestions[i].states[0];
+      addressElement = "button";
+      addressClass = itemClass + "-city-full";
+      manyStateClass = itemClass + "-states-hide";
     }
-    // Each suggestion will be a button element.
-    var newSuggestion = document.createElement("button");
-    // The button's innerHTML syntax will be [city name], [state]
-    newSuggestion.innerHTML = suggestions[i].name + ", " + state;
-    // Put the new suggestion within the 'items' class for easy DOM access.
-    newSuggestion.className = "items";
-    // Add this new element to the DOM.
-    suggestionItems.appendChild(newSuggestion);
+
+    var address = document.createElement(addressElement);
+    address.className = addressClass;
+    address.innerHTML = cityText + ", " + stateText;
+    item.appendChild(address);
+
+    if (manyStateClass === itemClass + "-states-show")
+    {
+      // Contains the manyStateElement for the suggestion.
+      var states = document.createElement("div");
+      states.className = itemClass + "-states";
+      item.appendChild(states);
+      //states = document.getElementsByClassName(states);
+      //states = states[states.length - 1];
+
+      var leftButton = document.createElement("button");
+      // Will use css selectors to edit left and right button style instead
+      // of using a new class/id.
+      leftButton.className = manyStateClass;
+      leftButton.innerHTML = "<";
+      states.appendChild(leftButton);
+
+      var manyState = document.createElement(manyStateElement);
+      manyState.className = manyStateClass;
+      for (var j = 0; j < suggestions[i].states.length; j++)
+      {
+        var newState = document.createElement("button");
+        newState.innerHTML = suggestions[i].states[j];
+        manyState.appendChild(newState);
+      }
+      states.appendChild(manyState);
+
+      var rightButton = document.createElement("button");
+      rightButton.className = manyStateClass;
+      leftButton.innerHTML = ">";
+      states.appendChild(rightButton);
+    }
+
+    // Try adding an id indicating left and right. The right id will act as
+    // a container two arrow buttons on either side of another container.
+    // Within this next container will be each state as buttons.
   }
   callback();
 }
@@ -222,7 +279,7 @@ function showSuggestions(suggestions, limit = null, callback) {
 // If true, add event listeners. If false, remove event listeners.
 function addListeners(bool) {
   var input = document.getElementById("header--weather-form-input").value;
-  var suggestions = document.getElementsByClassName("items");
+  var suggestions = document.getElementsByClassName("item");
 
   if (input.length >= 3)
   {
@@ -234,7 +291,7 @@ function addListeners(bool) {
         var item = event.target.innerHTML;
 
         // Clears all previous suggestions to make way for new ones.
-        document.getElementById("header--weather-suggestions-items").innerHTML = "";
+        document.getElementById("header--weather-suggestions-container").innerHTML = "";
         // Replace the text within the input field to the suggestion that was clicked.
         document.getElementById("header--weather-form-input").value = item;
         // Simulate clicking submit in order to get weather data.
@@ -264,8 +321,8 @@ function animate(bool) {
 
   if (bool)
   {
-    // 'items' refers to each suggestion within the suggestion-item container.
-    var items = document.getElementsByClassName("items");
+    // 'item' refers to each suggestion within the suggestion-item container.
+    var items = document.getElementsByClassName("item");
     var totalItems = items.length;
     // The first and last child have margins that extend 12px.
     // Every child that isnt the first or last extend their margin 8px.

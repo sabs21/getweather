@@ -185,7 +185,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 	transition: height 400ms ease-out;
 	overflow: hidden;
 }
-	#header--weather-suggestions-items {
+	#header--weather-suggestions-container {
 		height: 0px;
 	}
 	/*
@@ -193,13 +193,9 @@ input:focus, select:focus, textarea:focus, button:focus {
 	you must reflect those changes in the math of the animate function in
 	activeInputValidation.js
 	*/
-	#header--weather-suggestions-items p {
-		height: 26px;
-		background-color: rgb(32, 113, 156);
-		padding: 2px;
-	}
-	#header--weather-suggestions-items button {
-		height: 26px;
+	#header--weather-suggestions-container button,
+	#header--weather-suggestions-container p {
+		height: 500px;
 		width: 100%;
 		font-family: 'Acari Sans', sans-serif;
 		font-weight: 300;
@@ -212,15 +208,18 @@ input:focus, select:focus, textarea:focus, button:focus {
 		margin-top: 8px;
 		padding: 2px;
 	}
-	#header--weather-suggestions-items button:hover {
+	#header--weather-suggestions-container button:hover {
 		background-color: rgb(1, 50, 100);
 	}
-	#header--weather-suggestions-items button:first-child {
+	#header--weather-suggestions-container button:first-child {
 		margin-top: 12px;
 	}
-	#header--weather-suggestions-items button:last-child {
+	#header--weather-suggestions-container button:last-child {
 		margin-bottom: 12px;
 	}
+		#header--weather-suggestions-container-item {
+
+		}
 
 #table {
 	display: grid;
