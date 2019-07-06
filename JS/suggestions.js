@@ -51,11 +51,11 @@ document.getElementById("header--weather-form-input").oninput = function() {
             }
             else
             {
-              /*showSuggestions(callback, 15, function() {
+              showSuggestions(callback, 15, function() {
                 addListeners(false); // Remove all previous listeners...
                 addListeners(true); // Then add all the new ones in.
                 animate(true); // Opens the suggestions drop down.
-              });*/
+              });
             }
           });
         });
@@ -170,51 +170,51 @@ function stackSuggestions(suggestionStr, callback) {
   }
 }
 
-function showSuggestions(suggestionStr, limit = null, callback) {
+function showSuggestions(suggestions, limit = null, callback) {
   suggestionItems = document.getElementById("header--weather-suggestions-items");
   // Clears all previous suggestions to make way for new ones.
   suggestionItems.innerHTML = "";
 
-  // If the suggestionStr is false (false is a string, not a boolean), then
-  // display an error message as a suggestion.
-  if (suggestionStr == "false")
-  {
-    document.getElementById("error").innerHTML = "No cities found.";
-  }
-  else
-  {
-    // Clear any previous error messsages from the error bar.
-    document.getElementById("error").innerHTML = "";
+  // Clear any previous error messsages from the error bar.
+  document.getElementById("error").innerHTML = "";
 
-    var suggestions = JSON.parse(suggestionStr);
-    var totalSuggestions = suggestions.length;
+  var totalSuggestions = suggestions.length;
 
-    if (limit != null)
-    {
-      // If the amount of items in the array is less than the limit, then let
-      // the limit become however many suggestions there are.
-      if (limit > totalSuggestions)
-      {
-        limit = totalSuggestions;
-      }
-    }
-    else
+  if (limit != null)
+  {
+    // If the amount of items in the array is less than the limit, then let
+    // the limit become however many suggestions there are.
+    if (limit > totalSuggestions)
     {
       limit = totalSuggestions;
     }
+  }
+  else
+  {
+    limit = totalSuggestions;
+  }
 
-    // This loop fills the 'header--weather-suggestions-items' element with new suggestions.
-    for (var i = 0; i < limit; i++)
+  var state = "";
+
+  // This loop fills the 'header--weather-suggestions-items' element with new suggestions.
+  for (var i = 0; i < limit; i++)
+  {
+    if (suggestions[i].states.length > 1)
     {
-      // Each suggestion will be a button element.
-      var newSuggestion = document.createElement("button");
-      // The button's innerHTML syntax will be [city name], [state]
-      newSuggestion.innerHTML = suggestions[i].name + ", " + suggestions[i].state;
-      // Put the new suggestion within the 'items' class for easy DOM access.
-      newSuggestion.className = "items";
-      // Add this new element to the DOM.
-      suggestionItems.appendChild(newSuggestion);
+      state = "...";
     }
+    else
+    {
+      state = suggestions[i].states[0];
+    }
+    // Each suggestion will be a button element.
+    var newSuggestion = document.createElement("button");
+    // The button's innerHTML syntax will be [city name], [state]
+    newSuggestion.innerHTML = suggestions[i].name + ", " + state;
+    // Put the new suggestion within the 'items' class for easy DOM access.
+    newSuggestion.className = "items";
+    // Add this new element to the DOM.
+    suggestionItems.appendChild(newSuggestion);
   }
   callback();
 }
