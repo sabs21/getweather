@@ -4,6 +4,7 @@ var phpPath = "./PHP/";
 // Keeps track of whether or not the suggestions dropdown is visible.
 var isVisible = false;
 
+// This oninput function validates input first, then handles displaying suggestions.
 document.getElementById("header--weather-form-input").oninput = function() {
   var input = this.value;
   // This if statement helps avoid errors when hitting backspace on a string within the form.
@@ -14,7 +15,6 @@ document.getElementById("header--weather-form-input").oninput = function() {
     var lastCharTyped = input[input.length - 1];
     input = input.replace(/[^a-z' ,-]/gi, "");
 
-    // Keeps track of whether or not the suggestions dropdown is visible.
     var suggestionItems = document.getElementById("header--weather-suggestions-items");
     // Checks whether or not the suggestions dropdown is visible.
     isVisible = suggestionItems.hasChildNodes();
@@ -42,11 +42,15 @@ document.getElementById("header--weather-form-input").oninput = function() {
       if (this.value[0] != undefined)
       {
         getSuggestions(city, state, lastCharTyped, function(callback) {
-          showSuggestions(callback, 15, function() {
+          var suggestionStr = callback;
+          stackSuggestions(suggestionStr, function (callback) {
+            console.log(callback);
+          });
+          /*showSuggestions(callback, 15, function() {
             addListeners(false); // Remove all previous listeners...
             addListeners(true); // Then add all the new ones in.
             animate(true); // Opens the suggestions drop down.
-          });
+          });*/
         });
       }
     }
@@ -100,6 +104,63 @@ function getSuggestions(city, state, lastCharTyped, callback) {
   }
 }
 
+// Takes the suggestions array as input.
+// Reorganizes the info into an object.
+function stackSuggestions(suggestionStr, callback) {
+  if (suggestionStr == "false")
+  {
+    //document.getElementById("error").innerHTML = "No cities found.";
+    return "No cities found.";
+  }
+  else
+  {
+    var suggestions = JSON.parse(suggestionStr);
+    // Fill nameAndStates pre-emptively before the loops start. This way, we
+    // can prevent the loops from doing more computations than they have to.
+    var namesAndStates = [{
+      name:suggestions[0].name,
+      states:[suggestions[0].state]
+    }];
+    var totalSuggestions = suggestions.length;
+    // Keep track of which index of suggestions we're checking.
+    var index = 1;
+    var len = namesAndStates.length;
+
+    for (var i = index; i < totalSuggestions; i++)
+    {
+      for (var j = 0; j < len; j++)
+      {
+        console.log("i = " + i + " and j = " + j);
+        if (suggestions[i].name === namesAndStates[j].name)
+        {
+          // I didn't use push() for performance reasons.
+          var totalStates = namesAndStates[j].states.length;
+          namesAndStates[j].states[totalStates] = suggestions[i].state;
+          console.log(namesAndStates);
+        }
+        else
+        {
+          // If the city name in suggestions is unique, then
+          // create a new object to be added to namesAndStates.
+          var obj = {
+            name:suggestions[i].name,
+            states:[suggestions[i].state]
+          };
+          var arrLen = namesAndStates.length;
+          namesAndStates[arrLen] = obj;
+          console.log(namesAndStates);
+          // Reset i to index and j to 0
+          //i = index;
+          //j = 0;
+        }
+      }
+      len++;
+    }
+
+    callback(namesAndStates);
+  }
+}
+
 function showSuggestions(suggestionStr, limit = null, callback) {
   suggestionItems = document.getElementById("header--weather-suggestions-items");
   // Clears all previous suggestions to make way for new ones.
@@ -121,7 +182,8 @@ function showSuggestions(suggestionStr, limit = null, callback) {
 
     if (limit != null)
     {
-      // If the amount of items in the array exceed the limit, enforce the limit.
+      // If the amount of items in the array is less than the limit, then let
+      // the limit become however many suggestions there are.
       if (limit > totalSuggestions)
       {
         limit = totalSuggestions;
