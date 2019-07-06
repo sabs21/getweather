@@ -45,12 +45,19 @@ document.getElementById("header--weather-form-input").oninput = function() {
           var suggestionStr = callback;
           stackSuggestions(suggestionStr, function (callback) {
             console.log(callback);
+            if (callback === "No cities found.")
+            {
+              document.getElementById("error").innerHTML = "No cities found.";
+            }
+            else
+            {
+              /*showSuggestions(callback, 15, function() {
+                addListeners(false); // Remove all previous listeners...
+                addListeners(true); // Then add all the new ones in.
+                animate(true); // Opens the suggestions drop down.
+              });*/
+            }
           });
-          /*showSuggestions(callback, 15, function() {
-            addListeners(false); // Remove all previous listeners...
-            addListeners(true); // Then add all the new ones in.
-            animate(true); // Opens the suggestions drop down.
-          });*/
         });
       }
     }
@@ -109,8 +116,7 @@ function getSuggestions(city, state, lastCharTyped, callback) {
 function stackSuggestions(suggestionStr, callback) {
   if (suggestionStr == "false")
   {
-    //document.getElementById("error").innerHTML = "No cities found.";
-    return "No cities found.";
+    callback("No cities found.");
   }
   else
   {
@@ -124,39 +130,42 @@ function stackSuggestions(suggestionStr, callback) {
     var totalSuggestions = suggestions.length;
     // Keep track of which index of suggestions we're checking.
     var index = 1;
-    var len = namesAndStates.length;
+    // Tracks whether a city name has been found that wasn't previously found.
+    var isUnique = true;
 
-    for (var i = index; i < totalSuggestions; i++)
+    // Loops through each index of 'suggestions' to compare those city names
+    // with all city names from 'namesAndStates'. 'namesAndStates' holds one
+    // index for each unique city name.
+    while (index < totalSuggestions)
     {
-      for (var j = 0; j < len; j++)
+      isUnique = true;
+
+      // This loop compares one city name in 'suggestions' to
+      // all unique city names found so far ('namesAndStates').
+      for (var j = 0; j < namesAndStates.length; j++)
       {
-        console.log("i = " + i + " and j = " + j);
-        if (suggestions[i].name === namesAndStates[j].name)
+        if (suggestions[index].name === namesAndStates[j].name)
         {
-          // I didn't use push() for performance reasons.
-          var totalStates = namesAndStates[j].states.length;
-          namesAndStates[j].states[totalStates] = suggestions[i].state;
-          console.log(namesAndStates);
-        }
-        else
-        {
-          // If the city name in suggestions is unique, then
-          // create a new object to be added to namesAndStates.
-          var obj = {
-            name:suggestions[i].name,
-            states:[suggestions[i].state]
-          };
-          var arrLen = namesAndStates.length;
-          namesAndStates[arrLen] = obj;
-          console.log(namesAndStates);
-          // Reset i to index and j to 0
-          //i = index;
-          //j = 0;
+          // Add the state to the list of states with the same city name.
+          var lastIndex = namesAndStates[j].states.length;
+          namesAndStates[j].states[lastIndex] = suggestions[index].state;
+          isUnique = false;
         }
       }
-      len++;
-    }
 
+      if (isUnique)
+      {
+        // Add a new city object to 'namesAndStates'.
+        var obj = {
+          name:suggestions[index].name,
+          states:[suggestions[index].state]
+        };
+        var lastIndex = namesAndStates.length;
+        namesAndStates[lastIndex] = obj;
+      }
+      // Next iteration will compare the next city name in 'suggestions'.
+      index++;
+    }
     callback(namesAndStates);
   }
 }
