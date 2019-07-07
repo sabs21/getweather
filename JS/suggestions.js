@@ -6,14 +6,15 @@ var isVisible = false;
 
 // This oninput function validates input first, then handles displaying suggestions.
 document.getElementById("header--weather-form-input").oninput = function() {
-  var input = this.value;
+  var input = this.value.replace(/[^a-z' ,-]/gi, "");
+  document.getElementById("header--weather-form-input").value = input;
   // This if statement helps avoid errors when hitting backspace on a string within the form.
   // Also, this ensures that the input contains at least one letter character.
   if (input.length > 0 && input.search(/[a-zA-Z]/) != -1)
   {
     // If the last character typed was invalid, erase it automatically.
     var lastCharTyped = input[input.length - 1];
-    input = input.replace(/[^a-z' ,-]/gi, "");
+    //input = input.replace(/[^a-z' ,-]/gi, "");
 
     var suggestionItems = document.getElementById("header--weather-suggestions-container");
     // Checks whether or not the suggestions dropdown is visible.
@@ -221,21 +222,25 @@ function showSuggestions(suggestions, limit = null, callback) {
     {
       stateText = "...";
       addressElement = "p";
-      addressClass = itemClass + "-city-half";
+      addressClass = itemClass + "-address-half";
       manyStateClass = itemClass + "-states-show";
     }
     else
     {
       stateText = suggestions[i].states[0];
       addressElement = "button";
-      addressClass = itemClass + "-city-full";
+      addressClass = itemClass + "-address-full";
       manyStateClass = itemClass + "-states-hide";
     }
+
+    var addressContainer = document.createElement("div");
+    addressContainer.className = itemClass + "-address";
+    item.appendChild(addressContainer);
 
     var address = document.createElement(addressElement);
     address.className = addressClass;
     address.innerHTML = cityText + ", " + stateText;
-    item.appendChild(address);
+    addressContainer.appendChild(address);
 
     if (manyStateClass === itemClass + "-states-show")
     {
@@ -243,13 +248,11 @@ function showSuggestions(suggestions, limit = null, callback) {
       var states = document.createElement("div");
       states.className = itemClass + "-states";
       item.appendChild(states);
-      //states = document.getElementsByClassName(states);
-      //states = states[states.length - 1];
 
       var leftButton = document.createElement("button");
       // Will use css selectors to edit left and right button style instead
       // of using a new class/id.
-      leftButton.className = manyStateClass;
+      leftButton.className = itemClass + "-states-nav";
       leftButton.innerHTML = "<";
       states.appendChild(leftButton);
 
@@ -264,8 +267,8 @@ function showSuggestions(suggestions, limit = null, callback) {
       states.appendChild(manyState);
 
       var rightButton = document.createElement("button");
-      rightButton.className = manyStateClass;
-      leftButton.innerHTML = ">";
+      rightButton.className = itemClass + "-states-nav";
+      rightButton.innerHTML = ">";
       states.appendChild(rightButton);
     }
 
@@ -326,10 +329,11 @@ function animate(bool) {
     var totalItems = items.length;
     // The first and last child have margins that extend 12px.
     // Every child that isnt the first or last extend their margin 8px.
-    var margin = 24 + 8 * (totalItems - 1);
+    //var margin = 24 + 8 * (totalItems - 1);
     // Each button has a height of 26px.
-    var buttonHeight = totalItems * 26;
-    var totalHeight = margin + buttonHeight;
+    //var buttonHeight = totalItems * 26;
+    //var totalHeight = margin + buttonHeight;
+    var totalHeight = 500;
 
     style.innerHTML =
       "#header--weather-suggestions {" +

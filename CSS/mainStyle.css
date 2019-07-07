@@ -170,7 +170,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 				background-color: rgba(1, 50, 100, 0.5);
 			}
 			#header--weather-form-input:focus {
-				background-color: rgb(1, 50, 100, 0.5);
+				background-color: rgba(1, 50, 100, 0.5);
 			}
 			#header--weather-form-submit {
 				display: none;
@@ -178,8 +178,8 @@ input:focus, select:focus, textarea:focus, button:focus {
 
 
 #header--weather-suggestions {
-	display: flex;
-	flex-direction: column;
+	display: block;
+	/*flex-direction: column;*/
 	width: 100%;
 	height: 0px;
 	transition: height 400ms ease-out;
@@ -193,33 +193,108 @@ input:focus, select:focus, textarea:focus, button:focus {
 	you must reflect those changes in the math of the animate function in
 	activeInputValidation.js
 	*/
-	#header--weather-suggestions-container button,
-	#header--weather-suggestions-container p {
-		height: 500px;
-		width: 100%;
+	#header--weather-suggestions-container {
+		/*height: 26px;
+		width: 100%;*/
 		font-family: 'Acari Sans', sans-serif;
 		font-weight: 300;
 		font-style: normal;
 		font-size: 18px;
 		text-align: left;
-		color: white;
+		margin: 0px;
+		padding: 0px;
+		/*color: white;
 		border: none;
 		background-color: rgb(32, 113, 156);
 		margin-top: 8px;
-		padding: 2px;
+		padding: 2px;*/
 	}
 	#header--weather-suggestions-container button:hover {
-		background-color: rgb(1, 50, 100);
+		background-color: rgb(10, 50, 100);
 	}
-	#header--weather-suggestions-container button:first-child {
-		margin-top: 12px;
-	}
-	#header--weather-suggestions-container button:last-child {
-		margin-bottom: 12px;
-	}
-		#header--weather-suggestions-container-item {
-
+		.header--weather-suggestions-container-item {
+			display: block;
+			/*flex-direction: row;*/
+			white-space: nowrap;
+			border: 1px solid red;
+			overflow: hidden;
+			height: 40px;
 		}
+			.header--weather-suggestions-container-item-address {
+				display: inline-block;
+				border: 1px solid cyan;
+				/* vertical-align prevents the inline-blocks from becoming misaligned */
+				/*vertical-align: top;*/
+				width: 50%;
+				height: 40px;
+				line-height: 40px;
+			}
+				.header--weather-suggestions-container-item-address-half {
+					display: table-cell;
+					vertical-align: middle;
+					line-height: normal;
+					border: 1px solid green;
+				}
+				.header--weather-suggestions-container-item-address-full {
+					display: table-cell;
+					vertical-align: middle;
+					line-height: normal;
+					border: 1px solid white;
+				}
+			.header--weather-suggestions-container-item-states {
+				/* 'flex: 1;' sets a value for the flex box to an intrinsic value */
+				/*flex: 1;*/
+				display: inline-block;
+				/*flex-direction: row;*/
+				overflow: hidden;
+				/* vertical-align prevents the inline-blocks from becoming misaligned */
+				vertical-align: top;
+				width: 50%;
+				height: 40px;
+				border: 1px solid orange;
+			}
+				.header--weather-suggestions-container-item-states-hide {
+					display: none;
+				}
+				.header--weather-suggestions-container-item-states-show {
+					display: inline-block;
+					overflow-x: auto;
+					white-space: nowrap;
+					height: 100%;
+				}
+				.header--weather-suggestions-container-item-states-show button {
+					/*height: 100%;*/
+					border: 1px solid brown;
+					margin-left: 2px;
+					margin-right: 2px;
+					background-color: rgb(100, 100, 150);
+					/* vertical-align prevents the inline-blocks from becoming misaligned */
+					vertical-align: top;
+					height: 100%;
+					width: 30px;
+				}
+				.header--weather-suggestions-container-item-states-show button:first-child {
+					margin-left: 2px;
+				}
+				.header--weather-suggestions-container-item-states-show button:last-child {
+					margin-right: 2px;
+				}
+				.header--weather-suggestions-container-item-states div {
+					border: 1px solid green;
+					display: inline-block;
+					overflow: auto;
+					width: 203px;
+					/*height: 100%;*/
+				}
+			/* Both nav buttons */
+			.header--weather-suggestions-container-item-states-nav {
+				/*width: auto;*/
+				border: 1px solid magenta;
+				/* vertical-align prevents the inline-blocks from becoming misaligned */
+				vertical-align: top;
+				width: 20px;
+				height: 100%;
+			}
 
 #table {
 	display: grid;
