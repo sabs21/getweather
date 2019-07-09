@@ -6,8 +6,9 @@ var isVisible = false;
 
 // This oninput function validates input first, then handles displaying suggestions.
 document.getElementById("header--weather-form-input").oninput = function() {
-  var input = this.value.replace(/[^a-z' ,-]/gi, "");
-  document.getElementById("header--weather-form-input").value = input;
+  var input = this.value;
+  var cleanInput = this.value.replace(/[^a-z' ,-]/gi, "");
+  document.getElementById("header--weather-form-input").value = cleanInput;
   // This if statement helps avoid errors when hitting backspace on a string within the form.
   // Also, this ensures that the input contains at least one letter character.
   if (input.length > 0 && input.search(/[a-zA-Z]/) != -1)
@@ -40,7 +41,7 @@ document.getElementById("header--weather-form-input").oninput = function() {
     document.getElementById("header--weather-form-input").onkeyup = function() {
       // Check if the first character of the input is defined.
       // This check prevents errors when the input is cleared using backspace.
-      if (this.value[0] != undefined)
+      if (this.value[0] != undefined && isValid(lastCharTyped))
       {
         getSuggestions(city, state, lastCharTyped, function(callback) {
           var suggestionStr = callback;
@@ -52,9 +53,10 @@ document.getElementById("header--weather-form-input").oninput = function() {
             }
             else
             {
-              showSuggestions(callback, 15, function() {
-                addListeners(false); // Remove all previous listeners...
-                addListeners(true); // Then add all the new ones in.
+              showSuggestions(callback, 15, function(callback) {
+                var suggestions = callback;
+                addListeners(false, suggestions); // Remove all previous listeners...
+                addListeners(true, suggestions); // Then add all the new ones in.
                 animate(true); // Opens the suggestions drop down.
               });
             }
@@ -196,13 +198,8 @@ function showSuggestions(suggestions, limit = null, callback) {
   }
 
   var itemClass = "header--weather-suggestions-container-item";
-  var cityText = "";
-  var stateText = "";
-  var addressElement = "";
-  var manyStateElement = "div";
+  var address = "";
   var addressClass = "";
-  // If manyStateStyle is displayed, then create the buttons for it.
-  var manyStateClass = "";
 
   // This loop fills the 'header--weather-suggestions-container' element with
   // new suggestions.
@@ -216,98 +213,141 @@ function showSuggestions(suggestions, limit = null, callback) {
     item = document.getElementsByClassName(itemClass);
     item = item[i];
 
-    cityText = suggestions[i].name;
-
     if (suggestions[i].states.length > 1)
     {
-      stateText = "...";
-      addressElement = "p";
-      addressClass = itemClass + "-address-half";
-      manyStateClass = itemClass + "-states-show";
+      address = suggestions[i].name + ", ...";
+      addressClass = itemClass + "-multiple";
     }
     else
     {
-      stateText = suggestions[i].states[0];
-      addressElement = "button";
-      addressClass = itemClass + "-address-full";
-      manyStateClass = itemClass + "-states-hide";
+      address = suggestions[i].name + ", " + suggestions[i].states[0];
+      addressClass = itemClass + "-single";
     }
 
-    var addressContainer = document.createElement("div");
-    addressContainer.className = itemClass + "-address";
-    item.appendChild(addressContainer);
-
-    var address = document.createElement(addressElement);
-    address.className = addressClass;
-    address.innerHTML = cityText + ", " + stateText;
-    addressContainer.appendChild(address);
-
-    if (manyStateClass === itemClass + "-states-show")
-    {
-      // Contains the manyStateElement for the suggestion.
-      var states = document.createElement("div");
-      states.className = itemClass + "-states";
-      item.appendChild(states);
-
-      var leftButton = document.createElement("button");
-      // Will use css selectors to edit left and right button style instead
-      // of using a new class/id.
-      leftButton.className = itemClass + "-states-nav";
-      leftButton.innerHTML = "<";
-      states.appendChild(leftButton);
-
-      var manyState = document.createElement(manyStateElement);
-      manyState.className = manyStateClass;
-      for (var j = 0; j < suggestions[i].states.length; j++)
-      {
-        var newState = document.createElement("button");
-        newState.innerHTML = suggestions[i].states[j];
-        manyState.appendChild(newState);
-      }
-      states.appendChild(manyState);
-
-      var rightButton = document.createElement("button");
-      rightButton.className = itemClass + "-states-nav";
-      rightButton.innerHTML = ">";
-      states.appendChild(rightButton);
-    }
-
-    // Try adding an id indicating left and right. The right id will act as
-    // a container two arrow buttons on either side of another container.
-    // Within this next container will be each state as buttons.
+    var newAddress = document.createElement("button");
+    newAddress.className = addressClass;
+    newAddress.innerHTML = address;
+    item.appendChild(newAddress);
   }
-  callback();
+  callback(suggestions);
 }
 
-// If true, add event listeners. If false, remove event listeners.
-function addListeners(bool) {
+// Add event handlers in a different function to handle when each suggestion
+// is clicked.
+
+// If addListener is true, add event listeners. If false, remove event listeners.
+function addListeners(addListener, suggestions) {
   var input = document.getElementById("header--weather-form-input").value;
-  var suggestions = document.getElementsByClassName("item");
+  var singleStateClassName = "header--weather-suggestions-container-item-single";
+  var multipleStateClassName = "header--weather-suggestions-container-item-multiple";
+  var allItems = document.getElementsByClassName("header--weather-suggestions-container-item");
+
+  // This is the function that will be used for each single state event listener.
+  var single = function(event) {
+    // 'item' refers to a suggestion within the suggestion-item container.
+    var item = event.target.innerHTML;
+
+    // Clears all previous suggestions.
+    document.getElementById("header--weather-suggestions-container").innerHTML = "";
+    // Replace the text within the input field to the suggestion that was clicked.
+    document.getElementById("header--weather-form-input").value = item;
+    // Simulate clicking submit in order to get weather data.
+    document.getElementById("header--weather-form-submit").click();
+  };
+
+  // This fires on suggestions with multiple states.
+  // I still need to have the stateContainer point to the suggestion that
+  // was clicked on.
+  var multiple = function(event) {
+    console.log(event);
+    // This is the index value that was passed to the function as a "parameter".
+    // We need the index of where the suggestion is in the suggestion container
+    // in order to pinpoint it with the states menu later.
+    var index = event.target.index;
+    // 'str' is the city name followed by a comma and periods.
+    // [city name], ...
+    var str = event.target.innerHTML;
+    // 'city' is the substring of 'str' that leaves out the commas and periods.
+    var city = "";
+
+    // Removes everything in the innerHTML past the comma to get the city name.
+    // The city name will be paired with the selected state to finalize an input.
+    for (var i = 0; i < str.length; i++)
+    {
+      if (str[i] === ",")
+      {
+        city = str.substring(0, i);
+      }
+    }
+
+    var statesContainer = document.getElementById("header--statesContainer");
+    // Clears out any previous states that were found.
+    statesContainer.innerHTML = "";
+
+    var states = suggestions[index].states;
+
+    for (var i = 0; i < states.length; i++)
+    {
+      var newState = document.createElement("button");
+      newState.className = "header--statesContainer-item";
+      newState.innerHTML = states[i];
+      newState.city = city;
+      newState.addEventListener("click", chosenState);
+      statesContainer.appendChild(newState);
+    }
+  }
+
+  var chosenState = function(event) {
+    console.log(event);
+    var city = event.target.city;
+    var state = event.target.innerHTML;
+
+    var formInput = document.getElementById("header--weather-form-input");
+    // Replace the text within the input field to the suggestion that was clicked.
+    formInput.value = city + ", " + state;
+
+    // Clear both suggestion containers of any suggestions.
+    document.getElementById("header--statesContainer").innerHTML = "";
+    document.getElementById("header--weather-suggestions-container").innerHTML = "";
+
+    // Simulate clicking submit in order to get weather data.
+    document.getElementById("header--weather-form-submit").click();
+  }
 
   if (input.length >= 3)
   {
-    for (var i = 0; i < suggestions.length; i++)
+    for (var i = 0; i < allItems.length; i++)
     {
-      // This is the function that will be used for each event listener.
-      var suggestionClick = function(event) {
-        // 'item' refers to a suggestion within the suggestion-item container.
-        var item = event.target.innerHTML;
+      var currentSuggestion = allItems[i].childNodes[0];
+      var currentSuggestionClassName = currentSuggestion.className;
 
-        // Clears all previous suggestions to make way for new ones.
-        document.getElementById("header--weather-suggestions-container").innerHTML = "";
-        // Replace the text within the input field to the suggestion that was clicked.
-        document.getElementById("header--weather-form-input").value = item;
-        // Simulate clicking submit in order to get weather data.
-        document.getElementById("header--weather-form-submit").click();
-      };
-
-      if (bool)
+      if (currentSuggestionClassName === singleStateClassName)
       {
-        suggestions[i].addEventListener("click", suggestionClick);
+        if (addListener)
+        {
+          currentSuggestion.addEventListener("click", single);
+        }
+        else
+        {
+          currentSuggestion.removeEventListener("click", single);
+        }
       }
-      else
+      else if (currentSuggestionClassName === multipleStateClassName)
       {
-        suggestions[i].removeEventListener("click", suggestionClick);
+        if (addListener)
+        {
+          // Since javascript is very reliant on the idea of prototypes, we can
+          // use this to store an index variable in the event object.
+          // By doing this, we can actually pass parameters on to our event
+          // listener function.
+          currentSuggestion.index = i;
+          currentSuggestion.addEventListener("click", multiple);
+        }
+        else
+        {
+          currentSuggestion.index = i;
+          currentSuggestion.removeEventListener("click", multiple);
+        }
       }
     }
   }

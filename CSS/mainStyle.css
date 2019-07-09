@@ -72,52 +72,97 @@ input:focus, select:focus, textarea:focus, button:focus {
 #header {
 	width: 100%;
 	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+	border: 1px solid orange;
 }
+	#header--center {
+		display: block;
+		justify-content: center;
+		align-items: center;
+		/*flex-direction: row;*/
+		border: 1px dashed white;
+		/*display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;*/
+	}
 	#header--title {
-		display: flex;
-		flex-direction: row;
+		display: block;
+		/*justify-content: center;*/
+		text-align: center;
+		/*align-items: center;*/
+		/*flex-direction: row;*/
 		opacity: 0;
 		transition: opacity 400ms ease-out;
+		border: 1px solid orange;
 	}
 		#header--title-get {
+			display: inline-block;
 			background-image: url("./Images/getWeather_img.png");
 			width: 119px;
 			height: 94px;
+			margin-right: 10px;
 			transition: background-position 400ms ease-out, margin-right 800ms ease-in-out;
 		}
-		#header--title-seperate {
-			background-color: rgb(255,255,255);
-			margin-left: 10px;
-			margin-right: 10px;
-			width: 2px;
-			height: 94px;
-			transition: height 500ms ease-in-out, margin-top 500ms ease-in-out;
-		}
 		#header--title-weather {
+			display: inline-block;
 			background-image: url("./Images/getWeather_img.png");
+			margin-left: 10px;
 			width: 311px;
 			height: 94px;
 			background-position: -549px 0px;
 			transition: background-position 400ms ease-out, margin-left 800ms ease-in-out;
 		}
+		#header--title-dividing {
+			display: block;
+			width: 2px;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: -100px;
+			overflow: hidden;
+			padding-right: 190px;
+			transition: margin-top 500ms ease-in;
+		}
+			#header--title-dividing-line {
+				/*text-align: center;
+				align-items: center;*/
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				background-color: rgb(255,255,255);
+				width: 2px;
+				height: 94px;
+				transition: height 500ms ease-in;
+				/*border: 1px dashed purple;*/
+			}
 
 	#header--puddle {
-		display: flex;
-		flex-direction: row-reverse;
-		margin-top: -2px;
+		display: block;
+		/*flex-direction: row-reverse;*/
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: -18px;
+		width: 450px;
+		/*border: 1px dashed teal;*/
 	}
-		#header--puddle-right {
+		#header--puddle-left {
+			display: inline-block;
 			overflow: hidden;
-			width: 346px;
+			width: 130px;
 			height: 2px;
 		}
-		#header--puddle-left {
+			#header--puddle-left-line {
+				opacity: 0;
+				background-color: white;
+				float: right;
+				width: 1px;
+				height: 2px;
+				transition: width 500ms ease-out;
+			}
+		#header--puddle-right {
+			display: inline-block;
 			overflow: hidden;
-			width: 154px;
+			margin-left: -6px;
+			width: 320px;
 			height: 2px;
 		}
 			#header--puddle-right-line {
@@ -126,23 +171,17 @@ input:focus, select:focus, textarea:focus, button:focus {
 				float: left;
 				width: 1px;
 				height: 2px;
-				transition: width 800ms ease-out;
-			}
-			#header--puddle-left-line {
-				opacity: 0;
-				background-color: white;
-				float: right;
-				width: 1px;
-				height: 2px;
-				transition: width 800ms ease-out;
+				transition: width 500ms ease-out;
 			}
 
 	#header--weather {
+		display: block;
 		opacity: 0;
-		margin-top: -38px;
-		width: 500px;
+		margin-top: -45px;
+		width: 450px;
 		margin-right: auto;
 		margin-left: auto;
+		border: 1px solid yellow;
 		transition: opacity 1s ease-in;
 	}
 			#header--weather-form-input {
@@ -241,60 +280,18 @@ input:focus, select:focus, textarea:focus, button:focus {
 					line-height: normal;
 					border: 1px solid white;
 				}
-			.header--weather-suggestions-container-item-states {
-				/* 'flex: 1;' sets a value for the flex box to an intrinsic value */
-				/*flex: 1;*/
-				display: inline-block;
-				/*flex-direction: row;*/
-				overflow: hidden;
-				/* vertical-align prevents the inline-blocks from becoming misaligned */
-				vertical-align: top;
-				width: 50%;
-				height: 40px;
-				border: 1px solid orange;
-			}
-				.header--weather-suggestions-container-item-states-hide {
-					display: none;
-				}
-				.header--weather-suggestions-container-item-states-show {
-					display: inline-block;
-					overflow-x: auto;
-					white-space: nowrap;
-					height: 100%;
-				}
-				.header--weather-suggestions-container-item-states-show button {
-					/*height: 100%;*/
-					border: 1px solid brown;
-					margin-left: 2px;
-					margin-right: 2px;
-					background-color: rgb(100, 100, 150);
-					/* vertical-align prevents the inline-blocks from becoming misaligned */
-					vertical-align: top;
-					height: 100%;
-					width: 30px;
-				}
-				.header--weather-suggestions-container-item-states-show button:first-child {
-					margin-left: 2px;
-				}
-				.header--weather-suggestions-container-item-states-show button:last-child {
-					margin-right: 2px;
-				}
-				.header--weather-suggestions-container-item-states div {
-					border: 1px solid green;
-					display: inline-block;
-					overflow: auto;
-					width: 203px;
-					/*height: 100%;*/
-				}
-			/* Both nav buttons */
-			.header--weather-suggestions-container-item-states-nav {
-				/*width: auto;*/
-				border: 1px solid magenta;
-				/* vertical-align prevents the inline-blocks from becoming misaligned */
-				vertical-align: top;
-				width: 20px;
-				height: 100%;
-			}
+
+	#header--statesContainer {
+		display: flex;
+		justify-content: flex-end;
+		align-items: flex-end;
+		flex-direction: row;
+		border: 1px solid lime;
+	}
+		#header--statesContainer-pivotPoint {
+
+			border: 1px solid purple;
+		}
 
 #table {
 	display: grid;

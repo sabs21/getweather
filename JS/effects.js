@@ -30,35 +30,37 @@ window.addEventListener("load", function() {
 
   setTimeout(function() {
     style.innerHTML +=
-      "#header--title-seperate {" +
+      "#header--title-dividing {" +
+        "margin-top: 70px;" +
+      "}\n" +
+      "#header--title-dividing-line {" +
         "height: 2px;" +
-        "margin-top: 160px;" +
       "}\n";
   }, 1000);
 
   setTimeout(function() {
     style.innerHTML +=
-      "#header--title-seperate {" +
+      /*"#header--title-dividing-line {" +
         "visibility: hidden" +
-      "}\n" +
+      "}\n" +*/
       "#header--puddle-right-line {" +
-        "width: 346px;" +
+        "width: 320px;" +
       "}\n" +
       "#header--puddle-left-line {" +
-        "width: 154px;" +
+        "width: 130px;" +
       "}\n" +
       "#header--title-get {" +
-        "margin-right: -10px;" +
+        "margin-right: 0px;" +
       "}\n" +
       "#header--title-weather {" +
-        "margin-left: -10px;" +
+        "margin-left: 0px;" +
       "}\n";
-  }, 1600);
+  }, 1500);
 
   setTimeout(function() {
     style.innerHTML +=
       "#header--weather {" +
         "opacity: 1;" +
       "}\n";
-  }, 2400)
+  }, 2200)
 });
