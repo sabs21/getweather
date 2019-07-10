@@ -65,6 +65,15 @@ document.getElementById("header--weather-form-input").oninput = function() {
       }
     }
   }
+  else if (input.length < 3)
+  {
+    // If the user highlights and erases the input text to where there are
+    // two or less characters, then erase and close the suggestions.
+    console.log(document.getElementById("header--statesContainer-states"));
+    document.getElementById("header--statesContainer-states").innerHTML = "";
+    animate(false);
+    document.getElementById("header--weather-suggestions-container").innerHTML = "";
+  }
 }
 
 // Tests the last typed character to see if it's valid. Returns boolean.
@@ -75,8 +84,10 @@ function isValid(str) {
 
 // Retrieves a max of 15 city suggestions
 function getSuggestions(city, state, lastCharTyped, callback) {
-  // Check if the user has typed at least three VALID characters before throwing suggestions.
-  if (city.length >= 3 && isValid(lastCharTyped))
+  // Check if the user has typed at least three VALID characters
+  // before throwing suggestions. The validity of the lastCharTyped is
+  // already checked prior to the call of the function.
+  if (city.length >= 3)
   {
     var url = "";
 
@@ -126,7 +137,7 @@ function stackSuggestions(suggestionStr, callback) {
     var suggestions = JSON.parse(suggestionStr);
     // Fill nameAndStates pre-emptively before the loops start. This way, we
     // can prevent the loops from doing more computations than they have to.
-    var namesAndStates = [{
+    var stackedSuggestions = [{
       name:suggestions[0].name,
       states:[suggestions[0].state]
     }];
@@ -137,39 +148,84 @@ function stackSuggestions(suggestionStr, callback) {
     var isUnique = true;
 
     // Loops through each index of 'suggestions' to compare those city names
-    // with all city names from 'namesAndStates'. 'namesAndStates' holds one
+    // with all city names from 'stackedSuggestions'. 'stackedSuggestions' holds one
     // index for each unique city name.
     while (index < totalSuggestions)
     {
       isUnique = true;
 
       // This loop compares one city name in 'suggestions' to
-      // all unique city names found so far ('namesAndStates').
-      for (var j = 0; j < namesAndStates.length; j++)
+      // all unique city names found so far ('stackedSuggestions').
+      for (var j = 0; j < stackedSuggestions.length; j++)
       {
-        if (suggestions[index].name === namesAndStates[j].name)
+        if (suggestions[index].name === stackedSuggestions[j].name)
         {
           // Add the state to the list of states with the same city name.
-          var lastIndex = namesAndStates[j].states.length;
-          namesAndStates[j].states[lastIndex] = suggestions[index].state;
+          var endIndex = stackedSuggestions[j].states.length;
+          stackedSuggestions[j].states[endIndex] = suggestions[index].state;
           isUnique = false;
         }
       }
 
       if (isUnique)
       {
-        // Add a new city object to 'namesAndStates'.
+        // Add a new city object to 'stackedSuggestions'.
         var obj = {
           name:suggestions[index].name,
           states:[suggestions[index].state]
         };
-        var lastIndex = namesAndStates.length;
-        namesAndStates[lastIndex] = obj;
+        var endIndex = stackedSuggestions.length;
+        stackedSuggestions[endIndex] = obj;
       }
       // Next iteration will compare the next city name in 'suggestions'.
       index++;
     }
-    callback(namesAndStates);
+
+    // This for loop performs swaps in order to push the suggestions with
+    // multiple states to the top of the suggestions list.
+    for (var i = 0, startOfArr = 0; i < stackedSuggestions.length; i++)
+    {
+      // If the current index city resides in more than one state,
+      // then swap the indexed suggestion with the first suggestion.
+      if (stackedSuggestions[i].states.length > 1)
+      {
+        // Swap
+        var temp = stackedSuggestions[i];
+        stackedSuggestions[i] = stackedSuggestions[startOfArr];
+        stackedSuggestions[startOfArr] = temp;
+
+        startOfArr++;
+      }
+    }
+
+    // Replace this with heapsort eventually!
+    // Check to see if there is more than one suggestion with multiple states.
+    if (startOfArr > 1)
+    {
+      // If so, then perform a bubble sort.
+      var swaps = 1;
+      while (swaps > 0)
+      {
+        swaps = 0;
+
+        for (var i = startOfArr - 1; i >= 0; i--)
+        {
+          // If the higher index (which is lower in the suggestion list) has
+          // more states than the lower index, swap them.
+          // This is done to push the most likely suggestion to the top.
+          if (stackedSuggestions[i + 1].states.length > stackedSuggestions[i].states.length)
+          {
+            // Swap
+            var temp = stackedSuggestions[i];
+            stackedSuggestions[i] = stackedSuggestions[i + 1];
+            stackedSuggestions[i + 1] = temp;
+
+            swaps++;
+          }
+        }
+      }
+    }
+    callback(stackedSuggestions);
   }
 }
 
@@ -247,8 +303,11 @@ function addListeners(addListener, suggestions) {
     // 'item' refers to a suggestion within the suggestion-item container.
     var item = event.target.innerHTML;
 
-    // Clears all previous suggestions.
+    // Clear both suggestion containers of all previous suggestions.
+    document.getElementById("header--statesContainer-states").innerHTML = "";
     document.getElementById("header--weather-suggestions-container").innerHTML = "";
+    // Retract the suggestions from view
+    animate(false);
     // Replace the text within the input field to the suggestion that was clicked.
     document.getElementById("header--weather-form-input").value = item;
     // Simulate clicking submit in order to get weather data.
@@ -280,7 +339,7 @@ function addListeners(addListener, suggestions) {
       }
     }
 
-    var statesContainer = document.getElementById("header--statesContainer");
+    var statesContainer = document.getElementById("header--statesContainer-states");
     // Clears out any previous states that were found.
     statesContainer.innerHTML = "";
 
@@ -289,7 +348,7 @@ function addListeners(addListener, suggestions) {
     for (var i = 0; i < states.length; i++)
     {
       var newState = document.createElement("button");
-      newState.className = "header--statesContainer-item";
+      newState.className = "header--statesContainer-states-item";
       newState.innerHTML = states[i];
       newState.city = city;
       newState.addEventListener("click", chosenState);
@@ -307,8 +366,10 @@ function addListeners(addListener, suggestions) {
     formInput.value = city + ", " + state;
 
     // Clear both suggestion containers of any suggestions.
-    document.getElementById("header--statesContainer").innerHTML = "";
+    document.getElementById("header--statesContainer-states").innerHTML = "";
     document.getElementById("header--weather-suggestions-container").innerHTML = "";
+    // Retract the suggestions from view
+    animate(false);
 
     // Simulate clicking submit in order to get weather data.
     document.getElementById("header--weather-form-submit").click();

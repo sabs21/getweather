@@ -1,9 +1,9 @@
 <?php
   // Imports city list.
-  $jsonData = file_get_contents("US_city_list_complete_fixed.json");
+  $jsonData = file_get_contents("US_city_list_dupeless.json");
   // This contains every U.S. city (provided by openweathermap)
   $allCities = json_decode($jsonData);
-  $allCitiesLength = 19971;
+  $allCitiesLength = 19737;
 
   $cityInput = cleanInput($_GET["cityInput"]);
   $stateInput = null;
