@@ -9,7 +9,7 @@ ref.appendChild(style);
 // Using style, we will tinker with animations that play onload.
 window.addEventListener("load", function() {
   style.innerHTML =
-    "#header--title {" +
+    "#title {" +
       "opacity: 1;" +
     "}\n";
 
@@ -17,50 +17,57 @@ window.addEventListener("load", function() {
     // After the first innerHTML edit, the innerHTML must be concatenated.
     // If we don't concatenate, then we will lose previously defined styling.
     style.innerHTML +=
-      "#header--title-get {" +
+      "#title--get {" +
         "background-position: -119px 0px;" +
       "}\n" +
-      "#header--title-weather {" +
+      "#title--weather {" +
         "background-position: -239px 0px;" +
       "}\n" +
-      "#header--puddle-right-line, #header--puddle-left-line {" +
+      "#puddle--right-line, #puddle--left-line {" +
         "opacity: 1;" +
       "}\n";
   }, 500);
 
   setTimeout(function() {
     style.innerHTML +=
-      "#header--title-dividing {" +
+      "#title--dividerContainer {" +
         "margin-top: 70px;" +
       "}\n" +
-      "#header--title-dividing-line {" +
+      "#title--dividerLine {" +
         "height: 2px;" +
       "}\n";
   }, 1000);
 
   setTimeout(function() {
     style.innerHTML +=
-      /*"#header--title-dividing-line {" +
+      "#title--dividerLine {" +
         "visibility: hidden" +
-      "}\n" +*/
-      "#header--puddle-right-line {" +
+      "}\n" +
+      "#puddle--right-line {" +
         "width: 320px;" +
       "}\n" +
-      "#header--puddle-left-line {" +
+      "#puddle--left-line {" +
         "width: 130px;" +
       "}\n" +
-      "#header--title-get {" +
+      "#title--get {" +
         "margin-right: 0px;" +
       "}\n" +
-      "#header--title-weather {" +
+      "#title--weather {" +
         "margin-left: 0px;" +
       "}\n";
   }, 1500);
 
   setTimeout(function() {
     style.innerHTML +=
-      "#header--weather {" +
+      "#search {" +
         "opacity: 1;" +
       "}\n";
   }, 2200)
+
+  setTimeout(function() {
+    style.innerHTML +=
+      "#puddle {" +
+        "display: none;" +
+      "}\n";
+  }, 3000)
 });

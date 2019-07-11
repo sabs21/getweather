@@ -69,23 +69,15 @@ body {
 input:focus, select:focus, textarea:focus, button:focus {
 	outline: none;
 }
-#header {
+
+#center {
+	display: block;
+	text-align: center;
 	width: 100%;
 	height: 100%;
 	border: 1px solid orange;
 }
-	#header--center {
-		display: block;
-		justify-content: center;
-		align-items: center;
-		/*flex-direction: row;*/
-		border: 1px dashed white;
-		/*display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: row;*/
-	}
-	#header--title {
+	#title {
 		display: block;
 		/*justify-content: center;*/
 		text-align: center;
@@ -95,7 +87,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 		transition: opacity 400ms ease-out;
 		border: 1px solid orange;
 	}
-		#header--title-get {
+		#title--get {
 			display: inline-block;
 			background-image: url("./Images/getWeather_img.png");
 			width: 119px;
@@ -103,7 +95,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 			margin-right: 10px;
 			transition: background-position 400ms ease-out, margin-right 800ms ease-in-out;
 		}
-		#header--title-weather {
+		#title--weather {
 			display: inline-block;
 			background-image: url("./Images/getWeather_img.png");
 			margin-left: 10px;
@@ -112,7 +104,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 			background-position: -549px 0px;
 			transition: background-position 400ms ease-out, margin-left 800ms ease-in-out;
 		}
-		#header--title-dividing {
+		#title--dividerContainer {
 			display: block;
 			width: 2px;
 			margin-left: auto;
@@ -122,7 +114,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 			padding-right: 190px;
 			transition: margin-top 500ms ease-in;
 		}
-			#header--title-dividing-line {
+			#title--dividerLine {
 				/*text-align: center;
 				align-items: center;*/
 				display: block;
@@ -135,7 +127,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 				/*border: 1px dashed purple;*/
 			}
 
-	#header--puddle {
+	#puddle {
 		display: block;
 		/*flex-direction: row-reverse;*/
 		margin-left: auto;
@@ -144,13 +136,13 @@ input:focus, select:focus, textarea:focus, button:focus {
 		width: 450px;
 		/*border: 1px dashed teal;*/
 	}
-		#header--puddle-left {
+		#puddle--left {
 			display: inline-block;
 			overflow: hidden;
 			width: 130px;
 			height: 2px;
 		}
-			#header--puddle-left-line {
+			#puddle--left-line {
 				opacity: 0;
 				background-color: white;
 				float: right;
@@ -158,14 +150,14 @@ input:focus, select:focus, textarea:focus, button:focus {
 				height: 2px;
 				transition: width 500ms ease-out;
 			}
-		#header--puddle-right {
+		#puddle--right {
 			display: inline-block;
 			overflow: hidden;
 			margin-left: -6px;
 			width: 320px;
 			height: 2px;
 		}
-			#header--puddle-right-line {
+			#puddle--right-line {
 				opacity: 0;
 				background-color: white;
 				float: left;
@@ -174,67 +166,71 @@ input:focus, select:focus, textarea:focus, button:focus {
 				transition: width 500ms ease-out;
 			}
 
-	#header--weather {
-		display: block;
+	#search {
+		display: inline-block;
 		opacity: 0;
 		margin-top: -45px;
 		width: 450px;
 		margin-right: auto;
 		margin-left: auto;
 		border: 1px solid yellow;
-		transition: opacity 1s ease-in;
+		transition: opacity 600ms ease-in;
 	}
-			#header--weather-form-input {
-				overflow: hidden;
-				font-family: 'Acari Sans', Arial, sans-serif;
-				font-weight: 400;
-				font-style: normal;
-				font-size: 30px;
-				text-align: center;
-				border-style: solid;
-				border-color: white;
-				border-width: 0px 0px 2px 0px;
-				width: 100%;
-				background-color: rgba(2, 83, 126, 0.5);
-				color: white;
-			}
-			#header--weather-form-input::placeholder {
-				color: grey;
-				font-family: 'Acari Sans', Arial, sans-serif;
-				font-weight: 300;
-				font-style: italic;
-				font-size: 30px;
-			}
-			#header--weather-form-input:hover {
-				background-color: rgba(1, 50, 100, 0.5);
-			}
-			#header--weather-form-input:focus {
-				background-color: rgba(1, 50, 100, 0.5);
-			}
-			#header--weather-form-submit {
-				display: none;
-			}
+		#search--form-input {
+			overflow: hidden;
+			font-family: 'Acari Sans', Arial, sans-serif;
+			font-weight: 400;
+			font-style: normal;
+			font-size: 30px;
+			text-align: center;
+			border-style: solid;
+			border-color: white;
+			border-width: 0px 0px 2px 0px;
+			width: 100%;
+			background-color: rgba(2, 83, 126, 0.5);
+			color: white;
+		}
+		#search--form-input::placeholder {
+			color: grey;
+			font-family: 'Acari Sans', Arial, sans-serif;
+			font-weight: 300;
+			font-style: italic;
+			font-size: 30px;
+		}
+		#search--form-input:hover {
+			background-color: rgba(1, 50, 100, 0.5);
+		}
+		#search--form-input:focus {
+			background-color: rgba(1, 50, 100, 0.5);
+		}
+		#search--form-submit {
+			display: none;
+		}
 
-
-#header--weather-suggestions {
+#search--suggestions {
 	display: block;
 	/*flex-direction: column;*/
 	width: 100%;
 	height: 0px;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 300;
+	font-style: normal;
+	font-size: 18px;
+	text-align: left;
+	margin: 0px;
+	padding: 0px;
 	transition: height 400ms ease-out;
-	overflow: auto;
+	overflow: hidden;
 }
-	#header--weather-suggestions-container {
+	/*#search--suggestions {
 		height: 0px;
-	}
+	}*/
 	/*
 	If you change any of the margins or height of each button,
 	you must reflect those changes in the math of the animate function in
 	activeInputValidation.js
 	*/
-	#header--weather-suggestions-container {
-		/*height: 26px;
-		width: 100%;*/
+	/*#search--suggestions {
 		font-family: 'Acari Sans', sans-serif;
 		font-weight: 300;
 		font-style: normal;
@@ -242,16 +238,11 @@ input:focus, select:focus, textarea:focus, button:focus {
 		text-align: left;
 		margin: 0px;
 		padding: 0px;
-		/*color: white;
-		border: none;
-		background-color: rgb(32, 113, 156);
-		margin-top: 8px;
-		padding: 2px;*/
-	}
-	#header--weather-suggestions-container button:hover {
+	}*/
+	#search--suggestions button:hover {
 		background-color: rgb(10, 50, 100);
 	}
-		.header--weather-suggestions-container-item {
+		.search--suggestions-item {
 			display: block;
 			/*flex-direction: row;*/
 			white-space: nowrap;
@@ -259,7 +250,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 			overflow: hidden;
 			height: 40px;
 		}
-			.header--weather-suggestions-container-item-address {
+			.search--suggestions-item-address {
 				display: inline-block;
 				border: 1px solid cyan;
 				/* vertical-align prevents the inline-blocks from becoming misaligned */
@@ -268,35 +259,35 @@ input:focus, select:focus, textarea:focus, button:focus {
 				height: 40px;
 				line-height: 40px;
 			}
-				.header--weather-suggestions-container-item-address-half {
-					display: table-cell;
-					vertical-align: middle;
-					line-height: normal;
+				.search--suggestions-item-address-half {
+					display: inline-block;
 					border: 1px solid green;
 				}
-				.header--weather-suggestions-container-item-address-full {
-					display: table-cell;
-					vertical-align: middle;
-					line-height: normal;
+				.search--suggestions-item-address-full {
+					display: inline-block;
 					border: 1px solid white;
 				}
 
-	#header--statesContainer {
-		display: flex;
+	#states {
+		/*display: flex;
 		justify-content: flex-end;
 		align-items: flex-end;
-		flex-direction: row;
+		flex-direction: row;*/
+		display: inline-block;
+		width: 250px;
+		overflow: auto;
 		border: 1px solid lime;
 	}
-		#header--statesContainer-pivotPoint {
+		#states--pivotPoint {
 			border: 1px solid purple;
 		}
-		#header--statesContainer-states {
+		#states--results {
 
 		}
-			.header--statesContainer-states-item {
-				height: 20px;
-				width: 32px;
+			.states--results-item {
+				height: 40px;
+				width: 56px;
+				margin: 10px;
 			}
 
 #table {

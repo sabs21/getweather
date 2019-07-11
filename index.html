@@ -8,45 +8,42 @@
   <body>
 		<p id="error"></p>
 
-		<div id="header">
-			<div id="header--center">
-				<div id="header--title">
-					<div id="header--title-get"></div>
-					<div id="header--title-weather"></div>
-					<div id="header--title-dividing">
-						<div id="header--title-dividing-line"></div>
-					</div>
+		<div id="center">
+			<div id="title">
+				<div id="title--get"></div>
+				<div id="title--weather"></div>
+				<div id="title--dividerContainer">
+					<div id="title--dividerLine"></div>
 				</div>
-
-		<!--
-		This contains the line effect that leads into fading in the input form.
-		Instead of adding css style elements, try simply changing ID for same effects.
-		-->
-					<div id="header--puddle">
-						<div id="header--puddle-left">
-							<div id="header--puddle-left-line"></div>
-						</div>
-						<div id="header--puddle-right">
-							<div id="header--puddle-right-line"></div>
-						</div>
-					</div>
-
-
-				<div id="header--weather">
-					<form action="./JS/PHP/getKey.php" method="get" id="header--weather-form">
-						<input type="text" name="city" autocomplete="off" placeholder="City Name (USA), State" id="header--weather-form-input">
-						<input type="submit" value="Get Weather" id="header--weather-form-submit">
-					</form>
-					<div id="header--weather-suggestions">
-						<!-- potentially change end of id to addressContainer -->
-						<div id="header--weather-suggestions-container"></div>
-					</div>
-		    </div>
 			</div>
 
-			<div id="header--statesContainer">
-				<div id="header--statesContainer-pivotPoint"></div>
-				<div id="header--statesContainer-states"></div>
+	<!--
+	This contains the line effect that leads into fading in the input form.
+	Instead of adding css style elements, try simply changing ID for same effects.
+	-->
+			<div id="puddle">
+				<div id="puddle--left">
+					<div id="puddle--left-line"></div>
+				</div>
+				<div id="puddle--right">
+					<div id="puddle--right-line"></div>
+				</div>
+			</div>
+
+
+			<div id="search">
+				<form action="./JS/PHP/getKey.php" method="get" id="search--form">
+					<input type="text" name="city" autocomplete="off" placeholder="City Name (USA), State" id="search--form-input">
+					<input type="submit" value="Get Weather" id="search--form-submit">
+				</form>
+				<div id="search--suggestions">
+
+				</div>
+	    </div>
+
+			<div id="states">
+				<div id="states--pivotPoint"></div>
+				<div id="states--results"></div>
 			</div>
 		</div>
 

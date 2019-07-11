@@ -10,7 +10,7 @@ if (document.cookie.indexOf("=") == -1)
 // listenerCount is used simply to limit how many event listeners are added to 'form'
 var listenerCount = 0;
 
-document.getElementById("header--weather-form-submit").onclick = function() {
+document.getElementById("search--form-submit").onclick = function() {
 	listenerCount++;
 
 	// This if statement prevents multiple event listeners from being added.
@@ -19,7 +19,7 @@ document.getElementById("header--weather-form-submit").onclick = function() {
 	{
 		// Adds just one event listener to the submit event.
 		// Doing this lets us prevent PHP from redirecting to a different page.
-		document.getElementById("header--weather-form").addEventListener("submit", formSubmit);
+		document.getElementById("search--form").addEventListener("submit", formSubmit);
 	}
 
 	// The entire front-end process of handling the submission is done by formSubmit.
@@ -30,7 +30,7 @@ document.getElementById("header--weather-form-submit").onclick = function() {
 		event.preventDefault();
 
 		// Note: An input is invalid if it contains any uppercase letters.
-		var input = document.getElementById("header--weather-form-input").value.toLowerCase();
+		var input = document.getElementById("search--form-input").value.toLowerCase();
 		var searchUrl = getSearchUrl(input);
 
 		// First, search the city list for a match.
@@ -45,7 +45,7 @@ document.getElementById("header--weather-form-submit").onclick = function() {
 				var keyurl = phpPath + "getKey.php?cityInput=" + city.name + "&stateInput=" + city.state;
 
 				// This replaces the user's input with a capitalized city name and state.
-				document.getElementById("header--weather-form-input").value = city.name + ", " + city.state;
+				document.getElementById("search--form-input").value = city.name + ", " + city.state;
 
 				requestKey(keyurl, function(callback) {
 					var key = callback;

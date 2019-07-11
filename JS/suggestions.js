@@ -5,10 +5,10 @@ var phpPath = "./PHP/";
 var isVisible = false;
 
 // This oninput function validates input first, then handles displaying suggestions.
-document.getElementById("header--weather-form-input").oninput = function() {
+document.getElementById("search--form-input").oninput = function() {
   var input = this.value;
   var cleanInput = this.value.replace(/[^a-z' ,-]/gi, "");
-  document.getElementById("header--weather-form-input").value = cleanInput;
+  document.getElementById("search--form-input").value = cleanInput;
   // This if statement helps avoid errors when hitting backspace on a string within the form.
   // Also, this ensures that the input contains at least one letter character.
   if (input.length > 0 && input.search(/[a-zA-Z]/) != -1)
@@ -17,9 +17,9 @@ document.getElementById("header--weather-form-input").oninput = function() {
     var lastCharTyped = input[input.length - 1];
     //input = input.replace(/[^a-z' ,-]/gi, "");
 
-    var suggestionItems = document.getElementById("header--weather-suggestions-container");
+    var suggestionContainer = document.getElementById("search--suggestions");
     // Checks whether or not the suggestions dropdown is visible.
-    isVisible = suggestionItems.hasChildNodes();
+    isVisible = suggestionContainer.hasChildNodes();
 
     // if there is a comma delimiter within the input string...
     if (input.search(",") != -1)
@@ -38,10 +38,10 @@ document.getElementById("header--weather-form-input").oninput = function() {
     }
 
     // This gets all possible suggestions, then displays them on the page.
-    document.getElementById("header--weather-form-input").onkeyup = function() {
+    document.getElementById("search--form-input").onkeyup = function() {
       // Check if the first character of the input is defined.
       // This check prevents errors when the input is cleared using backspace.
-      if (this.value[0] != undefined && isValid(lastCharTyped))
+      if (this.value[0] != undefined && isValid(lastCharTyped) && input.length >= 3)
       {
         getSuggestions(city, state, lastCharTyped, function(callback) {
           var suggestionStr = callback;
@@ -53,26 +53,23 @@ document.getElementById("header--weather-form-input").oninput = function() {
             }
             else
             {
-              showSuggestions(callback, 15, function(callback) {
+              showSuggestions(callback, 8, function(callback) {
                 var suggestions = callback;
                 addListeners(false, suggestions); // Remove all previous listeners...
                 addListeners(true, suggestions); // Then add all the new ones in.
-                animate(true); // Opens the suggestions drop down.
+                openDropDown(true); // Opens the suggestions drop down.
               });
             }
           });
         });
       }
+      else
+      {
+        clearSuggestions();
+
+        openDropDown(false);
+      }
     }
-  }
-  else if (input.length < 3)
-  {
-    // If the user highlights and erases the input text to where there are
-    // two or less characters, then erase and close the suggestions.
-    console.log(document.getElementById("header--statesContainer-states"));
-    document.getElementById("header--statesContainer-states").innerHTML = "";
-    animate(false);
-    document.getElementById("header--weather-suggestions-container").innerHTML = "";
   }
 }
 
@@ -119,7 +116,7 @@ function getSuggestions(city, state, lastCharTyped, callback) {
   else if (city.length < 3)
   {
     // Closes the suggestions drop down.
-    animate(false);
+    openDropDown(false);
     // Clear any previous error messsages from the error bar.
     document.getElementById("error").innerHTML = "";
   }
@@ -181,9 +178,14 @@ function stackSuggestions(suggestionStr, callback) {
       index++;
     }
 
+    // 'totalStacks' refers to how many suggested cities have multiple states.
+    // In the for loop, 'totalStacks' is used to send cities with
+    // a stack of states to the beginning of the stackedSuggestions array.
+    var totalStacks = 0;
+
     // This for loop performs swaps in order to push the suggestions with
     // multiple states to the top of the suggestions list.
-    for (var i = 0, startOfArr = 0; i < stackedSuggestions.length; i++)
+    for (var i = 0, totalStacks = 0; i < stackedSuggestions.length; i++)
     {
       // If the current index city resides in more than one state,
       // then swap the indexed suggestion with the first suggestion.
@@ -191,16 +193,16 @@ function stackSuggestions(suggestionStr, callback) {
       {
         // Swap
         var temp = stackedSuggestions[i];
-        stackedSuggestions[i] = stackedSuggestions[startOfArr];
-        stackedSuggestions[startOfArr] = temp;
+        stackedSuggestions[i] = stackedSuggestions[totalStacks];
+        stackedSuggestions[totalStacks] = temp;
 
-        startOfArr++;
+        totalStacks++;
       }
     }
 
     // Replace this with heapsort eventually!
     // Check to see if there is more than one suggestion with multiple states.
-    if (startOfArr > 1)
+    if (totalStacks > 1)
     {
       // If so, then perform a bubble sort.
       var swaps = 1;
@@ -208,7 +210,7 @@ function stackSuggestions(suggestionStr, callback) {
       {
         swaps = 0;
 
-        for (var i = startOfArr - 1; i >= 0; i--)
+        for (var i = 0; i < totalStacks - 1; i++)
         {
           // If the higher index (which is lower in the suggestion list) has
           // more states than the lower index, swap them.
@@ -230,9 +232,9 @@ function stackSuggestions(suggestionStr, callback) {
 }
 
 function showSuggestions(suggestions, limit = null, callback) {
-  var suggestionItems = document.getElementById("header--weather-suggestions-container");
+  var suggestionContainer = document.getElementById("search--suggestions");
   // Clears all previous suggestions to make way for new ones.
-  suggestionItems.innerHTML = "";
+  suggestionContainer.innerHTML = "";
 
   // Clear any previous error messsages from the error bar.
   document.getElementById("error").innerHTML = "";
@@ -253,18 +255,18 @@ function showSuggestions(suggestions, limit = null, callback) {
     limit = totalSuggestions;
   }
 
-  var itemClass = "header--weather-suggestions-container-item";
+  var itemClass = "search--suggestions-item";
   var address = "";
   var addressClass = "";
 
-  // This loop fills the 'header--weather-suggestions-container' element with
+  // This loop fills the 'search--suggestions' element with
   // new suggestions.
   for (var i = 0; i < limit; i++)
   {
     // This div is used to hold the content of each individual suggestion.
     var item = document.createElement("div");
     item.className = itemClass;
-    suggestionItems.appendChild(item);
+    suggestionContainer.appendChild(item);
 
     item = document.getElementsByClassName(itemClass);
     item = item[i];
@@ -293,25 +295,23 @@ function showSuggestions(suggestions, limit = null, callback) {
 
 // If addListener is true, add event listeners. If false, remove event listeners.
 function addListeners(addListener, suggestions) {
-  var input = document.getElementById("header--weather-form-input").value;
-  var singleStateClassName = "header--weather-suggestions-container-item-single";
-  var multipleStateClassName = "header--weather-suggestions-container-item-multiple";
-  var allItems = document.getElementsByClassName("header--weather-suggestions-container-item");
+  var input = document.getElementById("search--form-input").value;
+  var singleStateClassName = "search--suggestions-item-single";
+  var multipleStateClassName = "search--suggestions-item-multiple";
+  var allSuggestions = document.getElementsByClassName("search--suggestions-item");
 
   // This is the function that will be used for each single state event listener.
   var single = function(event) {
     // 'item' refers to a suggestion within the suggestion-item container.
     var item = event.target.innerHTML;
 
-    // Clear both suggestion containers of all previous suggestions.
-    document.getElementById("header--statesContainer-states").innerHTML = "";
-    document.getElementById("header--weather-suggestions-container").innerHTML = "";
+    clearSuggestions();
     // Retract the suggestions from view
-    animate(false);
+    openDropDown(false);
     // Replace the text within the input field to the suggestion that was clicked.
-    document.getElementById("header--weather-form-input").value = item;
+    document.getElementById("search--form-input").value = item;
     // Simulate clicking submit in order to get weather data.
-    document.getElementById("header--weather-form-submit").click();
+    document.getElementById("search--form-submit").click();
   };
 
   // This fires on suggestions with multiple states.
@@ -339,7 +339,7 @@ function addListeners(addListener, suggestions) {
       }
     }
 
-    var statesContainer = document.getElementById("header--statesContainer-states");
+    var statesContainer = document.getElementById("states--results");
     // Clears out any previous states that were found.
     statesContainer.innerHTML = "";
 
@@ -348,7 +348,7 @@ function addListeners(addListener, suggestions) {
     for (var i = 0; i < states.length; i++)
     {
       var newState = document.createElement("button");
-      newState.className = "header--statesContainer-states-item";
+      newState.className = "states--results-item";
       newState.innerHTML = states[i];
       newState.city = city;
       newState.addEventListener("click", chosenState);
@@ -361,25 +361,23 @@ function addListeners(addListener, suggestions) {
     var city = event.target.city;
     var state = event.target.innerHTML;
 
-    var formInput = document.getElementById("header--weather-form-input");
+    var formInput = document.getElementById("search--form-input");
     // Replace the text within the input field to the suggestion that was clicked.
     formInput.value = city + ", " + state;
 
-    // Clear both suggestion containers of any suggestions.
-    document.getElementById("header--statesContainer-states").innerHTML = "";
-    document.getElementById("header--weather-suggestions-container").innerHTML = "";
+    clearSuggestions();
     // Retract the suggestions from view
-    animate(false);
+    openDropDown(false);
 
     // Simulate clicking submit in order to get weather data.
-    document.getElementById("header--weather-form-submit").click();
+    document.getElementById("search--form-submit").click();
   }
 
   if (input.length >= 3)
   {
-    for (var i = 0; i < allItems.length; i++)
+    for (var i = 0; i < allSuggestions.length; i++)
     {
-      var currentSuggestion = allItems[i].childNodes[0];
+      var currentSuggestion = allSuggestions[i].childNodes[0];
       var currentSuggestionClassName = currentSuggestion.className;
 
       if (currentSuggestionClassName === singleStateClassName)
@@ -395,18 +393,17 @@ function addListeners(addListener, suggestions) {
       }
       else if (currentSuggestionClassName === multipleStateClassName)
       {
+        // Since javascript is very reliant on the idea of prototypes, we can
+        // use this to store an index variable in the event object.
+        // By doing this, we can actually pass parameters on to our event
+        // listener function.
+        currentSuggestion.index = i;
         if (addListener)
         {
-          // Since javascript is very reliant on the idea of prototypes, we can
-          // use this to store an index variable in the event object.
-          // By doing this, we can actually pass parameters on to our event
-          // listener function.
-          currentSuggestion.index = i;
           currentSuggestion.addEventListener("click", multiple);
         }
         else
         {
-          currentSuggestion.index = i;
           currentSuggestion.removeEventListener("click", multiple);
         }
       }
@@ -414,7 +411,7 @@ function addListeners(addListener, suggestions) {
   }
 }
 
-function animate(bool) {
+function openDropDown(bool) {
   // The 'style' var holds styling for each suggestion item.
   // CSS elements are assigned to 'style' innerHTML.
   var style = document.createElement("style");
@@ -425,28 +422,33 @@ function animate(bool) {
 
   if (bool)
   {
-    // 'item' refers to each suggestion within the suggestion-item container.
-    var items = document.getElementsByClassName("item");
+    // An 'item' in this context refers to a single suggestion from the list.
+    var items = document.getElementsByClassName("search--suggestions-item");
     var totalItems = items.length;
-    // The first and last child have margins that extend 12px.
-    // Every child that isnt the first or last extend their margin 8px.
-    //var margin = 24 + 8 * (totalItems - 1);
-    // Each button has a height of 26px.
-    //var buttonHeight = totalItems * 26;
-    //var totalHeight = margin + buttonHeight;
-    var totalHeight = 500;
+    // The choice of index doesn't matter since all items will have the same
+    // height. 'offsetHeight' returns the element's true height. Note that
+    // 'offsetHeight' doesn't factor in margin;
+    var height = items[0].offsetHeight;
+
+    var totalHeight = height * totalItems;
 
     style.innerHTML =
-      "#header--weather-suggestions {" +
+      "#search--suggestions {" +
         "height: " + totalHeight + "px" +
       "}";
   }
   else
   {
     style.innerHTML =
-      "#header--weather-suggestions {" +
+      "#search--suggestions {" +
         "height: 0px" +
       "}";
   }
+}
+
+function clearSuggestions() {
+  // Clear both suggestion containers of any suggestions.
+  document.getElementById("states--results").innerHTML = "";
+  document.getElementById("search--suggestions").innerHTML = "";
 }
 // Make ALL incoming city name input data ALL LOWERCASE.
