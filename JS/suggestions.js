@@ -57,7 +57,7 @@ document.getElementById("search--form-input").oninput = function() {
                 var suggestions = callback;
                 addListeners(false, suggestions); // Remove all previous listeners...
                 addListeners(true, suggestions); // Then add all the new ones in.
-                openDropDown(true); // Opens the suggestions drop down.
+                openSuggestions(true); // Opens the suggestions drop down.
               });
             }
           });
@@ -67,7 +67,8 @@ document.getElementById("search--form-input").oninput = function() {
       {
         clearSuggestions();
 
-        openDropDown(false);
+        openSuggestions(false);
+        openStates(false);
       }
     }
   }
@@ -116,7 +117,8 @@ function getSuggestions(city, state, lastCharTyped, callback) {
   else if (city.length < 3)
   {
     // Closes the suggestions drop down.
-    openDropDown(false);
+    openSuggestions(false);
+    openStates(false);
     // Clear any previous error messsages from the error bar.
     document.getElementById("error").innerHTML = "";
   }
@@ -307,7 +309,8 @@ function addListeners(addListener, suggestions) {
 
     clearSuggestions();
     // Retract the suggestions from view
-    openDropDown(false);
+    openSuggestions(false);
+    openStates(false);
     // Replace the text within the input field to the suggestion that was clicked.
     document.getElementById("search--form-input").value = item;
     // Simulate clicking submit in order to get weather data.
@@ -318,6 +321,9 @@ function addListeners(addListener, suggestions) {
   // I still need to have the stateContainer point to the suggestion that
   // was clicked on.
   var multiple = function(event) {
+    // Open the side menu containing the stack of state while invisible.
+    openStates(true);
+
     console.log(event);
     // This is the index value that was passed to the function as a "parameter".
     // We need the index of where the suggestion is in the suggestion container
@@ -354,6 +360,7 @@ function addListeners(addListener, suggestions) {
       newState.addEventListener("click", chosenState);
       statesContainer.appendChild(newState);
     }
+    openStates(true, true);
   }
 
   var chosenState = function(event) {
@@ -367,7 +374,8 @@ function addListeners(addListener, suggestions) {
 
     clearSuggestions();
     // Retract the suggestions from view
-    openDropDown(false);
+    openSuggestions(false);
+    openStates(false);
 
     // Simulate clicking submit in order to get weather data.
     document.getElementById("search--form-submit").click();
@@ -411,7 +419,7 @@ function addListeners(addListener, suggestions) {
   }
 }
 
-function openDropDown(bool) {
+function openSuggestions(open) {
   // The 'style' var holds styling for each suggestion item.
   // CSS elements are assigned to 'style' innerHTML.
   var style = document.createElement("style");
@@ -420,7 +428,7 @@ function openDropDown(bool) {
   // Finally, we add the element to the HTML.
   ref.appendChild(style);
 
-  if (bool)
+  if (open)
   {
     // An 'item' in this context refers to a single suggestion from the list.
     var items = document.getElementsByClassName("search--suggestions-item");
@@ -450,5 +458,60 @@ function clearSuggestions() {
   // Clear both suggestion containers of any suggestions.
   document.getElementById("states--results").innerHTML = "";
   document.getElementById("search--suggestions").innerHTML = "";
+}
+
+function openStates (openInvisible, getWidth = false) {
+  // The 'style' var holds styling for each suggestion item.
+  // CSS elements are assigned to 'style' innerHTML.
+  var style = document.createElement("style");
+  // Then the style tag is appended to the head of the HTML document.
+  var ref = document.querySelector("head");
+  // Finally, we add the element to the HTML.
+  ref.appendChild(style);
+
+  var width = 0;
+  var height = 0;
+
+  console.log(document.getElementById("states"));
+
+  if (openInvisible)
+  {
+    width = 250;
+  }
+  else
+  {
+    width = 0;
+  }
+
+  if (getWidth)
+  {
+    var totalStates = document.getElementsByClassName("states--results-item").length;
+    console.log(totalStates);
+    // The '* 60' is for the height of the buttons plus their margins
+    // The '- 20' is adjust for the first row and last row's margins.
+    var resultsHeight = Math.ceil(totalStates / 3) * 60;
+
+    var suggestions = document.getElementsByClassName("search--suggestions-item");
+    var totalSuggestions = suggestions.length;
+    var suggestionHeight = suggestions[0].offsetHeight * suggestions.length;
+
+    var input = document.getElementById("search--form-input");
+    var inputHeight = input.offsetHeight;
+
+    var maxHeight = suggestionHeight + inputHeight;
+    height = resultsHeight;
+
+    console.log(maxHeight + " " + resultsHeight + " " + height);
+
+    if (resultsHeight > maxHeight)
+    {
+      height = maxHeight;
+    }
+  }
+  style.innerHTML =
+    "#states {" +
+      "height: " + height + "px;" +
+      "width: " + width + "px;" +
+    "}\n";
 }
 // Make ALL incoming city name input data ALL LOWERCASE.

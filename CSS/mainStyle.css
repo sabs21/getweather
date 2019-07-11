@@ -254,7 +254,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 				display: inline-block;
 				border: 1px solid cyan;
 				/* vertical-align prevents the inline-blocks from becoming misaligned */
-				/*vertical-align: top;*/
+				/* vertical-align: top; */
 				width: 50%;
 				height: 40px;
 				line-height: 40px;
@@ -274,21 +274,31 @@ input:focus, select:focus, textarea:focus, button:focus {
 		align-items: flex-end;
 		flex-direction: row;*/
 		display: inline-block;
-		width: 250px;
-		overflow: auto;
+		width: 0px;
+		overflow: hidden;
+		transition: width 200ms ease-out, opacity 200ms linear;
 		border: 1px solid lime;
 	}
 		#states--pivotPoint {
 			border: 1px solid purple;
 		}
 		#states--results {
-
+			width: 250px;
 		}
 			.states--results-item {
 				height: 40px;
 				width: 56px;
 				margin: 10px;
 			}
+	/*#states_hidden {
+		visibility: hidden;
+	}
+	#states_show {
+		opacity: 1;
+	}
+	#states_showInvisible {
+		opacity: 0;
+	}*/
 
 #table {
 	display: grid;
