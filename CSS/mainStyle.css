@@ -70,22 +70,19 @@ input:focus, select:focus, textarea:focus, button:focus {
 	outline: none;
 }
 
-#center {
-	display: block;
+.center {
 	text-align: center;
-	width: 100%;
-	height: 100%;
-	border: 1px solid orange;
+	margin-left: auto;
+	margin-right: auto;
 }
 	#title {
 		display: block;
 		/*justify-content: center;*/
-		text-align: center;
 		/*align-items: center;*/
 		/*flex-direction: row;*/
 		opacity: 0;
 		transition: opacity 400ms ease-out;
-		border: 1px solid orange;
+		/*border: 1px solid white;*/
 	}
 		#title--get {
 			display: inline-block;
@@ -107,8 +104,6 @@ input:focus, select:focus, textarea:focus, button:focus {
 		#title--dividerContainer {
 			display: block;
 			width: 2px;
-			margin-left: auto;
-			margin-right: auto;
 			margin-top: -100px;
 			overflow: hidden;
 			padding-right: 190px;
@@ -118,8 +113,6 @@ input:focus, select:focus, textarea:focus, button:focus {
 				/*text-align: center;
 				align-items: center;*/
 				display: block;
-				margin-left: auto;
-				margin-right: auto;
 				background-color: rgb(255,255,255);
 				width: 2px;
 				height: 94px;
@@ -130,9 +123,8 @@ input:focus, select:focus, textarea:focus, button:focus {
 	#puddle {
 		display: block;
 		/*flex-direction: row-reverse;*/
-		margin-left: auto;
-		margin-right: auto;
 		margin-top: -18px;
+		margin-bottom: -44px;
 		width: 450px;
 		/*border: 1px dashed teal;*/
 	}
@@ -169,10 +161,8 @@ input:focus, select:focus, textarea:focus, button:focus {
 	#search {
 		display: inline-block;
 		opacity: 0;
-		margin-top: -45px;
+		/*margin-top: -60px;*/
 		width: 450px;
-		margin-right: auto;
-		margin-left: auto;
 		border: 1px solid yellow;
 		transition: opacity 600ms ease-in;
 	}
@@ -208,7 +198,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 		}
 
 #search--suggestions {
-	display: block;
+	display: inline-block;
 	/*flex-direction: column;*/
 	width: 100%;
 	height: 0px;
@@ -221,24 +211,8 @@ input:focus, select:focus, textarea:focus, button:focus {
 	padding: 0px;
 	transition: height 400ms ease-out;
 	overflow: hidden;
+	/*border: 1px dashed pink;*/
 }
-	/*#search--suggestions {
-		height: 0px;
-	}*/
-	/*
-	If you change any of the margins or height of each button,
-	you must reflect those changes in the math of the animate function in
-	activeInputValidation.js
-	*/
-	/*#search--suggestions {
-		font-family: 'Acari Sans', sans-serif;
-		font-weight: 300;
-		font-style: normal;
-		font-size: 18px;
-		text-align: left;
-		margin: 0px;
-		padding: 0px;
-	}*/
 	#search--suggestions button:hover {
 		background-color: rgb(10, 50, 100);
 	}
@@ -274,31 +248,54 @@ input:focus, select:focus, textarea:focus, button:focus {
 		align-items: flex-end;
 		flex-direction: row;*/
 		display: inline-block;
+		white-space: nowrap;
 		width: 0px;
-		overflow: hidden;
+		overflow: auto;
 		transition: width 200ms ease-out, opacity 200ms linear;
 		border: 1px solid lime;
 	}
-		#states--pivotPoint {
+		#states--pivot {
+			display: inline-block;
+			overflow: hidden;
+			vertical-align: top;
+			white-space: normal;
+			width: 20px;
+			margin-right: -5px;
 			border: 1px solid purple;
 		}
+			#states--pivot-triangle {
+				/*display: inline-block;*/
+				width: 0;
+				height: 0;
+				border-top: 20px solid transparent;
+				border-right: 20px solid red;
+				border-bottom: 20px solid transparent;
+			}
 		#states--results {
+			display: inline-block;
+			vertical-align: top;
+			white-space: normal;
 			width: 250px;
+			background-color: rgb(34, 43, 56);
 		}
 			.states--results-item {
 				height: 40px;
 				width: 56px;
 				margin: 10px;
+				border: none;
+				font-family: 'Acari Sans', sans-serif;
+				font-weight: 500;
+				font-style: normal;
+				font-size: 20px;
+				color: white;
+				background-image: linear-gradient(130deg, rgb(0, 128, 255), rgb(143, 0, 179));
 			}
-	/*#states_hidden {
-		visibility: hidden;
-	}
-	#states_show {
-		opacity: 1;
-	}
-	#states_showInvisible {
-		opacity: 0;
-	}*/
+			/*.states--results-item:first-child{
+				margin: 20px 5px 5px 5px;
+			}
+			.states--results-item:last-child{
+				margin: 5px 5px 20px 5px;
+			}*/
 
 #table {
 	display: grid;

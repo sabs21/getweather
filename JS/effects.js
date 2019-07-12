@@ -66,8 +66,16 @@ window.addEventListener("load", function() {
 
   setTimeout(function() {
     style.innerHTML +=
+    // Remove puddle from view.
       "#puddle {" +
         "display: none;" +
+        //"opacity: 0" +
+      "}\n" +
+      // Nudges input form upwards by reducing the height of the title block.
+      // This is done so that the input form doesn't move when puddle is removed.
+      "#title {" +
+        //"margin-bottom: -41px;"
+        "height: 130px;" +
       "}\n";
   }, 3000)
 });

@@ -43,6 +43,11 @@ document.getElementById("search--form-input").oninput = function() {
       // This check prevents errors when the input is cleared using backspace.
       if (this.value[0] != undefined && isValid(lastCharTyped) && input.length >= 3)
       {
+        // When something else is typed, retract the states suggestions.
+        openStates(false);
+        // Then erase the previous state suggestions.
+        document.getElementById("states--results").innerHTML = "";
+
         getSuggestions(city, state, lastCharTyped, function(callback) {
           var suggestionStr = callback;
           stackSuggestions(suggestionStr, function (callback) {
@@ -460,7 +465,9 @@ function clearSuggestions() {
   document.getElementById("search--suggestions").innerHTML = "";
 }
 
-function openStates (openInvisible, getWidth = false) {
+// openStates opens and closes the state suggestions based on the 'open' parameter.
+//
+function openStates (open, showStates = false, callback = function() {}) {
   // The 'style' var holds styling for each suggestion item.
   // CSS elements are assigned to 'style' innerHTML.
   var style = document.createElement("style");
@@ -474,16 +481,16 @@ function openStates (openInvisible, getWidth = false) {
 
   console.log(document.getElementById("states"));
 
-  if (openInvisible)
+  if (open)
   {
-    width = 250;
+    width = 275;
   }
   else
   {
     width = 0;
   }
 
-  if (getWidth)
+  if (showStates)
   {
     var totalStates = document.getElementsByClassName("states--results-item").length;
     console.log(totalStates);
@@ -507,11 +514,21 @@ function openStates (openInvisible, getWidth = false) {
     {
       height = maxHeight;
     }
+      console.log(maxHeight + " " + height);
   }
   style.innerHTML =
     "#states {" +
       "height: " + height + "px;" +
       "width: " + width + "px;" +
+    "}\n" +
+    "#states--pivot {" +
+      "height: " + height + "px;" +
+      "padding-top: " + ((height / 2) - 20) + "px;" +
     "}\n";
 }
+
+/*function arrowMiddle() {
+  var totalStates = document.getElementsByClassName("states--results-item").length;
+  var resultsHeight = Math.ceil(totalStates / 3) * 60;
+}*/
 // Make ALL incoming city name input data ALL LOWERCASE.
