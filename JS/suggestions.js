@@ -366,6 +366,7 @@ function addListeners(addListener, suggestions) {
       statesContainer.appendChild(newState);
     }
     openStates(true, true);
+    alignArrow(event);
   }
 
   var chosenState = function(event) {
@@ -435,15 +436,7 @@ function openSuggestions(open) {
 
   if (open)
   {
-    // An 'item' in this context refers to a single suggestion from the list.
-    var items = document.getElementsByClassName("search--suggestions-item");
-    var totalItems = items.length;
-    // The choice of index doesn't matter since all items will have the same
-    // height. 'offsetHeight' returns the element's true height. Note that
-    // 'offsetHeight' doesn't factor in margin;
-    var height = items[0].offsetHeight;
-
-    var totalHeight = height * totalItems;
+    var totalHeight = getSuggestionsHeight();
 
     style.innerHTML =
       "#search--suggestions {" +
@@ -466,8 +459,8 @@ function clearSuggestions() {
 }
 
 // openStates opens and closes the state suggestions based on the 'open' parameter.
-//
-function openStates (open, showStates = false, callback = function() {}) {
+// The arrow defaults to being in the middle of the states suggestions.
+function openStates (open, showStates = false) {
   // The 'style' var holds styling for each suggestion item.
   // CSS elements are assigned to 'style' innerHTML.
   var style = document.createElement("style");
@@ -478,8 +471,7 @@ function openStates (open, showStates = false, callback = function() {}) {
 
   var width = 0;
   var height = 0;
-
-  console.log(document.getElementById("states"));
+  var maxHeight = 0;
 
   if (open)
   {
@@ -492,43 +484,118 @@ function openStates (open, showStates = false, callback = function() {}) {
 
   if (showStates)
   {
-    var totalStates = document.getElementsByClassName("states--results-item").length;
-    console.log(totalStates);
-    // The '* 60' is for the height of the buttons plus their margins
-    // The '- 20' is adjust for the first row and last row's margins.
-    var resultsHeight = Math.ceil(totalStates / 3) * 60;
+    var resultsHeight = getStatesHeight();
+    var suggestionsHeight = getSuggestionsHeight();
+    var inputHeight = getInputHeight();
 
-    var suggestions = document.getElementsByClassName("search--suggestions-item");
-    var totalSuggestions = suggestions.length;
-    var suggestionHeight = suggestions[0].offsetHeight * suggestions.length;
-
-    var input = document.getElementById("search--form-input");
-    var inputHeight = input.offsetHeight;
-
-    var maxHeight = suggestionHeight + inputHeight;
+    maxHeight = suggestionsHeight + inputHeight;
     height = resultsHeight;
 
-    console.log(maxHeight + " " + resultsHeight + " " + height);
+    console.log(maxHeight + " " + height);
 
-    if (resultsHeight > maxHeight)
+    if (height > maxHeight)
     {
       height = maxHeight;
     }
-      console.log(maxHeight + " " + height);
   }
+
   style.innerHTML =
     "#states {" +
-      "height: " + height + "px;" +
+      "height: " + maxHeight + "px;" +
       "width: " + width + "px;" +
     "}\n" +
+    // The pivot element is set at maxHeight everytime because it simplifies
+    // the calculations required. Notably in the alignArrow() function.
     "#states--pivot {" +
+      "height: " + maxHeight + "px;" +
+    "}\n" +
+    "#states--pivot-triangle {" +
+      "margin-top: " + ((height / 2) - 20) + "px;" +
+    "}\n" +
+    "#states--results {" +
       "height: " + height + "px;" +
-      "padding-top: " + ((height / 2) - 20) + "px;" +
     "}\n";
 }
 
-/*function arrowMiddle() {
-  var totalStates = document.getElementsByClassName("states--results-item").length;
-  var resultsHeight = Math.ceil(totalStates / 3) * 60;
-}*/
+function getSuggestionsHeight(index = null) {
+  var suggestions = document.getElementsByClassName("search--suggestions-item");
+  if (index != null)
+  {
+    return suggestions[0].offsetHeight * index;
+  }
+  else
+  {
+    // I've added 2 to the end height because the last-child has a bottom
+    // border that is 2px thick.
+    return suggestions[0].offsetHeight * suggestions.length + 2;
+  }
+}
+
+// A state item's total height = 60px.
+function getStatesHeight() {
+  var states = document.getElementsByClassName("states--results-item");
+  // 'buttonSize' takes into account the button's margin as well as offsetHeight
+  var buttonSize = states[0].offsetHeight + 20;
+  // The '* 60' accounts for the height of each buttons and their margins.
+  return Math.ceil(states.length / 3) * buttonSize;
+}
+
+function getInputHeight() {
+  var input = document.getElementById("search--form-input");
+  return input.offsetHeight;
+}
+
+function alignArrow(event) {
+  var index = event.target.index;
+  var suggestionsHeight = getSuggestionsHeight();
+  var spaceBetweenSuggestionAndInput = getSuggestionsHeight(index);
+  var inputHeight = getInputHeight();
+  var statesHeight = getStatesHeight();
+  var maxHeight = inputHeight + suggestionsHeight;
+
+  //var pivotMargin = 0;
+  var pivotTriangleMargin = 0;
+  var resultsMargin = 0;
+
+  var arrowNudge = inputHeight + spaceBetweenSuggestionAndInput;
+  // The hardcoded 10 refers to the margin around the button item.
+  var resultsNudge = inputHeight + spaceBetweenSuggestionAndInput - 10;
+
+  //console.log("distanceNudged: " + distanceNudged + " statesHeight: " + statesHeight);
+
+  if ((resultsNudge + statesHeight) > maxHeight)
+  {
+    resultsMargin = 0;
+    //pivotMargin = 0;
+    pivotTriangleMargin = arrowNudge;
+  }
+  else
+  {
+    resultsMargin = resultsNudge;
+    pivotTriangleMargin = arrowNudge;
+  }
+
+  // inputHeight + 20px + (the index of clicked suggestion * 60)
+  // the 20px is half the height of the arrow.
+
+  // The 'style' var holds styling for each suggestion item.
+  // CSS elements are assigned to 'style' innerHTML.
+  var style = document.createElement("style");
+  // Then the style tag is appended to the head of the HTML document.
+  var ref = document.querySelector("head");
+  // Finally, we add the element to the HTML.
+  ref.appendChild(style);
+
+  style.innerHTML =
+  /*"#states--pivot {" +
+    "margin-top: " + pivotMargin + "px;" +
+  "}\n" +*/
+  "#states--pivot-triangle {" +
+    "margin-top: " + pivotTriangleMargin + "px;" +
+  "}\n" +
+  "#states--results {" +
+    "margin-top: " + resultsMargin + "px;" +
+  "}\n";
+}
+
 // Make ALL incoming city name input data ALL LOWERCASE.

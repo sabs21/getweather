@@ -66,6 +66,10 @@ body {
 	color: rgb(232,231,225);
 }
 
+nav {
+	height: 60px;
+}
+
 input:focus, select:focus, textarea:focus, button:focus {
 	outline: none;
 }
@@ -82,7 +86,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 		/*flex-direction: row;*/
 		opacity: 0;
 		transition: opacity 400ms ease-out;
-		/*border: 1px solid white;*/
+		/*border: 1px solid cyan;*/
 	}
 		#title--get {
 			display: inline-block;
@@ -163,7 +167,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 		opacity: 0;
 		/*margin-top: -60px;*/
 		width: 450px;
-		border: 1px solid yellow;
+		/*border: 1px solid yellow;*/
 		transition: opacity 600ms ease-in;
 	}
 		#search--form-input {
@@ -213,23 +217,49 @@ input:focus, select:focus, textarea:focus, button:focus {
 	overflow: hidden;
 	/*border: 1px dashed pink;*/
 }
+	#search--suggestions button {
+		font-family: 'Acari Sans', sans-serif;
+		font-weight: 400;
+		font-style: normal;
+		font-size: 20px;
+		text-align: left;
+		color: white;
+		padding-left: 20px;
+		height: 40px;
+		width: 100%;
+		border: none;
+		background-color: rgb(34, 43, 56);
+	}
 	#search--suggestions button:hover {
-		background-color: rgb(10, 50, 100);
+		background-color: rgb(59, 75, 98);
 	}
 		.search--suggestions-item {
 			display: block;
 			/*flex-direction: row;*/
 			white-space: nowrap;
-			border: 1px solid red;
+			/*border: 1px solid red;*/
+			/*background-color: rgb(34, 43, 56);*/
 			overflow: hidden;
 			height: 40px;
+			border-left: 2px solid white;
+			border-right: 2px solid white;
 		}
-			.search--suggestions-item-address {
+		.search--suggestions-item:last-child {
+			border-bottom: 2px solid white;
+		}
+			/*.search--suggestions-item-single {
+				font-family: 'Acari Sans', sans-serif;
+				font-weight: 300;
+				font-style: normal;
+				font-size: 18px;
+				text-align: left;
+			}*/
+			/*.search--suggestions-item-address {
 				display: inline-block;
-				border: 1px solid cyan;
+				border: 1px solid cyan;*/
 				/* vertical-align prevents the inline-blocks from becoming misaligned */
 				/* vertical-align: top; */
-				width: 50%;
+				/*width: 50%;
 				height: 40px;
 				line-height: 40px;
 			}
@@ -240,41 +270,37 @@ input:focus, select:focus, textarea:focus, button:focus {
 				.search--suggestions-item-address-full {
 					display: inline-block;
 					border: 1px solid white;
-				}
+				}*/
 
 	#states {
-		/*display: flex;
-		justify-content: flex-end;
-		align-items: flex-end;
-		flex-direction: row;*/
 		display: inline-block;
 		white-space: nowrap;
 		width: 0px;
-		overflow: auto;
+		overflow: hidden;
 		transition: width 200ms ease-out, opacity 200ms linear;
-		border: 1px solid lime;
+		/*border: 1px solid lime;*/
 	}
 		#states--pivot {
 			display: inline-block;
-			overflow: hidden;
 			vertical-align: top;
 			white-space: normal;
+			overflow: hidden;
 			width: 20px;
 			margin-right: -5px;
-			border: 1px solid purple;
+			/*border: 1px solid purple;*/
 		}
 			#states--pivot-triangle {
-				/*display: inline-block;*/
-				width: 0;
-				height: 0;
+				width: 0px;
+				height: 0px;
 				border-top: 20px solid transparent;
-				border-right: 20px solid red;
+				border-right: 20px solid rgb(34, 43, 56);
 				border-bottom: 20px solid transparent;
 			}
 		#states--results {
 			display: inline-block;
 			vertical-align: top;
 			white-space: normal;
+			overflow: auto;
 			width: 250px;
 			background-color: rgb(34, 43, 56);
 		}
