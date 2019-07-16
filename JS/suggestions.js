@@ -50,8 +50,8 @@ document.getElementById("search--form-input").oninput = function() {
 
         getSuggestions(city, state, lastCharTyped, function(callback) {
           var suggestionStr = callback;
+
           stackSuggestions(suggestionStr, function (callback) {
-            console.log(callback);
             if (callback === "No cities found.")
             {
               document.getElementById("error").innerHTML = "No cities found.";
@@ -329,7 +329,6 @@ function addListeners(addListener, suggestions) {
     // Open the side menu containing the stack of state while invisible.
     openStates(true);
 
-    console.log(event);
     // This is the index value that was passed to the function as a "parameter".
     // We need the index of where the suggestion is in the suggestion container
     // in order to pinpoint it with the states menu later.
@@ -370,7 +369,6 @@ function addListeners(addListener, suggestions) {
   }
 
   var chosenState = function(event) {
-    console.log(event);
     var city = event.target.city;
     var state = event.target.innerHTML;
 
@@ -491,8 +489,6 @@ function openStates (open, showStates = false) {
     maxHeight = suggestionsHeight + inputHeight;
     height = resultsHeight;
 
-    console.log(maxHeight + " " + height);
-
     if (height > maxHeight)
     {
       height = maxHeight;
@@ -560,8 +556,6 @@ function alignArrow(event) {
   var arrowNudge = inputHeight + spaceBetweenSuggestionAndInput;
   // The hardcoded 10 refers to the margin around the button item.
   var resultsNudge = inputHeight + spaceBetweenSuggestionAndInput - 10;
-
-  //console.log("distanceNudged: " + distanceNudged + " statesHeight: " + statesHeight);
 
   if ((resultsNudge + statesHeight) > maxHeight)
   {

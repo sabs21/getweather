@@ -40,12 +40,12 @@
 	font-style: italic;
 }
 
-@font-face {
+/*@font-face {
 	font-family: 'Cooper Hewitt';
 	src: url('./Fonts/CooperHewitt/CooperHewitt_Thin.otf') format('opentype');
 	font-weight: 100;
 	font-style: normal;
-}
+}*/
 
 * {
 	margin: 0px;
@@ -314,6 +314,9 @@ input:focus, select:focus, textarea:focus, button:focus {
 				font-style: normal;
 				font-size: 20px;
 				color: white;
+				background-image: linear-gradient(130deg, rgb(0, 128, 255), rgb(34, 43, 56));
+			}
+			.states--results-item:hover {
 				background-image: linear-gradient(130deg, rgb(0, 128, 255), rgb(143, 0, 179));
 			}
 			/*.states--results-item:first-child{

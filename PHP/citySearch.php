@@ -53,7 +53,20 @@
   while (!$done)
   {
     // The $diff(erence) governs how much to add or subtract from the current $index.
-    $diff = round($diff / 2, 0, PHP_ROUND_HALF_UP);
+    if ($oneLastLoop)
+    {
+      // This is part of the math for the final iteration.
+      // Once a search's $diff hits 2 for the first time, the next iterations
+      // check the city above and below that index. In order for the last
+      // iteration to check the final possible choice, we must add or subtract
+      // the index by 2 to make up for the previous iteration's calculation.
+      $diff = 2;
+    }
+    else
+    {
+      // This is the normal math thats performed for each iteration.
+      $diff = round($diff / 2, 0, PHP_ROUND_HALF_UP);
+    }
     // The json city name is made lowercase to promote expected results from ord().
     // Spaces are removed to ensure expected results.
     $cityJson = cleanInput($allCities[$index]->name, true);
@@ -110,7 +123,6 @@
         $i = $cityInputLength;
       }
     }
-
 
     // If $oneLastLoop is true, that means no matches have been found.
     if ($oneLastLoop)
