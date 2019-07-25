@@ -67,8 +67,44 @@ body {
 }
 
 nav {
-	height: 60px;
+	height: 100px;
+	/*border: 1px solid teal;*/
 }
+	#nav--settings {
+		display:inline-block;
+		width: 60px;
+		height: 100%;
+		border: 1px solid green;
+	}
+	#nav--recent {
+		display: inline-block;
+		width: 60px;
+		height: 100%;
+		float: right;
+		border: 1px solid pink;
+	}
+	#nav--recent:hover .dot {
+		background-color: white;
+	}
+	.tridot-spacing {
+		display: block;
+		margin-top: 8px;
+		margin-left: auto;
+		margin-right: auto;
+		height: 8px;
+		width: 8px;
+		/*border: 1px solid orange;*/
+	}
+	.tridot-spacing:first-child {
+		margin-top: 30px;
+	}
+		.dot {
+			background-color: rgb(146, 154, 168);
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+		}
+
 
 input:focus, select:focus, textarea:focus, button:focus {
 	outline: none;
@@ -80,10 +116,9 @@ input:focus, select:focus, textarea:focus, button:focus {
 	margin-right: auto;
 }
 	#title {
+		/* This clear is used to clear the float right of the recent button*/
+		clear: both;
 		display: block;
-		/*justify-content: center;*/
-		/*align-items: center;*/
-		/*flex-direction: row;*/
 		opacity: 0;
 		transition: opacity 400ms ease-out;
 		/*border: 1px solid cyan;*/
@@ -128,7 +163,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 		display: block;
 		/*flex-direction: row-reverse;*/
 		margin-top: -18px;
-		margin-bottom: -44px;
+		margin-bottom: -43px;
 		width: 450px;
 		/*border: 1px dashed teal;*/
 	}
