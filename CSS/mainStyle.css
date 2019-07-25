@@ -59,8 +59,7 @@ html {
 }
 
 body {
-	margin: 0px 3% 15px 3%; /* margin-top right bottom left*/
-	height: 90%;
+	overflow: hidden;
 	font-family: Arial, sans-serif;
 	background-color: rgba(2, 83, 126, 0);
 	color: rgb(232,231,225);
@@ -68,20 +67,22 @@ body {
 
 nav {
 	height: 100px;
+	padding-left: 60px;
+	padding-right: 60px;
 	/*border: 1px solid teal;*/
 }
 	#nav--settings {
 		display:inline-block;
 		width: 60px;
 		height: 100%;
-		border: 1px solid green;
+		/*border: 1px solid green;*/
 	}
 	#nav--recent {
 		display: inline-block;
 		width: 60px;
 		height: 100%;
 		float: right;
-		border: 1px solid pink;
+		/*border: 1px solid pink;*/
 	}
 	#nav--recent:hover .dot {
 		background-color: white;
@@ -364,9 +365,11 @@ input:focus, select:focus, textarea:focus, button:focus {
 #table {
 	display: grid;
 	grid-template-rows: 15% 85%;
-	width: 100%;
 	margin-top: 20px;
 	margin-bottom: 50px;
+	padding-left: 60px;
+	padding-right: 60px;
+	/*border: 1px dashed blue;*/
 }
 #table div {
 }
@@ -420,6 +423,17 @@ input:focus, select:focus, textarea:focus, button:focus {
 				padding-top: 7px;
 				padding-left: 10px;
 			}
+
+#recent {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 0px;
+	height: 100%;
+	background-color: rgb(34, 43, 56);
+	transition: width 300ms ease-out;
+	border: 1px solid white;
+}
 
 #error {
 	width: 100%;
