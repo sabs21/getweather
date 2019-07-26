@@ -326,7 +326,8 @@ function addListeners(addListener, suggestions) {
   // I still need to have the stateContainer point to the suggestion that
   // was clicked on.
   var multiple = function(event) {
-    // Open the side menu containing the stack of state while invisible.
+    // Open the side menu containing the stack of states while invisible.
+    // Doing so allows the offsetHeight to be read.
     openStates(true);
 
     // This is the index value that was passed to the function as a "parameter".
@@ -557,9 +558,20 @@ function alignArrow(event) {
   // The hardcoded 10 refers to the margin around the button item.
   var resultsNudge = inputHeight + spaceBetweenSuggestionAndInput - 10;
 
+  // This if statement lets the states block be confined within states--results
+  // in a readable manner.
   if ((resultsNudge + statesHeight) > maxHeight)
   {
-    resultsMargin = 0;
+    // If the arrow is near the bottom of the suggestions and the states block
+    // is fairly small.
+    if (resultsNudge > statesHeight)
+    {
+      resultsMargin = maxHeight - statesHeight;
+    }
+    else
+    {
+      resultsMargin = 0;
+    }
     //pivotMargin = 0;
     pivotTriangleMargin = arrowNudge;
   }
