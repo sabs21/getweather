@@ -59,15 +59,10 @@ html {
 }
 
 body {
-	margin: 0px 3% 15px 3%; /* margin-top right bottom left*/
-	height: 90%;
+	overflow: hidden;
 	font-family: Arial, sans-serif;
 	background-color: rgba(2, 83, 126, 0);
 	color: rgb(232,231,225);
-}
-
-nav {
-	height: 60px;
 }
 
 input:focus, select:focus, textarea:focus, button:focus {
@@ -79,127 +74,162 @@ input:focus, select:focus, textarea:focus, button:focus {
 	margin-left: auto;
 	margin-right: auto;
 }
-	#title {
-		display: block;
-		/*justify-content: center;*/
-		/*align-items: center;*/
-		/*flex-direction: row;*/
-		opacity: 0;
-		transition: opacity 400ms ease-out;
-		/*border: 1px solid cyan;*/
-	}
-		#title--get {
-			display: inline-block;
-			background-image: url("./Images/getWeather_img.png");
-			width: 119px;
-			height: 94px;
-			margin-right: 10px;
-			transition: background-position 400ms ease-out, margin-right 800ms ease-in-out;
-		}
-		#title--weather {
-			display: inline-block;
-			background-image: url("./Images/getWeather_img.png");
-			margin-left: 10px;
-			width: 311px;
-			height: 94px;
-			background-position: -549px 0px;
-			transition: background-position 400ms ease-out, margin-left 800ms ease-in-out;
-		}
-		#title--dividerContainer {
-			display: block;
-			width: 2px;
-			margin-top: -100px;
-			overflow: hidden;
-			padding-right: 190px;
-			transition: margin-top 500ms ease-in;
-		}
-			#title--dividerLine {
-				/*text-align: center;
-				align-items: center;*/
-				display: block;
-				background-color: rgb(255,255,255);
-				width: 2px;
-				height: 94px;
-				transition: height 500ms ease-in;
-				/*border: 1px dashed purple;*/
-			}
 
-	#puddle {
-		display: block;
-		/*flex-direction: row-reverse;*/
-		margin-top: -18px;
-		margin-bottom: -44px;
-		width: 450px;
-		/*border: 1px dashed teal;*/
+nav {
+	height: 100px;
+	padding-left: 60px;
+	padding-right: 60px;
+	/*border: 1px solid teal;*/
+}
+	#nav--settings {
+		display:inline-block;
+		width: 60px;
+		height: 100%;
+		/*border: 1px solid green;*/
 	}
-		#puddle--left {
-			display: inline-block;
-			overflow: hidden;
-			width: 130px;
-			height: 2px;
-		}
-			#puddle--left-line {
-				opacity: 0;
-				background-color: white;
-				float: right;
-				width: 1px;
-				height: 2px;
-				transition: width 500ms ease-out;
-			}
-		#puddle--right {
-			display: inline-block;
-			overflow: hidden;
-			margin-left: -6px;
-			width: 320px;
-			height: 2px;
-		}
-			#puddle--right-line {
-				opacity: 0;
-				background-color: white;
-				float: left;
-				width: 1px;
-				height: 2px;
-				transition: width 500ms ease-out;
-			}
-
-	#search {
+	#nav--recent {
 		display: inline-block;
-		opacity: 0;
-		/*margin-top: -60px;*/
-		width: 450px;
-		/*border: 1px solid yellow;*/
-		transition: opacity 600ms ease-in;
+		width: 60px;
+		height: 100%;
+		float: right;
+		/*border: 1px solid pink;*/
 	}
-		#search--form-input {
-			overflow: hidden;
-			font-family: 'Acari Sans', Arial, sans-serif;
-			font-weight: 400;
-			font-style: normal;
-			font-size: 30px;
-			text-align: center;
-			border-style: solid;
-			border-color: white;
-			border-width: 0px 0px 2px 0px;
-			width: 100%;
-			background-color: rgba(2, 83, 126, 0.5);
-			color: white;
+	#nav--recent:hover .dot {
+		background-color: white;
+	}
+	.tridot-spacing {
+		display: block;
+		margin-top: 8px;
+		margin-left: auto;
+		margin-right: auto;
+		height: 8px;
+		width: 8px;
+		/*border: 1px solid orange;*/
+	}
+	.tridot-spacing:first-child {
+		margin-top: 30px;
+	}
+		.dot {
+			background-color: rgb(146, 154, 168);
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
 		}
-		#search--form-input::placeholder {
-			color: grey;
-			font-family: 'Acari Sans', Arial, sans-serif;
-			font-weight: 300;
-			font-style: italic;
-			font-size: 30px;
+
+#title {
+	/* This clear is used to clear the float right of the recent button*/
+	clear: both;
+	display: block;
+	opacity: 0;
+	width: 500px;
+	transition: opacity 400ms ease-out;
+	border: 1px solid cyan;
+}
+	#title--get {
+		display: inline-block;
+		background-image: url("./Images/getWeather_img.png");
+		width: 119px;
+		height: 94px;
+		margin-right: 10px;
+		transition: background-position 400ms ease-out, margin-right 800ms ease-in-out;
+	}
+	#title--weather {
+		display: inline-block;
+		background-image: url("./Images/getWeather_img.png");
+		margin-left: 10px;
+		width: 311px;
+		height: 94px;
+		background-position: -549px 0px;
+		transition: background-position 400ms ease-out, margin-left 800ms ease-in-out;
+	}
+	#title--line {
+		display: block;
+		width: 2px;
+		margin-top: -100px;
+		overflow: hidden;
+		padding-left: 154px;
+		transition: margin-top 500ms ease-in;
+	}
+		#title--line div {
+			background-color: white;
+			height: 94px;
+			transition: height 500ms ease-in;
+			/*border: 1px dashed purple;*/
 		}
-		#search--form-input:hover {
-			background-color: rgba(1, 50, 100, 0.5);
+
+#puddle {
+	display: block;
+	margin-top: -2px;
+	margin-bottom: -39px;
+	width: 450px;
+	/* By setting font-size to 0, all space between inline-blocks is removed */
+	font-size: 0;
+	/*border: 1px dashed teal;*/
+}
+#puddle div {
+	display: inline-block;
+	overflow: hidden;
+	height: 2px;
+}
+#puddle div div {
+	opacity: 0;
+	background-color: white;
+	height: 2px;
+	transition: width 500ms ease-out;
+}
+	#puddle--left {
+		width: 130px;
+	}
+		#puddle--left-line {
+			float: right;
+			width: 1px;
 		}
-		#search--form-input:focus {
-			background-color: rgba(1, 50, 100, 0.5);
+	#puddle--right {
+		width: 320px;
+	}
+		#puddle--right-line {
+			float: left;
+			width: 1px;
 		}
-		#search--form-submit {
-			display: none;
-		}
+
+#search {
+	display: inline-block;
+	opacity: 0;
+	/*margin-top: -60px;*/
+	width: 450px;
+	border: 1px solid yellow;
+	transition: opacity 600ms ease-in;
+}
+	#search--form-input {
+		color: white;
+		font-family: 'Acari Sans', Arial, sans-serif;
+		font-weight: 400;
+		font-style: normal;
+		font-size: 30px;
+		text-align: center;
+		border-style: solid;
+		border-color: white;
+		border-width: 0px 0px 2px 0px;
+		overflow: hidden;
+		width: 100%;
+		background-color: rgba(2, 83, 126, 0.5);
+	}
+	#search--form-input::placeholder {
+		color: grey;
+		font-family: 'Acari Sans', Arial, sans-serif;
+		font-weight: 300;
+		font-style: italic;
+		font-size: 30px;
+	}
+	#search--form-input:hover {
+		background-color: rgba(1, 50, 100, 0.5);
+	}
+	#search--form-input:focus {
+		background-color: rgba(1, 50, 100, 0.5);
+	}
+	#search--form-submit {
+		display: none;
+	}
 
 #search--suggestions {
 	display: inline-block;
@@ -280,10 +310,15 @@ input:focus, select:focus, textarea:focus, button:focus {
 		transition: width 200ms ease-out, opacity 200ms linear;
 		/*border: 1px solid lime;*/
 	}
+	#states div {
+		display: inline-block;
+		vertical-align: top;
+		white-space: normal;
+	}
+	#states div div {
+		display: block;
+	}
 		#states--pivot {
-			display: inline-block;
-			vertical-align: top;
-			white-space: normal;
 			overflow: hidden;
 			width: 20px;
 			margin-right: -5px;
@@ -297,94 +332,36 @@ input:focus, select:focus, textarea:focus, button:focus {
 				border-bottom: 20px solid transparent;
 			}
 		#states--results {
-			display: inline-block;
-			vertical-align: top;
-			white-space: normal;
 			overflow: auto;
 			width: 250px;
 			background-color: rgb(34, 43, 56);
 		}
 			.states--results-item {
-				height: 40px;
-				width: 56px;
-				margin: 10px;
-				border: none;
 				font-family: 'Acari Sans', sans-serif;
 				font-weight: 500;
 				font-style: normal;
 				font-size: 20px;
 				color: white;
+				height: 40px;
+				width: 56px;
+				margin: 10px;
+				border: none;
 				background-image: linear-gradient(130deg, rgb(0, 128, 255), rgb(34, 43, 56));
 			}
 			.states--results-item:hover {
 				background-image: linear-gradient(130deg, rgb(0, 128, 255), rgb(143, 0, 179));
 			}
-			/*.states--results-item:first-child{
-				margin: 20px 5px 5px 5px;
-			}
-			.states--results-item:last-child{
-				margin: 5px 5px 20px 5px;
-			}*/
 
-#table {
-	display: grid;
-	grid-template-rows: 15% 85%;
-	width: 100%;
-	margin-top: 20px;
-	margin-bottom: 50px;
+#recent {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 0px;
+	height: 100%;
+	background-color: rgb(34, 43, 56);
+	transition: width 300ms ease-out;
+	border: 1px solid white;
 }
-#table div {
-}
-	#table--head-data {
-		display: grid;
-		grid-template-columns: 149px 40%;
-		padding-top: 5px;
-		padding-left: 10px;
-		padding-bottom: 10px;
-		width: 100%;
-	}
-	#table--body {
-		display: grid;
-		grid-template-columns: 33.3% 33.3% 33.3%;
-	}
-	#table--body div {
-		border: white solid 1px;
-		padding-top: 10px;
-		padding-bottom: 10px;
-	}
-		.table--head-data-desc {
-			font-family: 'Acari Sans', Arial, sans-serif;
-			font-size: 24px;
-			font-weight: 500;
-			font-style: italic;
-		}
-		.table--head-data-output {
-			font-family: 'Acari Sans', Arial, sans-serif;
-			font-size: 16px;
-			font-weight: 300;
-			font-style: normal;
-			padding-top: 7px;
-			padding-left: 5px;
-		}
-		.table--body-data {
-			display: grid;
-			grid-template-rows: 32px 32px;
-		}
-			.table--body-data-desc {
-				font-family: 'Acari Sans', Arial, sans-serif;
-				font-size: 24px;
-				font-weight: 500;
-				font-style: italic;
-				padding-left: 10px;
-			}
-			.table--body-data-output {
-				font-family: 'Acari Sans', Arial, sans-serif;
-				font-size: 16px;
-				font-weight: 300;
-				font-style: normal;
-				padding-top: 7px;
-				padding-left: 10px;
-			}
 
 #error {
 	width: 100%;

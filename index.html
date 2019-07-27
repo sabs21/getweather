@@ -7,14 +7,28 @@
 
   <body>
 		<nav>
+			<div id="nav--settings"></div>
+
+			<div id="nav--recent">
+				<div class="tridot-spacing">
+					<div class="dot"></div>
+				</div>
+				<div class="tridot-spacing">
+					<div class="dot"></div>
+				</div>
+				<div class="tridot-spacing">
+					<div class="dot"></div>
+				</div>
+			</div>
 		</nav>
+
 		<p id="error"></p>
 
 		<div id="title" class="center">
 			<div id="title--get"></div>
 			<div id="title--weather"></div>
-			<div id="title--dividerContainer" class="center">
-				<div id="title--dividerLine"></div>
+			<div id="title--line">
+				<div></div>
 			</div>
 		</div>
 
@@ -31,10 +45,14 @@
 			</div>
 		</div>
 
+		<!-- Since "search" is an inline-block, I need this container to be 100%
+		wide with a text-align center in order to center the elements inside.
+		I would just make "search" a block, but then "states" gets pushed down to
+		a new line -->
 		<div class="center">
 			<div id="search">
 				<form action="./JS/PHP/getKey.php" method="get" id="search--form">
-					<input type="text" name="city" autocomplete="off" placeholder="City Name (USA), State" id="search--form-input">
+					<input type="text" autocomplete="off" placeholder="City Name (USA), State" id="search--form-input">
 					<input type="submit" value="Get Weather" id="search--form-submit">
 				</form>
 				<div id="search--suggestions"></div>
@@ -48,52 +66,61 @@
 			</div>
 		</div>
 
-		<div id="table">
-			<div id="table--head-data">
-				<p class="table--head-data-desc">Last Updated: </p>
-				<p class="table--head-data-output" id="time"></p>
-			</div>
-			<div id="table--body">
-				<div class="table--body-data">
+		<table class="center">
+			<tr>
+				<th>
+					<p class="table--head-data-desc">Last Updated: </p>
+					<p class="table--head-data-output" id="time"></p>
+				</th>
+			</tr>
+			<tr>
+				<td>
 					<p class="table--body-data-desc">City: </p>
 					<p class="table--body-data-output" id="city"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">State: </p>
 					<p class="table--body-data-output" id="state"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">Current Conditions: </p>
 					<p class="table--body-data-output" id="weather"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+			</tr>
+			<tr>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">Description: </p>
 					<p class="table--body-data-output" id="weatherDesc"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">Barometric Pressure: </p>
 					<p class="table--body-data-output" id="pressure"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">Temperature: </p>
 					<p class="table--body-data-output" id="temp"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+			</tr>
+			<tr>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">Humidity: </p>
 					<p class="table--body-data-output" id="humidity"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">Latitude: </p>
 					<p class="table--body-data-output" id="lat"></p>
-				</div>
-				<div class="table--body-data">
+				</td>
+				<td class="table--body-data">
 					<p class="table--body-data-desc">Longitude: </p>
 					<p class="table--body-data-output" id="lon"></p>
-				</div>
-			</div>
-		</div>
+				</td>
+			</tr>
+		</table>
 
-		<script src="./JS/effects.js"></script>
+		<div id="recent"></div>
+
+		<script src="./JS/onloadEffects.js"></script>
+		<script src="./JS/sidebarEffects.js"></script>
 		<script src="./JS/getWeather.js" async> </script>
 		<script src="./JS/suggestions.js"></script>
   </body>

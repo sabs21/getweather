@@ -23,24 +23,24 @@ window.addEventListener("load", function() {
       "#title--weather {" +
         "background-position: -239px 0px;" +
       "}\n" +
-      "#puddle--right-line, #puddle--left-line {" +
+      "#puddle div div {" +
         "opacity: 1;" +
       "}\n";
   }, 500);
 
   setTimeout(function() {
     style.innerHTML +=
-      "#title--dividerContainer {" +
+      "#title--line {" +
         "margin-top: 70px;" +
       "}\n" +
-      "#title--dividerLine {" +
+      "#title--line div {" +
         "height: 2px;" +
       "}\n";
   }, 1000);
 
   setTimeout(function() {
     style.innerHTML +=
-      "#title--dividerLine {" +
+      "#title--line div {" +
         "visibility: hidden" +
       "}\n" +
       "#puddle--right-line {" +
