@@ -123,13 +123,13 @@ nav {
 	opacity: 0;
 	width: 500px;
 	transition: opacity 400ms ease-out;
-	border: 1px solid cyan;
+	/*border: 1px solid cyan;*/
 }
 #title.visible {
 	opacity: 1;
 }
 #title.readjust {
-	height: 131px;
+	height: 132px;
 }
 	#title--get {
 		display: inline-block;
@@ -178,7 +178,7 @@ nav {
 			/*border: 1px dashed purple;*/
 		}
 		#title--line div.shrink {
-			height: 2px;
+			height: 1px;
 		}
 		#title--line div.hidden {
 			visibility: hidden;
@@ -187,7 +187,7 @@ nav {
 #puddle {
 	display: block;
 	margin-top: -2px;
-	margin-bottom: -39px;
+	margin-bottom: -38px;
 	width: 450px;
 	/* By setting font-size to 0, all space between inline-blocks is removed */
 	font-size: 0;
@@ -236,7 +236,7 @@ nav {
 	opacity: 0;
 	/*margin-top: -60px;*/
 	width: 450px;
-	border: 1px solid yellow;
+	/*border: 1px solid yellow;*/
 	transition: opacity 600ms ease-in;
 }
 #search.visible {
@@ -401,13 +401,50 @@ nav {
 	width: 500px;
 	height: 100%;
 	background-color: rgb(34, 43, 56);
-	transition: width 300ms ease-out;
-	border: 1px solid white;
+	transition: right 300ms ease-out;
 }
-
 #recent.collapsed {
-	width: 0px;
+	right: -500px;
 }
+#recent p {
+	display: inline-block;
+	overflow: hidden;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	font-size: 32px;
+	margin-left: 36px;
+	margin-top: 24px;
+	/*border: 1px solid cyan;*/
+	width: 75%;
+	vertical-align: top;
+	white-space: normal;
+}
+#recent div {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	border-bottom: 2px solid grey;
+}
+	#recent--close {
+		display: inline-block;
+		font-family: 'Acari Sans', sans-serif;
+		font-weight: 300;
+		font-style: normal;
+		font-size: 50px;
+		color: grey;
+		border: none;
+		background-color: rgb(34, 43, 56);
+		width: 15%;
+		height: 60px;
+		margin-top: 8px;
+		vertical-align: top;
+		white-space: normal;
+	}
+	#recent--close:hover {
+		color: white;
+	}
+
 
 #error {
 	width: 100%;
