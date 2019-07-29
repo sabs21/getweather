@@ -123,7 +123,13 @@ nav {
 	opacity: 0;
 	width: 500px;
 	transition: opacity 400ms ease-out;
-	border: 1px solid cyan;
+	/*border: 1px solid cyan;*/
+}
+#title.visible {
+	opacity: 1;
+}
+#title.readjust {
+	height: 132px;
 }
 	#title--get {
 		display: inline-block;
@@ -132,6 +138,12 @@ nav {
 		height: 94px;
 		margin-right: 10px;
 		transition: background-position 400ms ease-out, margin-right 800ms ease-in-out;
+	}
+	#title--get.visible {
+		background-position: -119px 0px;
+	}
+	#title--get.closeGap {
+		margin-right: 0px;
 	}
 	#title--weather {
 		display: inline-block;
@@ -142,6 +154,12 @@ nav {
 		background-position: -549px 0px;
 		transition: background-position 400ms ease-out, margin-left 800ms ease-in-out;
 	}
+	#title--weather.visible {
+		background-position: -239px 0px;
+	}
+	#title--weather.closeGap {
+		margin-left: 0px;
+	}
 	#title--line {
 		display: block;
 		width: 2px;
@@ -150,21 +168,33 @@ nav {
 		padding-left: 154px;
 		transition: margin-top 500ms ease-in;
 	}
+	#title--line.drop {
+		margin-top: 70px;
+	}
 		#title--line div {
 			background-color: white;
 			height: 94px;
 			transition: height 500ms ease-in;
 			/*border: 1px dashed purple;*/
 		}
+		#title--line div.shrink {
+			height: 1px;
+		}
+		#title--line div.hidden {
+			visibility: hidden;
+		}
 
 #puddle {
 	display: block;
 	margin-top: -2px;
-	margin-bottom: -39px;
+	margin-bottom: -38px;
 	width: 450px;
 	/* By setting font-size to 0, all space between inline-blocks is removed */
 	font-size: 0;
 	/*border: 1px dashed teal;*/
+}
+#puddle.remove {
+	display: none;
 }
 #puddle div {
 	display: inline-block;
@@ -177,19 +207,28 @@ nav {
 	height: 2px;
 	transition: width 500ms ease-out;
 }
+#puddle div div.visible {
+	opacity: 1;
+}
 	#puddle--left {
 		width: 130px;
 	}
-		#puddle--left-line {
+		#puddle--left div {
 			float: right;
 			width: 1px;
+		}
+		#puddle--left div.spread {
+			width: 130px;
 		}
 	#puddle--right {
 		width: 320px;
 	}
-		#puddle--right-line {
+		#puddle--right div {
 			float: left;
 			width: 1px;
+		}
+		#puddle--right div.spread {
+			width: 320px;
 		}
 
 #search {
@@ -197,8 +236,11 @@ nav {
 	opacity: 0;
 	/*margin-top: -60px;*/
 	width: 450px;
-	border: 1px solid yellow;
+	/*border: 1px solid yellow;*/
 	transition: opacity 600ms ease-in;
+}
+#search.visible {
+	opacity: 1;
 }
 	#search--form-input {
 		color: white;
@@ -356,12 +398,53 @@ nav {
 	position: absolute;
 	top: 0px;
 	right: 0px;
-	width: 0px;
+	width: 500px;
 	height: 100%;
 	background-color: rgb(34, 43, 56);
-	transition: width 300ms ease-out;
-	border: 1px solid white;
+	transition: right 300ms ease-out;
 }
+#recent.collapsed {
+	right: -500px;
+}
+#recent p {
+	display: inline-block;
+	overflow: hidden;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	font-size: 32px;
+	margin-left: 36px;
+	margin-top: 24px;
+	/*border: 1px solid cyan;*/
+	width: 75%;
+	vertical-align: top;
+	white-space: normal;
+}
+#recent div {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	border-bottom: 2px solid grey;
+}
+	#recent--close {
+		display: inline-block;
+		font-family: 'Acari Sans', sans-serif;
+		font-weight: 300;
+		font-style: normal;
+		font-size: 50px;
+		color: grey;
+		border: none;
+		background-color: rgb(34, 43, 56);
+		width: 15%;
+		height: 60px;
+		margin-top: 8px;
+		vertical-align: top;
+		white-space: normal;
+	}
+	#recent--close:hover {
+		color: white;
+	}
+
 
 #error {
 	width: 100%;

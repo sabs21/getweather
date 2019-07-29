@@ -1,81 +1,32 @@
-// CSS elements are assigned to 'style' innerHTML.
-var style = document.createElement("style");
-// Then the style tag is appended to the head of the HTML document.
-var ref = document.querySelector("head");
-// Finally, we add the element to the HTML.
-ref.appendChild(style);
-// From here, we may begin editing the css of the document.
-
-// Using style, we will tinker with animations that play onload.
 window.addEventListener("load", function() {
-  style.innerHTML =
-    "#title {" +
-      "opacity: 1;" +
-    "}\n";
+  document.getElementById("title").className = "visible center"
 
   setTimeout(function() {
-    // After the first innerHTML edit, the innerHTML must be concatenated.
-    // If we don't concatenate, then we will lose previously defined styling.
-    style.innerHTML +=
-      "#title--get {" +
-        "background-position: -119px 0px;" +
-      "}\n" +
-      "#title--weather {" +
-        "background-position: -239px 0px;" +
-      "}\n" +
-      "#puddle div div {" +
-        "opacity: 1;" +
-      "}\n";
+      document.getElementById("title--get").className = "visible";
+      document.getElementById("title--weather").className = "visible";
+      document.querySelector("#puddle--left div").className = "visible";
+      document.querySelector("#puddle--right div").className = "visible";
   }, 500);
 
   setTimeout(function() {
-    style.innerHTML +=
-      "#title--line {" +
-        "margin-top: 70px;" +
-      "}\n" +
-      "#title--line div {" +
-        "height: 2px;" +
-      "}\n";
+    document.getElementById("title--line").className = "drop";
+    document.querySelector("#title--line div").className = "shrink";
   }, 1000);
 
   setTimeout(function() {
-    style.innerHTML +=
-      "#title--line div {" +
-        "visibility: hidden" +
-      "}\n" +
-      "#puddle--right-line {" +
-        "width: 320px;" +
-      "}\n" +
-      "#puddle--left-line {" +
-        "width: 130px;" +
-      "}\n" +
-      "#title--get {" +
-        "margin-right: 0px;" +
-      "}\n" +
-      "#title--weather {" +
-        "margin-left: 0px;" +
-      "}\n";
+    document.querySelector("#title--line div").className = "shrink hidden";
+    document.querySelector("#puddle--left div").className = "visible spread";
+    document.querySelector("#puddle--right div").className = "visible spread";
+    document.getElementById("title--get").className = "visible closeGap";
+    document.getElementById("title--weather").className = "visible closeGap";
   }, 1500);
 
   setTimeout(function() {
-    style.innerHTML +=
-      "#search {" +
-        "opacity: 1;" +
-      "}\n";
+      document.getElementById("search").className = "visible";
   }, 2200)
 
   setTimeout(function() {
-    style.innerHTML +=
-    // Remove puddle from view.
-      "#puddle {" +
-        "display: none;" +
-        //"opacity: 0" +
-      "}\n" +
-      // Nudges input form upwards by reducing the height of the title block.
-      // This is done so that the input form doesn't move when puddle is removed.
-      "#title {" +
-        //"margin-bottom: -41px;"
-        "height: 130px;" +
-      "}\n";
+      document.getElementById("puddle").className = "remove";
+      document.getElementById("title").className = "visible center readjust";
   }, 3000)
 });
