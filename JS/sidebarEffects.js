@@ -65,12 +65,26 @@ window.addEventListener("load", function() {
   }
 
   var viewportHeight = window.innerHeight;
-  //var occupiedSpace = 62
+  var occupiedSpace = 60 + 20 + 20;
   console.log(viewportHeight);
 
   style.innerHTML +=
   "#recent--searches {" +
-    "height: " + v
+    "height: " + (viewportHeight - occupiedSpace) + "px;" +
+  "}";
+});
+
+window.addEventListener("resize", function() {
+  console.log("Window height changed to " + window.innerHeight);
+
+  var viewportHeight = window.innerHeight;
+  var occupiedSpace = 60 + 20 + 20;
+  console.log(viewportHeight);
+
+  style.innerHTML +=
+  "#recent--searches {" +
+    "height: " + (viewportHeight - occupiedSpace) + "px;" +
+  "}";
 });
 
 document.getElementById("nav--recent").addEventListener("click", function() {
@@ -82,8 +96,8 @@ document.getElementById("recent--close").addEventListener("click", function() {
   var decodedCookie = decodeURIComponent(document.cookie);
   var cookieSplit = decodedCookie.split(";");
 
-  console.log(cookieSplit.length - 1);
   console.log(cookieSplit[cookieSplit.length - 1]);
+  console.log(window.innerHeight);
 });
 
 /*function allocateResultSpace() {

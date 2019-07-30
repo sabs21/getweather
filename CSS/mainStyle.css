@@ -408,47 +408,47 @@ nav {
 }
 #recent--header {
 	height: 60px;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+	border-bottom: 2px solid grey;
 }
 #recent--header p {
 	display: inline-block;
 	overflow: hidden;
+	vertical-align: top;
 	font-family: 'Acari Sans', sans-serif;
 	font-weight: 500;
 	font-style: normal;
 	font-size: 32px;
-	margin-left: 36px;
-	/*padding-top: 14px;*/
-	vertical-align: top;
-	/*border: 1px solid cyan;*/
+	/*margin-right: 0px;*/
+	padding-top: 15px;
+	padding-left: 22px;
 	width: 75%;
 	height: 100%;
-	border: 1px solid white;
+	/*border: 1px solid white;*/
 }
 #recent--header button {
 	display: inline-block;
 	overflow: hidden;
+	vertical-align: top;
 	font-family: 'Acari Sans', sans-serif;
 	font-weight: 300;
 	font-style: normal;
 	font-size: 50px;
+	margin-left: 16px;
 	color: grey;
-	vertical-align: top;
-	/*background-color: rgb(34, 43, 56);*/
+	background-color: rgb(34, 43, 56);
 	width: 15%;
 	height: 100%;
-
-
-	border: 1px solid green;
+	border: none;
+	/*border: 1px solid green;*/
 }
-#recent--close:hover {
+#recent--header button:hover {
 	color: white;
 }
-#recent--divider {
-	width: 90%;
-	margin-left: auto;
-	margin-right: auto;
-	border-bottom: 2px solid grey;
-}
+
 #recent--searches {
 	width: 90%;
 	margin-left: auto;
