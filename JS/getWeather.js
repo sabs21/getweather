@@ -205,7 +205,7 @@ function cookieHandler(key, city, url) {
 
 			var cookieSplit = cookie.split("|");	// The data within cookieSplit is in order as follows:
 																						// [0]: Timestamp in seconds since Jan 1, 1970.
-			displayData(cookieSplit);						// [1]: City Name
+			displayData(cookieSplit);							// [1]: City Name
 																						// [2]: State
 																						// [3]: Current Weather Conditions
 																						// [4]: Description of Current Weather Condition

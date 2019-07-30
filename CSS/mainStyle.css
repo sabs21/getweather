@@ -414,36 +414,49 @@ nav {
 	font-style: normal;
 	font-size: 32px;
 	margin-left: 36px;
-	margin-top: 24px;
+	padding-top: 14px;
+	vertical-align: text-top;
 	/*border: 1px solid cyan;*/
 	width: 75%;
-	vertical-align: top;
-	white-space: normal;
+	height: 46px;
+	border: 1px solid white;
 }
-#recent div {
+#recent--close {
+	display: inline-block;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 300;
+	font-style: normal;
+	font-size: 50px;
+	color: grey;
+	vertical-align: top;
+	border: none;
+	background-color: rgb(34, 43, 56);
+	width: 15%;
+	height: 60px;
+
+
+	border: 1px solid green;
+}
+#recent--close:hover {
+	color: white;
+}
+#recent--divider {
 	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
 	border-bottom: 2px solid grey;
 }
-	#recent--close {
-		display: inline-block;
-		font-family: 'Acari Sans', sans-serif;
-		font-weight: 300;
-		font-style: normal;
-		font-size: 50px;
-		color: grey;
-		border: none;
-		background-color: rgb(34, 43, 56);
-		width: 15%;
-		height: 60px;
-		margin-top: 8px;
-		vertical-align: top;
-		white-space: normal;
-	}
-	#recent--close:hover {
-		color: white;
-	}
+#recent--searches {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid yellow;
+}
+#recent--searches div {
+
+}
 
 
 #error {
