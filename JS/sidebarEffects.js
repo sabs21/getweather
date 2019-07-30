@@ -25,9 +25,9 @@ window.addEventListener("load", function() {
 
   while(!done)
   {
-    var data = splitCookieData(cookies[index].toString());
-
     index -= 1;
+    var data = splitCookieData(cookies[index]);
+    console.log(data[0]);
 
     if (index == 0)
     {
@@ -63,6 +63,14 @@ window.addEventListener("load", function() {
       }
     }
   }
+
+  var viewportHeight = window.innerHeight;
+  //var occupiedSpace = 62
+  console.log(viewportHeight);
+
+  style.innerHTML +=
+  "#recent--searches {" +
+    "height: " + v
 });
 
 document.getElementById("nav--recent").addEventListener("click", function() {
@@ -86,11 +94,16 @@ function splitCookies() {
   // Replaces any special characters with what they represent.
   var decodedCookie = decodeURIComponent(document.cookie);
   // Create an array of all cookies by seperating them by semi-colons.
-  return decodedCookie.split(";");
+  var cookies = decodedCookie.split(";");
+  console.log(cookies);
+  return cookies;
 }
 
 function splitCookieData(cookieStr) {
-  return cookieStr.split("|");
+  var equalsIndex = cookieStr.indexOf("=") + 1;
+  var cookieName = cookieStr.substring(0, equalsIndex);
+  var cookieData = cookieStr.replace(cookieName, "");
+  return cookieData.split("|");
   /*
   // Remember, the array of data will be structured as follows:
   // [0]: Timestamp in seconds since Jan 1, 1970.

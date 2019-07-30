@@ -406,7 +406,10 @@ nav {
 #recent.collapsed {
 	right: -500px;
 }
-#recent p {
+#recent--header {
+	height: 60px;
+}
+#recent--header p {
 	display: inline-block;
 	overflow: hidden;
 	font-family: 'Acari Sans', sans-serif;
@@ -414,25 +417,25 @@ nav {
 	font-style: normal;
 	font-size: 32px;
 	margin-left: 36px;
-	padding-top: 14px;
-	vertical-align: text-top;
+	/*padding-top: 14px;*/
+	vertical-align: top;
 	/*border: 1px solid cyan;*/
 	width: 75%;
-	height: 46px;
+	height: 100%;
 	border: 1px solid white;
 }
-#recent--close {
+#recent--header button {
 	display: inline-block;
+	overflow: hidden;
 	font-family: 'Acari Sans', sans-serif;
 	font-weight: 300;
 	font-style: normal;
 	font-size: 50px;
 	color: grey;
 	vertical-align: top;
-	border: none;
-	background-color: rgb(34, 43, 56);
+	/*background-color: rgb(34, 43, 56);*/
 	width: 15%;
-	height: 60px;
+	height: 100%;
 
 
 	border: 1px solid green;
