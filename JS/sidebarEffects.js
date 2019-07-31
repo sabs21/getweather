@@ -65,9 +65,12 @@ window.addEventListener("load", function() {
   }
 
   var viewportHeight = window.innerHeight;
+  // Occupied space is the total vertical space taken up by elements and their
+  // heights/margins. This does not include the recent searches wrapper element.
   var occupiedSpace = 60 + 20 + 20;
-  console.log(viewportHeight);
 
+  // By subtracting the viewport height from the occupied height, we can define
+  // a safe space for the previous searches wrapper to sit.
   style.innerHTML +=
   "#recent--searches {" +
     "height: " + (viewportHeight - occupiedSpace) + "px;" +
@@ -134,7 +137,7 @@ function splitCookieData(cookieStr) {
 }
 
 function createResult(cookieData, color) {
-
+  
 }
 
 // Retrieves the requested cookie's data.
