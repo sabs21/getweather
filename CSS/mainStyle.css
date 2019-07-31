@@ -455,12 +455,88 @@ nav {
 	margin-right: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	border: 1px solid yellow;
+	overflow: auto;
+	/*border: 1px solid yellow;*/
 }
-#recent--searches div {
+.recent--wrapper {
+	height: 90px;
+	width: 100%;
+	margin-bottom: 14px;
+}
+.bg {
+	height: 90px;
+	width: 85%;
+	position: absolute;
+	z-index: 0;
+	right: 25px;
+	margin-bottom: 14px;
+	border-top-left-radius: 45px;
+	border-bottom-left-radius: 45px;
+	background-color: rgba(86, 102, 95, 0.8);
+	transition: width 200ms ease-in-out,border-bottom-left-radius 200ms ease-in-out;
+}
+.recent--wrapper:hover .bg {
+	width: 450px;
+	border-bottom-left-radius: 0;
+}
+.temp {
+	float: left;
+	position: relative;
+	z-index: 1;
+	margin-left: 30px;
+	margin-top: 6px;
+	border: 2px solid white;
+	border-radius: 50%;
+	width: 76px;
+	height: 74px;
+
+	/* Values to be added through js */
+	background-color: rgb(245, 174, 32);
+}
+.temp p {
+	position: relative;
+	z-index: 1;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 300;
+	font-style: normal;
+	font-size: 40px;
+	color: black;
+	text-align: center;
+	margin-top: 14px;
+}
+.state {
+	float: right;
+	display: inline-block;
+	position: absolute;
+	z-index: 1;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	font-size: 127px;
+	color: rgba(255, 255, 255, 0.2);
+	line-height: 80%;
+	height: 90px;
+	overflow: hidden;
+	vertical-align: text-top;
+	right: 25px;
+	padding: 0;
+	/*border: 1px solid lime;*/
+}
+.city {
+	float: left;
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 24px;
+	margin-top: 55px;
+	/*border: 1px solid orange;*/
+
+	/* Values to be added through js */
 
 }
-
 
 #error {
 	width: 100%;
