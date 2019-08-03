@@ -14,6 +14,7 @@ var codesWithColors = {
   thunderstorm: "rgb(86, 102, 95)",
   snow: "rgb(242, 242, 242)",
   mist: "rgb(135, 160, 212)",
+  fog: "rgb(89, 111, 124)",
   default: "rgb(35, 161, 79)"
 }
 
@@ -37,30 +38,34 @@ window.addEventListener("load", function() {
     {
       switch (data[3])
       {
-        case "clear":
+        case "Clear":
           color = codesWithColors.clear;
           break;
-        case "clouds":
+        case "Clouds":
           color = codesWithColors.clouds;
           break;
-        case "drizzle":
+        case "Drizzle":
           color = codesWithColors.drizzle;
           break;
-        case "rain":
+        case "Rain":
           color = codesWithColors.rain;
           break;
-        case "thunderstorm":
+        case "Thunderstorm":
           color = codesWithColors.thunderstorm;
           break;
-        case "snow":
+        case "Snow":
           color = codesWithColors.snow;
           break;
-        case "mist":
+        case "Mist":
           color = codesWithColors.mist;
+          break;
+        case "Fog":
+          color = codesWithColors.fog;
           break;
         default:
           color = codesWithColors.default;
       }
+        createResult(data, color);
     }
   }
 
@@ -75,6 +80,10 @@ window.addEventListener("load", function() {
   "#recent--searches {" +
     "height: " + (viewportHeight - occupiedSpace) + "px;" +
   "}";
+});
+
+document.getElementById("search--form-submit").addEventListener("click", function(event) {
+  console.log(event);
 });
 
 window.addEventListener("resize", function() {
@@ -137,7 +146,43 @@ function splitCookieData(cookieStr) {
 }
 
 function createResult(cookieData, color) {
-  
+  // 'results' contains the element that holds all recent search results.
+  var results = document.getElementById("recent--searches");
+
+  // Creates the wrapper that will hold all of the elements for each search
+  // result and places this new result at the top of the list.
+  var wrapper = document.createElement("div");
+  wrapper.className = "recent--wrapper";
+  results.appendChild(wrapper);
+
+  // Creates the element that will hold the state abbreviation.
+  var state = document.createElement("p");
+  state.className = "state";
+  state.innerHTML = cookieData[2]; // index 2 returns state.
+  wrapper.appendChild(state);
+
+  // Creates the temperature wrapper element.
+  var temperatureWrapper = document.createElement("div");
+  temperatureWrapper.className = "temp";
+  wrapper.appendChild(temperatureWrapper);
+
+  // Creates the temperature value element that will go inside the temperature
+  // wrapper element.
+  var temperatureValue = document.createElement("p");
+  temperatureValue.innerHTML = Math.round(cookieData[6]) + "&#176"; // index 6 returns temp
+  temperatureWrapper.appendChild(temperatureValue);
+
+  // Creates the element that will hold the city name.
+  var city = document.createElement("p");
+  city.className = "city";
+  city.innerHTML = cookieData[1];  // index 1 returns city name
+  wrapper.appendChild(city);
+
+  // Creates the background for the result in the list.
+  var bg = document.createElement("div");
+  bg.className = "bg";
+  bg.style.backgroundColor = color;
+  wrapper.appendChild(bg);
 }
 
 // Retrieves the requested cookie's data.

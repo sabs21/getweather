@@ -1,9 +1,6 @@
 // This sets the path to the PHP files.
 var phpPath = "./PHP/";
 
-// Keeps track of whether or not the suggestions dropdown is visible.
-var isVisible = false;
-
 // This oninput function validates input first, then handles displaying suggestions.
 document.getElementById("search--form-input").oninput = function() {
   var input = this.value;
@@ -15,11 +12,6 @@ document.getElementById("search--form-input").oninput = function() {
   {
     // If the last character typed was invalid, erase it automatically.
     var lastCharTyped = input[input.length - 1];
-    //input = input.replace(/[^a-z' ,-]/gi, "");
-
-    var suggestionContainer = document.getElementById("search--suggestions");
-    // Checks whether or not the suggestions dropdown is visible.
-    isVisible = suggestionContainer.hasChildNodes();
 
     // if there is a comma delimiter within the input string...
     if (input.search(",") != -1)
@@ -48,10 +40,10 @@ document.getElementById("search--form-input").oninput = function() {
         // Then erase the previous state suggestions.
         document.getElementById("states--results").innerHTML = "";
 
-        getSuggestions(city, state, lastCharTyped, function(callback) {
+        getSuggestions(city, state, function(callback) {
           var suggestionStr = callback;
 
-          stackSuggestions(suggestionStr, function (callback) {
+          stackSuggestions(suggestionStr, function(callback) {
             if (callback === "No cities found.")
             {
               document.getElementById("error").innerHTML = "No cities found.";
@@ -65,6 +57,7 @@ document.getElementById("search--form-input").oninput = function() {
                 openSuggestions(true); // Opens the suggestions drop down.
               });
             }
+            console.log("enter key was resgistered as valid");
           });
         });
       }
@@ -86,10 +79,9 @@ function isValid(str) {
 }
 
 // Retrieves a max of 15 city suggestions
-function getSuggestions(city, state, lastCharTyped, callback) {
+function getSuggestions(city, state, callback) {
   // Check if the user has typed at least three VALID characters
-  // before throwing suggestions. The validity of the lastCharTyped is
-  // already checked prior to the call of the function.
+  // before throwing suggestions. 
   if (city.length >= 3)
   {
     var url = "";
@@ -312,19 +304,18 @@ function addListeners(addListener, suggestions) {
     // 'item' refers to a suggestion within the suggestion-item container.
     var item = event.target.innerHTML;
 
-    clearSuggestions();
-    // Retract the suggestions from view
-    openSuggestions(false);
-    openStates(false);
     // Replace the text within the input field to the suggestion that was clicked.
     document.getElementById("search--form-input").value = item;
     // Simulate clicking submit in order to get weather data.
     document.getElementById("search--form-submit").click();
+
+    clearSuggestions();
+    // Retract the suggestions from view
+    openSuggestions(false);
+    openStates(false);
   };
 
   // This fires on suggestions with multiple states.
-  // I still need to have the stateContainer point to the suggestion that
-  // was clicked on.
   var multiple = function(event) {
     // Open the side menu containing the stack of states while invisible.
     // Doing so allows the offsetHeight to be read.
@@ -377,13 +368,13 @@ function addListeners(addListener, suggestions) {
     // Replace the text within the input field to the suggestion that was clicked.
     formInput.value = city + ", " + state;
 
+    // Simulate clicking submit in order to get weather data.
+    document.getElementById("search--form-submit").click();
+
     clearSuggestions();
     // Retract the suggestions from view
     openSuggestions(false);
     openStates(false);
-
-    // Simulate clicking submit in order to get weather data.
-    document.getElementById("search--form-submit").click();
   }
 
   if (input.length >= 3)

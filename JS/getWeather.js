@@ -7,61 +7,46 @@ if (document.cookie.indexOf("=") == -1)
 	setCookie("test", ".", 1440);
 }
 
-// listenerCount is used simply to limit how many event listeners are added to 'form'
-var listenerCount = 0;
+document.getElementById("search--form").addEventListener("submit", formSubmit);
 
-document.getElementById("search--form-submit").onclick = function() {
-	listenerCount++;
+// The entire front-end process of handling the submission is done by formSubmit.
+// It's all condensed into one function in order to be used by formSubmitEvent.
+// Note that all of this is for the city name form submission and isn't geolocation related.
+function formSubmit(event) {
+	// 'preventDefault' prevents PHP from redirecting the page.
+	event.preventDefault();
 
-	// This if statement prevents multiple event listeners from being added.
-	// If multiple event listeners are added, the amount of api calls made will double with each search.
-	if (listenerCount == 1)
-	{
-		// Adds just one event listener to the submit event.
-		// Doing this lets us prevent PHP from redirecting to a different page.
-		document.getElementById("search--form").addEventListener("submit", formSubmit);
-	}
+	// Note: An input is invalid if it contains any uppercase letters.
+	var input = document.getElementById("search--form-input").value.toLowerCase();
+	var searchUrl = getSearchUrl(input);
 
-	// The entire front-end process of handling the submission is done by formSubmit.
-	// It's all condensed into one function in order to be used by formSubmitEvent.
-	// Note that all of this is for the city name form submission and isn't geolocation related.
-	function formSubmit(event) {
-		// 'preventDefault' prevents PHP from redirecting the page.
-		event.preventDefault();
+	// First, search the city list for a match.
+	searchCityList(searchUrl, function(callback) {
+		// When the form is submitted, whether by hitting enter or clicking on a
+		// suggestion, the top-most suggestion will be used to search through the
+		// city list.
+		var city = callback[0];
 
-		// Note: An input is invalid if it contains any uppercase letters.
-		var input = document.getElementById("search--form-input").value.toLowerCase();
-		var searchUrl = getSearchUrl(input);
+		if (city != undefined)
+		{
+			var keyurl = phpPath + "getKey.php?cityInput=" + city.name + "&stateInput=" + city.state;
 
-		// First, search the city list for a match.
-		searchCityList(searchUrl, function(callback) {
-			// When the form is submitted, whether by hitting enter or clicking on a
-			// suggestion, the top-most suggestion will be used to search through the
-			// city list.
-			var city = callback[0];
+			// This replaces the user's input with a capitalized city name and state.
+			document.getElementById("search--form-input").value = city.name + ", " + city.state;
 
-			if (city != undefined)
-			{
-				var keyurl = phpPath + "getKey.php?cityInput=" + city.name + "&stateInput=" + city.state;
+			requestKey(keyurl, function(callback) {
+				var key = callback;
+				var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&appid=" + key;
 
-				// This replaces the user's input with a capitalized city name and state.
-				document.getElementById("search--form-input").value = city.name + ", " + city.state;
-
-				requestKey(keyurl, function(callback) {
-					var key = callback;
-					var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&appid=" + key;
-
-					cookieHandler(key, city, url);
-				})
-			}
-			else
-			{
-				setError(false, "City not found.")
-			}
-		});
-	}
+				cookieHandler(key, city, url);
+			});
+		}
+		else
+		{
+			setError(false, "City not found.");
+		}
+	});
 }
-
 
 // Note that TTL (Time To Live) is based off of minutes, not seconds.
 function setCookie(name, value, TTL) {
