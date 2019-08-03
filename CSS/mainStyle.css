@@ -478,7 +478,7 @@ nav {
 	transition: width 200ms ease-in-out,border-bottom-left-radius 200ms ease-in-out;
 }
 .recent--wrapper:hover .bg {
-	width: 450px;
+	width: 100%;
 	border-bottom-left-radius: 0;
 }
 .temp {
