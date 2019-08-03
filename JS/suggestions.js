@@ -1,17 +1,23 @@
 // This sets the path to the PHP files.
 var phpPath = "./PHP/";
 
-// This oninput function validates input first, then handles displaying suggestions.
-document.getElementById("search--form-input").oninput = function() {
+// This oninput function validates input first, then handles displaying suggestions
+var formInput = document.getElementById("search--form-input");
+formInput.lastCharTyped = "";
+formInput.city = "";
+formInput.state = "";
+
+formInput.addEventListener("input", function() {
   var input = this.value;
   var cleanInput = this.value.replace(/[^a-z' ,-]/gi, "");
+
   document.getElementById("search--form-input").value = cleanInput;
   // This if statement helps avoid errors when hitting backspace on a string within the form.
   // Also, this ensures that the input contains at least one letter character.
   if (input.length > 0 && input.search(/[a-zA-Z]/) != -1)
   {
     // If the last character typed was invalid, erase it automatically.
-    var lastCharTyped = input[input.length - 1];
+    this.lastCharTyped = input[input.length - 1];
 
     // if there is a comma delimiter within the input string...
     if (input.search(",") != -1)
@@ -20,57 +26,71 @@ document.getElementById("search--form-input").oninput = function() {
       // The limit is set to 3 so that no garbage collects in the
       // second array element (in case more commas were added after state).
       var inputArgs = input.split(",", 3);
-      var city = inputArgs[0];
-      var state = inputArgs[1];
+      formInput.city = inputArgs[0];
+      formInput.state = inputArgs[1];
     }
     else
     {
-      var city = input;
-      var state = null;
-    }
-
-    // This gets all possible suggestions, then displays them on the page.
-    document.getElementById("search--form-input").onkeyup = function() {
-      // Check if the first character of the input is defined.
-      // This check prevents errors when the input is cleared using backspace.
-      if (this.value[0] != undefined && isValid(lastCharTyped) && input.length >= 3)
-      {
-        // When something else is typed, retract the states suggestions.
-        openStates(false);
-        // Then erase the previous state suggestions.
-        document.getElementById("states--results").innerHTML = "";
-
-        getSuggestions(city, state, function(callback) {
-          var suggestionStr = callback;
-
-          stackSuggestions(suggestionStr, function(callback) {
-            if (callback === "No cities found.")
-            {
-              document.getElementById("error").innerHTML = "No cities found.";
-            }
-            else
-            {
-              showSuggestions(callback, 8, function(callback) {
-                var suggestions = callback;
-                addListeners(false, suggestions); // Remove all previous listeners...
-                addListeners(true, suggestions); // Then add all the new ones in.
-                openSuggestions(true); // Opens the suggestions drop down.
-              });
-            }
-            console.log("enter key was resgistered as valid");
-          });
-        });
-      }
-      else
-      {
-        clearSuggestions();
-
-        openSuggestions(false);
-        openStates(false);
-      }
+      formInput.city = input;
+      formInput.state = null;
     }
   }
-}
+  else
+  {
+    formInput.city = null;
+    formInput.state = null;
+  }
+});
+
+// This gets all possible suggestions, then displays them on the page.
+formInput.addEventListener("keyup", function(event) {
+  var input = this.value;
+
+  if (formInput.city == null || event.key == "Enter")
+  {
+    clearSuggestions();
+
+    openSuggestions(false);
+    openStates(false);
+  }
+  // Checks if the first character of the input is defined.
+  // This check prevents errors when the input is cleared using backspace.
+  else if (this.value[0] != undefined && isValid(this.lastCharTyped) && input.length >= 3)
+  {
+    // When something else is typed, retract the states suggestions.
+    openStates(false);
+    // Then erase the previous state suggestions.
+    document.getElementById("states--results").innerHTML = "";
+
+    getSuggestions(formInput.city, formInput.state, function(callback) {
+      var suggestionStr = callback;
+
+      stackSuggestions(suggestionStr, function(callback) {
+        if (callback === "No cities found.")
+        {
+          document.getElementById("error").innerHTML = "No cities found.";
+        }
+        else
+        {
+          showSuggestions(callback, 8, function(callback) {
+            var suggestions = callback;
+            addListeners(false, suggestions); // Remove all previous listeners...
+            addListeners(true, suggestions); // Then add all the new ones in.
+            openSuggestions(true); // Opens the suggestions drop down.
+          });
+        }
+        console.log("enter key was registered as valid");
+      });
+    });
+  }
+  else
+  {
+    clearSuggestions();
+
+    openSuggestions(false);
+    openStates(false);
+  }
+});
 
 // Tests the last typed character to see if it's valid. Returns boolean.
 function isValid(str) {
@@ -81,7 +101,7 @@ function isValid(str) {
 // Retrieves a max of 15 city suggestions
 function getSuggestions(city, state, callback) {
   // Check if the user has typed at least three VALID characters
-  // before throwing suggestions. 
+  // before throwing suggestions.
   if (city.length >= 3)
   {
     var url = "";
@@ -426,6 +446,7 @@ function openSuggestions(open) {
 
   if (open)
   {
+    console.log("suggestions opened");
     var totalHeight = getSuggestionsHeight();
 
     style.innerHTML =
@@ -435,6 +456,7 @@ function openSuggestions(open) {
   }
   else
   {
+    console.log("suggestions closed");
     style.innerHTML =
       "#search--suggestions {" +
         "height: 0px" +
@@ -469,11 +491,13 @@ function openStates (open, showStates = false) {
   }
   else
   {
+    console.log("states closed");
     width = 0;
   }
 
   if (showStates)
   {
+    console.log("states opened");
     var resultsHeight = getStatesHeight();
     var suggestionsHeight = getSuggestionsHeight();
     var inputHeight = getInputHeight();
