@@ -6,7 +6,7 @@ var ref = document.querySelector("head");
 // Finally, we add the element to the HTML.
 ref.appendChild(style);
 
-var codesWithColors = {
+var conditionColor = {
   clear: "rgb(27, 112, 224)",
   clouds: "rgb(177, 183, 189)",
   drizzle: "rgb(163, 207, 227)",
@@ -21,7 +21,7 @@ var codesWithColors = {
 window.addEventListener("load", function() {
   var cookies = splitCookies();
   var index = cookies.length;
-  var color = "";
+  var bgColor = "";
   var done = false;
 
   while(!done)
@@ -39,33 +39,36 @@ window.addEventListener("load", function() {
       switch (data[3])
       {
         case "Clear":
-          color = codesWithColors.clear;
+          bgColor = conditionColor.clear;
           break;
         case "Clouds":
-          color = codesWithColors.clouds;
+          bgColor = conditionColor.clouds;
           break;
         case "Drizzle":
-          color = codesWithColors.drizzle;
+          bgColor = conditionColor.drizzle;
           break;
         case "Rain":
-          color = codesWithColors.rain;
+          bgColor = conditionColor.rain;
           break;
         case "Thunderstorm":
-          color = codesWithColors.thunderstorm;
+          bgColor = conditionColor.thunderstorm;
           break;
         case "Snow":
-          color = codesWithColors.snow;
+          bgColor = conditionColor.snow;
           break;
         case "Mist":
-          color = codesWithColors.mist;
+          bgColor = conditionColor.mist;
           break;
         case "Fog":
-          color = codesWithColors.fog;
+          bgColor = conditionColor.fog;
           break;
         default:
-          color = codesWithColors.default;
+          bgColor = conditionColor.default;
       }
-        createResult(data, color);
+        var tempColor = getTempColor(data[6], true);
+
+        createResult(data, bgColor, tempColor);
+        console.log(getFormalTime(data[0]));
     }
   }
 
@@ -99,22 +102,15 @@ window.addEventListener("resize", function() {
   "}";
 });
 
+// Opens the recent searches sidebar when the tri dot button is clicked.
 document.getElementById("nav--recent").addEventListener("click", function() {
   document.getElementById("recent").className = "";
 });
 
+// Closes the recent searches sidebar when the tri dot button is clicked.
 document.getElementById("recent--close").addEventListener("click", function() {
   document.getElementById("recent").className = "collapsed";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var cookieSplit = decodedCookie.split(";");
-
-  console.log(cookieSplit[cookieSplit.length - 1]);
-  console.log(window.innerHeight);
 });
-
-/*function allocateResultSpace() {
-
-}*/
 
 function splitCookies() {
   // Replaces any special characters with what they represent.
@@ -145,7 +141,100 @@ function splitCookieData(cookieStr) {
   */
 }
 
-function createResult(cookieData, color) {
+function getFormalTime(milliseconds = null) {
+  var date = new Date();
+
+  if (milliseconds != null)
+  {
+    date.setTime(milliseconds);
+  }
+
+  // Converts military time to 12 hour format.
+  var hours = date.getHours();
+  var morningOrEvening = " AM";
+  if (hours > 12)
+  {
+    hours = hours - 12;
+    morningOrEvening = " PM";
+  }
+
+  var minutes = date.getMinutes();
+  if (minutes < 10)
+  {
+    minutes = "0" + minutes;
+  }
+
+  var timestamp = hours + ":" + minutes + morningOrEvening;
+  return timestamp;
+}
+
+function getTempColor(temperature, isFahrenheit) {
+  var red = 0;
+  var green = 0;
+  var blue = 0;
+  var maxBrightness = 230;
+
+  if (isFahrenheit)
+  {
+    // 'transitionGap' is the degree difference it takes to entirely change
+    // from one color to another color.
+    var transitionGap = 20;
+    // 'increment' is how much the color value will change with each degree.
+    var increment = maxBrightness / transitionGap;
+    // 'difference' is a temperature that sits between the transition gap.
+    var difference = temperature % transitionGap;
+    // 'transition' is the color value to be assigned to red, green, or blue.
+    var transition = 0;
+
+    if (difference == 0)
+    {
+      transition = maxBrightness;
+    }
+    else
+    {
+      transition = increment * difference
+    }
+
+    if (temperature >= 100)
+    {
+      red = maxBrightness;
+    }
+    else if (temperature >= 80)
+    {
+      red = maxBrightness;
+      green = maxBrightness - transition;
+    }
+    else if (temperature >= 60)
+    {
+      red = maxBrightness;
+      green = maxBrightness;
+      blue = maxBrightness - transition;
+    }
+    else if (temperature >= 40)
+    {
+      red = maxBrightness;
+      green = maxBrightness;
+      blue = maxBrightness;
+    }
+    else if (temperature >= 20)
+    {
+      red = maxBrightness - transition;
+      green = maxBrightness;
+      blue = maxBrightness;
+    }
+    else if (temperature >= 0)
+    {
+      green = maxBrightness - transition;
+      blue = maxBrightness;
+    }
+    else {
+      blue = maxBrightness;
+    }
+    return "rgb(" + red + ", " + green + ", " + blue + ")"
+  }
+}
+
+function createResult(cookieData, bgColor, tempColor) {
   // 'results' contains the element that holds all recent search results.
   var results = document.getElementById("recent--searches");
 
@@ -164,6 +253,7 @@ function createResult(cookieData, color) {
   // Creates the temperature wrapper element.
   var temperatureWrapper = document.createElement("div");
   temperatureWrapper.className = "temp";
+  temperatureWrapper.style.backgroundColor = tempColor;
   wrapper.appendChild(temperatureWrapper);
 
   // Creates the temperature value element that will go inside the temperature
@@ -178,10 +268,15 @@ function createResult(cookieData, color) {
   city.innerHTML = cookieData[1];  // index 1 returns city name
   wrapper.appendChild(city);
 
+  var timestamp = document.createElement("p");
+  timestamp.className = "timestamp";
+  timestamp.innerHTML = getFormalTime(cookieData[0]);
+  wrapper.appendChild(timestamp);
+
   // Creates the background for the result in the list.
   var bg = document.createElement("div");
   bg.className = "bg";
-  bg.style.backgroundColor = color;
+  bg.style.backgroundColor = bgColor;
   wrapper.appendChild(bg);
 }
 

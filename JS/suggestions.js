@@ -79,7 +79,6 @@ formInput.addEventListener("keyup", function(event) {
             openSuggestions(true); // Opens the suggestions drop down.
           });
         }
-        console.log("enter key was registered as valid");
       });
     });
   }
@@ -446,7 +445,6 @@ function openSuggestions(open) {
 
   if (open)
   {
-    console.log("suggestions opened");
     var totalHeight = getSuggestionsHeight();
 
     style.innerHTML =
@@ -456,7 +454,6 @@ function openSuggestions(open) {
   }
   else
   {
-    console.log("suggestions closed");
     style.innerHTML =
       "#search--suggestions {" +
         "height: 0px" +
