@@ -406,6 +406,9 @@ nav {
 #recent.collapsed {
 	right: -500px;
 }
+#recent--addResult {
+	display: none;
+}
 #recent--header {
 	height: 60px;
 	overflow: hidden;
@@ -448,7 +451,6 @@ nav {
 #recent--header button:hover {
 	color: white;
 }
-
 #recent--searches {
 	width: 90%;
 	margin-left: auto;

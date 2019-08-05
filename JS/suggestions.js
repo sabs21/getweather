@@ -85,10 +85,19 @@ formInput.addEventListener("keyup", function(event) {
   else
   {
     clearSuggestions();
-
     openSuggestions(false);
     openStates(false);
   }
+});
+
+// This event listener is necessary for other scripts that are using the
+// search functionality. For instance, when you click on a result in the recent
+// searches sidebar, the suggestions and states containers wouldn't close
+// without this event listener.
+document.getElementById("search--form").addEventListener("submit", function() {
+  clearSuggestions();
+  openSuggestions(false);
+  openStates(false);
 });
 
 // Tests the last typed character to see if it's valid. Returns boolean.
@@ -488,13 +497,11 @@ function openStates (open, showStates = false) {
   }
   else
   {
-    console.log("states closed");
     width = 0;
   }
 
   if (showStates)
   {
-    console.log("states opened");
     var resultsHeight = getStatesHeight();
     var suggestionsHeight = getSuggestionsHeight();
     var inputHeight = getInputHeight();

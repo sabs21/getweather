@@ -18,57 +18,44 @@ var conditionColor = {
   default: "rgb(35, 161, 79)"
 }
 
+document.getElementById("recent--addResult").addEventListener("click", function() {
+  var cookies = splitCookies();
+  var index = cookies.length - 1;
+  var totalResults = document.getElementById("recent--searches").childNodes.length;
+  console.log(totalResults);
+
+  if (index > totalResults)
+  {
+    var newestCookie = cookies[index];
+    var data = splitCookieData(newestCookie);
+
+    var bgColor = getBGColor(data[3]);
+    var tempColor = getTempColor(data[6], true);
+
+    createResult(data, bgColor, tempColor);
+  }
+});
+
 window.addEventListener("load", function() {
   var cookies = splitCookies();
-  var index = cookies.length;
-  var bgColor = "";
+  var index = 0;
   var done = false;
 
   while(!done)
   {
-    index -= 1;
-    var data = splitCookieData(cookies[index]);
-    console.log(data[0]);
+    index += 1;
 
-    if (index == 0)
+    if (index == cookies.length)
     {
       done = true;
     }
     else
     {
-      switch (data[3])
-      {
-        case "Clear":
-          bgColor = conditionColor.clear;
-          break;
-        case "Clouds":
-          bgColor = conditionColor.clouds;
-          break;
-        case "Drizzle":
-          bgColor = conditionColor.drizzle;
-          break;
-        case "Rain":
-          bgColor = conditionColor.rain;
-          break;
-        case "Thunderstorm":
-          bgColor = conditionColor.thunderstorm;
-          break;
-        case "Snow":
-          bgColor = conditionColor.snow;
-          break;
-        case "Mist":
-          bgColor = conditionColor.mist;
-          break;
-        case "Fog":
-          bgColor = conditionColor.fog;
-          break;
-        default:
-          bgColor = conditionColor.default;
-      }
-        var tempColor = getTempColor(data[6], true);
+      var data = splitCookieData(cookies[index]);
+      var bgColor = getBGColor(data[3]);
+      var tempColor = getTempColor(data[6], true);
 
-        createResult(data, bgColor, tempColor);
-        console.log(getFormalTime(data[0]));
+      createResult(data, bgColor, tempColor);
     }
   }
 
@@ -85,16 +72,9 @@ window.addEventListener("load", function() {
   "}";
 });
 
-document.getElementById("search--form-submit").addEventListener("click", function(event) {
-  console.log(event);
-});
-
 window.addEventListener("resize", function() {
-  console.log("Window height changed to " + window.innerHeight);
-
   var viewportHeight = window.innerHeight;
   var occupiedSpace = 60 + 20 + 20;
-  console.log(viewportHeight);
 
   style.innerHTML +=
   "#recent--searches {" +
@@ -166,6 +146,30 @@ function getFormalTime(milliseconds = null) {
 
   var timestamp = hours + ":" + minutes + morningOrEvening;
   return timestamp;
+}
+
+function getBGColor(conditionStr) {
+  switch (conditionStr)
+  {
+    case "Clear":
+      return conditionColor.clear;
+    case "Clouds":
+      return conditionColor.clouds;
+    case "Drizzle":
+      return conditionColor.drizzle;
+    case "Rain":
+      return conditionColor.rain;
+    case "Thunderstorm":
+      return conditionColor.thunderstorm;
+    case "Snow":
+      return conditionColor.snow;
+    case "Mist":
+      return conditionColor.mist;
+    case "Fog":
+      return conditionColor.fog;
+    default:
+      return conditionColor.default;
+  }
 }
 
 function getTempColor(temperature, isFahrenheit) {
@@ -242,7 +246,14 @@ function createResult(cookieData, bgColor, tempColor) {
   // result and places this new result at the top of the list.
   var wrapper = document.createElement("div");
   wrapper.className = "recent--wrapper";
-  results.appendChild(wrapper);
+  if (results.childNodes[0] == null)
+  {
+    results.appendChild(wrapper);
+  }
+  else
+  {
+    results.insertBefore(wrapper, results.childNodes[0]);
+  }
 
   // Creates the element that will hold the state abbreviation.
   var state = document.createElement("p");
@@ -278,6 +289,11 @@ function createResult(cookieData, bgColor, tempColor) {
   bg.className = "bg";
   bg.style.backgroundColor = bgColor;
   wrapper.appendChild(bg);
+
+  wrapper.addEventListener("click", function() {
+    document.getElementById("search--form-input").value = cookieData[1] + ", " + cookieData[2];
+    document.getElementById("search--form-submit").click();
+  });
 }
 
 // Retrieves the requested cookie's data.

@@ -188,6 +188,8 @@ function cookieHandler(key, city, url) {
 			var cookie = getCookie(cookieName);
 			console.log("New Cookie: " + cookie);
 
+			document.getElementById("recent--addResult").click();
+
 			var cookieSplit = cookie.split("|");	// The data within cookieSplit is in order as follows:
 																						// [0]: Timestamp in seconds since Jan 1, 1970.
 			displayData(cookieSplit);							// [1]: City Name
@@ -213,6 +215,7 @@ function cookieHandler(key, city, url) {
 		var cookieSplit = data.split("|");
 
 		console.log("Cookie used. Cookie name: " + cookieName);
+		document.getElementById("recent--addResult").click();
 
 		displayData(cookieSplit);
 
