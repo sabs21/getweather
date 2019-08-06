@@ -97,20 +97,22 @@ nav {
 		width: 60px;
 		height: 100%;
 		float: right;
+		background-image: url("./Images/recent_icon.png");
+		background-position: 60px 0px;
 		/*border: 1px solid pink;*/
 	}
-	#nav--recent:hover .dot {
-		background-color: white;
+	#nav--recent:hover{
+		background-position: 0px 0px;
 	}
-	.tridot-spacing {
+	/*.tridot-spacing {
 		display: block;
 		margin-top: 8px;
 		margin-left: auto;
 		margin-right: auto;
 		height: 8px;
-		width: 8px;
+		width: 8px;*/
 		/*border: 1px solid orange;*/
-	}
+	/*}
 	.tridot-spacing:first-child {
 		margin-top: 30px;
 	}
@@ -119,7 +121,7 @@ nav {
 			width: 8px;
 			height: 8px;
 			border-radius: 50%;
-		}
+		}*/
 
 #title {
 	/* This clear is used to clear the float right of the recent button*/
@@ -560,9 +562,53 @@ nav {
 	top: 0px;
 	left: 0px;
 	background-color: rgb(34, 43, 56);
+	transition: left 300ms ease-out;
 }
 #settings.collapsed {
 	left: -500px;
+}
+#settings--header {
+	height: 60px;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+	border-bottom: 2px solid grey;
+}
+#settings--header p {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: top;
+	text-align: right;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	font-size: 32px;
+	/*margin-right: 0px;*/
+	padding-top: 15px;
+	padding-right: 22px;
+	width: 75%;
+	height: 100%;
+	/*border: 1px solid white;*/
+}
+#settings--header button {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: top;
+	font-family: 'Acari Sans', sans-serif;
+	font-weight: 300;
+	font-style: normal;
+	font-size: 50px;
+	margin-right: 16px;
+	color: grey;
+	background-color: rgb(34, 43, 56);
+	width: 15%;
+	height: 100%;
+	border: none;
+	/*border: 1px solid green;*/
+}
+#settings--header button:hover {
+	color: white;
 }
 
 #error {

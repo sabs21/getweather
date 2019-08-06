@@ -581,18 +581,13 @@ function alignArrow(event) {
   // in a readable manner.
   if ((resultsNudge + statesHeight) > maxHeight)
   {
-    // If the arrow is near the bottom of the suggestions and the states block
-    // is fairly small.
-    if (resultsNudge > statesHeight)
-    {
-      resultsMargin = maxHeight - statesHeight;
-    }
-    else
+    pivotTriangleMargin = arrowNudge;
+    resultsMargin = maxHeight - statesHeight;
+
+    if (resultsMargin < 0)
     {
       resultsMargin = 0;
     }
-    //pivotMargin = 0;
-    pivotTriangleMargin = arrowNudge;
   }
   else
   {
