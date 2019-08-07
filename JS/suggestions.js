@@ -547,6 +547,8 @@ function getSuggestionsHeight(index = null) {
   }
 }
 
+// Gets the height of the states window that pops up when a suggestion
+// with multiple states is chosen.
 // A state item's total height = 60px.
 function getStatesHeight() {
   var states = document.getElementsByClassName("states--results-item");
@@ -556,11 +558,13 @@ function getStatesHeight() {
   return Math.ceil(states.length / 3) * buttonSize;
 }
 
+// Gets the height of the input element.
 function getInputHeight() {
   var input = document.getElementById("search--form-input");
   return input.offsetHeight;
 }
 
+//
 function alignArrow(event) {
   var index = event.target.index;
   var suggestionsHeight = getSuggestionsHeight();
@@ -584,6 +588,12 @@ function alignArrow(event) {
     pivotTriangleMargin = arrowNudge;
     resultsMargin = maxHeight - statesHeight;
 
+    // When the state suggestions window is aligned to the bottom of the
+    // suggestions window (by resultsMargin), it's possible for the state
+    // suggestions to be too tall for the suggestions div. By checking for
+    // a negative margin, we are checking for this excess of height. If
+    // there is an excess of height, we simply align the state suggestions
+    // to the top of the suggestions div.
     if (resultsMargin < 0)
     {
       resultsMargin = 0;

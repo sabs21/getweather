@@ -610,6 +610,15 @@ nav {
 #settings--header button:hover {
 	color: white;
 }
+#settings--options {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	overflow: auto;
+	border: 1px solid yellow;
+}
 
 #error {
 	width: 100%;

@@ -15,6 +15,7 @@ var conditionColor = {
   snow: "rgb(242, 242, 242)",
   mist: "rgb(135, 160, 212)",
   fog: "rgb(89, 111, 124)",
+  haze: "rgb(158, 161, 133)",
   default: "rgb(35, 161, 79)"
 }
 
@@ -85,6 +86,13 @@ window.addEventListener("resize", function() {
 // Opens the recent searches sidebar when the tri dot button is clicked.
 document.getElementById("nav--recent").addEventListener("click", function() {
   document.getElementById("recent").className = "";
+  var settings = document.getElementById("settings")
+
+  // If the settings sidebar is open, then close it.
+  if (settings.className != "collapsed")
+  {
+    settings.className = "collapsed";
+  }
 });
 
 // Closes the recent searches sidebar when the tri dot button is clicked.
@@ -167,6 +175,8 @@ function getBGColor(conditionStr) {
       return conditionColor.mist;
     case "Fog":
       return conditionColor.fog;
+    case "Haze":
+      return conditionColor.haze;
     default:
       return conditionColor.default;
   }
