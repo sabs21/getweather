@@ -19,15 +19,66 @@ var conditionColor = {
   default: "rgb(35, 161, 79)"
 }
 
-document.getElementById("recent--addResult").addEventListener("click", function() {
+document.getElementById("recent--addResult").addEventListener("click", function(event) {
   var cookies = splitCookies();
-  var index = cookies.length - 1;
+  // The text found within the input bar after choosing a suggestion
+  // or hitting enter to get weather data.
+  var inputValue = document.getElementById("search--form-input").value;
+  // The total items within the results list.
   var totalResults = document.getElementById("recent--searches").childNodes.length;
-  console.log(totalResults);
+  // A flag to indicate whether the current search is a duplicate of one
+  // already within the list.
+  var isDuplicate = false;
 
-  if (index > totalResults)
+  // The purpose of this loop is to avoid duplicate results.
+  // Compare the inputValue with each result within the results list.
+  // If the result's city and state matches the inputValue, then we check
+  // the timestamp. If the timestamp is more than 10 minutes old, we can add
+  // a new result to the list.
+  for (var i = 0; i < totalResults; i++)
   {
-    var newestCookie = cookies[index];
+    // Find each result along with its city/state using the DOM.
+    var result = document.getElementById("recent--searches").childNodes[i];
+    var city = result.childNodes[2].innerHTML;
+    var state = result.childNodes[0].innerHTML;
+    // Mimic the format of the inputValue for accurate comparison.
+    var address = city + ", " + state;
+
+    // 1000 * 60 * 10 = 600,000 milliseconds = 10 minutes
+    var tenMinutes = 600000;
+
+    console.log(address + " " + inputValue);
+
+    if (address == inputValue)
+    {
+      // The timestamp of the result (when it was searched).
+      var timestamp = result.childNodes[3].name;
+      // The current time.
+      var d = new Date();
+      var currentTime = d.getTime();
+      // A flag to indicate whether the current search is a duplicate of one
+      // already within the list.
+      isDuplicate = true;
+
+      // If ten minutes has passed since the last search for that city,
+      // then add a new result to the results list (while leaving the
+      // old result intact);
+      if ((currentTime - timestamp) > tenMinutes)
+      {
+        // A flag to indicate whether the current search is a duplicate of one
+        // already within the list.
+        isDuplicate = false;
+        // Then break the loop.
+        i = totalResults;
+      }
+    }
+  }
+
+  // If the search is not a duplicate of what was already in the list, then
+  // add the result from the search.
+  if (!isDuplicate)
+  {
+    var newestCookie = cookies[cookies.length - 1];
     var data = splitCookieData(newestCookie);
 
     var bgColor = getBGColor(data[3]);
@@ -202,11 +253,11 @@ function getTempColor(temperature, isFahrenheit) {
 
     if (difference == 0)
     {
-      transition = maxBrightness;
+      transition = 0;
     }
     else
     {
-      transition = increment * difference
+      transition = increment * difference;
     }
 
     if (temperature >= 100)
@@ -292,6 +343,7 @@ function createResult(cookieData, bgColor, tempColor) {
   var timestamp = document.createElement("p");
   timestamp.className = "timestamp";
   timestamp.innerHTML = getFormalTime(cookieData[0]);
+  timestamp.name = cookieData[0];
   wrapper.appendChild(timestamp);
 
   // Creates the background for the result in the list.
