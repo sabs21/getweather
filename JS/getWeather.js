@@ -36,7 +36,10 @@ function formSubmit(event) {
 
 			requestKey(keyurl, function(callback) {
 				var key = callback;
-				var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&appid=" + key;
+				// Call by city ID.
+				var url = "https://api.openweathermap.org/data/2.5/weather?id=" + city.id + "&appid=" + key;
+				// Call by coordinates.
+				//var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&appid=" + key;
 
 				cookieHandler(key, city, url);
 			});
