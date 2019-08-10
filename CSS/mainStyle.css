@@ -241,6 +241,7 @@ nav {
 #search {
 	display: inline-block;
 	position: relative;
+	z-index: 1;
 	opacity: 0;
 	/*margin-top: -60px;*/
 	width: 450px;
@@ -271,10 +272,7 @@ nav {
 		font-style: italic;
 		font-size: 30px;
 	}
-	#search--form-input:hover {
-		background-color: rgba(1, 50, 100, 0.5);
-	}
-	#search--form-input:focus {
+	#search--form-input:hover, #search--form-input:focus {
 		background-color: rgba(1, 50, 100, 0.5);
 	}
 	#search--form-submit {
@@ -283,7 +281,7 @@ nav {
 
 #search--suggestions {
 	display: inline-block;
-	position: absolute;
+	position: relative;
 	/*flex-direction: column;*/
 	width: 100%;
 	height: 0px;
@@ -356,7 +354,8 @@ nav {
 
 	#states {
 		display: inline-block;
-		position: absolute;
+		position: relative;
+		z-index: 1;
 		white-space: nowrap;
 		width: 0px;
 		overflow: hidden;
@@ -405,8 +404,18 @@ nav {
 				background-image: linear-gradient(130deg, rgb(0, 128, 255), rgb(143, 0, 179));
 			}
 
+#data {
+	position: absolute;
+	display: block;
+	z-index: 0;
+	width: 100%;
+	height: 300px;
+	bottom: 0px;
+}
+
 #recent {
 	position: absolute;
+	z-index: 2;
 	top: 0px;
 	right: 0px;
 	width: 500px;
@@ -561,6 +570,7 @@ nav {
 
 #settings {
 	position: absolute;
+	z-index: 2;
 	width: 500px;
 	height: 100%;
 	top: 0px;

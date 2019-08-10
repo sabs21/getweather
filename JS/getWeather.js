@@ -36,7 +36,7 @@ function formSubmit(event) {
 
 			requestKey(keyurl, function(callback) {
 				var key = callback;
-				var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&appid=" + key;
+				var url = "https://api.openweathermap.org/data/2.5/weather?id=" + city.id + "&units=imperial" + "&appid=" + key;
 
 				cookieHandler(key, city, url);
 			});
@@ -180,7 +180,7 @@ function cookieHandler(key, city, url) {
 			+ apidata.weather[0].main + "|"
 			+ apidata.weather[0].description + "|"
 			+ (apidata.main.pressure * 0.7500616827).toPrecision(4) + "|"  // A hpa to mm Hg conversion.
-			+ ((apidata.main.temp - 273.15) * (9/5) + 32).toFixed(1) + "|"  // A Kelvin to Fahrenheit conversion.
+			+ apidata.main.temp.toFixed(1) + "|"
 			+ apidata.main.humidity + "|"
 			+ apidata.coord.lat + "|"
 			+ apidata.coord.lon, 10);

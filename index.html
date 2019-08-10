@@ -56,56 +56,9 @@
 			</div>
 		</div>
 
-		<table class="center">
-			<tr>
-				<th>
-					<p class="table--head-data-desc">Last Updated: </p>
-					<p class="table--head-data-output" id="time"></p>
-				</th>
-			</tr>
-			<tr>
-				<td>
-					<p class="table--body-data-desc">City: </p>
-					<p class="table--body-data-output" id="city"></p>
-				</td>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">State: </p>
-					<p class="table--body-data-output" id="state"></p>
-				</td>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">Current Conditions: </p>
-					<p class="table--body-data-output" id="weather"></p>
-				</td>
-			</tr>
-			<tr>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">Description: </p>
-					<p class="table--body-data-output" id="weatherDesc"></p>
-				</td>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">Barometric Pressure: </p>
-					<p class="table--body-data-output" id="pressure"></p>
-				</td>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">Temperature: </p>
-					<p class="table--body-data-output" id="temp"></p>
-				</td>
-			</tr>
-			<tr>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">Humidity: </p>
-					<p class="table--body-data-output" id="humidity"></p>
-				</td>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">Latitude: </p>
-					<p class="table--body-data-output" id="lat"></p>
-				</td>
-				<td class="table--body-data">
-					<p class="table--body-data-desc">Longitude: </p>
-					<p class="table--body-data-output" id="lon"></p>
-				</td>
-			</tr>
-		</table>
+		<canvas id="data">
+
+		</canvas>
 
 		<div id="recent" class="collapsed">
 			<button id="recent--addResult"></button>
@@ -130,5 +83,6 @@
 		<script src="./JS/settingsEffects.js"></script>
 		<script src="./JS/getWeather.js" async> </script>
 		<script src="./JS/suggestions.js"></script>
+		<script src="./JS/data.js"></script>
   </body>
 </html>
