@@ -221,7 +221,7 @@ function cookieHandler(key, city, url) {
 		console.log("Cookie used. Cookie name: " + cookieName);
 		document.getElementById("recent--addResult").click();
 
-		displayData(cookieSplit);
+		//displayData(cookieSplit);
 
 		setError(true);
 	}
@@ -260,11 +260,11 @@ function getWeather(url, callback)	{
 
 
 // This loops through and fills all HTML DOM elements that hold weather data.
-function displayData(cookieSplit) {
+/*function displayData(cookieSplit) {
 	var id = ["time", "city", "state", "weather", "weatherDesc", "pressure", "temp", "humidity", "lat", "lon"];
 
 	// Replaces the getTime() value with a more useful and readable one.
-	cookieSplit[0] = timeSince(cookieSplit[0]);
+	//cookieSplit[0] = timeSince(cookieSplit[0]);
 	cookieSplit[5] = cookieSplit[5] + " mm Hg";
 	cookieSplit[6] = cookieSplit[6] + " F&#176;";
 	cookieSplit[7] = cookieSplit[7] + "%";
@@ -273,9 +273,9 @@ function displayData(cookieSplit) {
 	{
 		document.getElementById(id[i]).innerHTML = cookieSplit[i];
 	}
-}
+}*/
 
-function timeSince(cookieTime) {
+/*function timeSince(cookieTime) {
 	var date = new Date();
 	var current = date.getTime();
 
@@ -297,7 +297,7 @@ function timeSince(cookieTime) {
 	{
 		return "Just now."
 	}
-}
+}*/
 
 // Removes extra spaces or apostrophe's at the end and beginning of a string.
 function cleanInput(str) {
