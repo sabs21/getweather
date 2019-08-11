@@ -168,6 +168,7 @@ function cookieHandler(key, city, url) {
 		// This request gets the JSON data from the url.
 		getWeather(url, function(callback) {
 			var apidata = callback;
+			console.log(apidata);
 
 			// All spaces within the city name are replaced with underscores.
 			// This is necessary because cookie names with spaces don't seem to be usable.
@@ -186,6 +187,9 @@ function cookieHandler(key, city, url) {
 			+ (apidata.main.pressure * 0.7500616827).toPrecision(4) + "|"  // A hpa to mm Hg conversion.
 			+ apidata.main.temp.toFixed(1) + "|"
 			+ apidata.main.humidity + "|"
+			+ apidata.clouds.all + "|"
+			+ apidata.wind.speed + "|"
+			+ apidata.wind.deg + "|"
 			+ apidata.coord.lat + "|"
 			+ apidata.coord.lon, 10);
 
@@ -203,8 +207,11 @@ function cookieHandler(key, city, url) {
 																						// [5]: Barometric pressure
 																						// [6]: Temperature (Fahrenheit)
 																						// [7]: Humidity (in percentage)
-																						// [8]: Latitude
-																						// [9]: Longitude
+																						// [8]: Cloudiness (in percentage) (if no clouds, result is 1)
+																						// [9]: Wind speed (in MPH)
+																						// [10]: Wind direction (in degrees)
+																						// [11]: Latitude
+																						// [12]: Longitude
 		});
 	}
 	// Instead of calling openweathermap, we can use data that was already obtained if a cookie for the city already exists.

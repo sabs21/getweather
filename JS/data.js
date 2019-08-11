@@ -64,18 +64,25 @@ onCookieCreation.addEventListener("click", function() {
 
 function displayData(cookieSplit)
 {
-  var id = ["time", "city", "state", "weather", "weatherDesc", "pressure", "temp", "humidity", "lat", "lon"];
-  var prefix = "data--value-";
+  var id = ["time", "city", "state", "weather", "weatherDesc", "pressure", "temp", "humidity", "clouds", "lat", "lon"];
+  var idPrefix = "data--value-";
 
 	// Replaces the getTime() value with a more useful and readable one.
 	//cookieSplit[0] = timeSince(cookieSplit[0]);
 	//cookieSplit[5] = cookieSplit[5] + " mm Hg";
 	cookieSplit[6] = cookieSplit[6] + "&deg;F";
+  cookieSplit[7] = "Humidity: " + cookieSplit[7] + "%";
+  cookieSplit[5] = "Pressure: " + cookieSplit[5] + " mm Hg";
+  cookieSplit[8] = "Cloudiness: " + cookieSplit[8] + "%";
 	//cookieSplit[7] = cookieSplit[7] + "%";
 
 	//for (var i = 0; i < cookieSplit.length; i++)
 	//{
-		document.getElementById(prefix + id[6]).innerHTML = cookieSplit[6];
+    document.getElementById(idPrefix + "address").innerHTML = cookieSplit[1] + ", " + cookieSplit[2];
+    document.getElementById(idPrefix + id[5]).innerHTML = cookieSplit[5];
+		document.getElementById(idPrefix + id[6]).innerHTML = cookieSplit[6];
+    document.getElementById(idPrefix + id[7]).innerHTML = cookieSplit[7];
+    document.getElementById(idPrefix + id[8]).innerHTML = cookieSplit[8];
 	//}
 }
 
