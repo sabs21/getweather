@@ -1,4 +1,4 @@
-var canvas = document.getElementById("data");
+var canvas = document.getElementById("data--bg");
 var draw = canvas.getContext("2d");
 var maxWidth = canvas.offsetWidth;
 var maxHeight = canvas.offsetHeight;

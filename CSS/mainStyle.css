@@ -407,11 +407,43 @@ nav {
 #data {
 	position: absolute;
 	display: block;
+	font-size: 0px;
 	z-index: 0;
 	width: 100%;
 	height: 300px;
 	bottom: 0px;
 }
+	#data--bg {
+		position: absolute;
+		display: block;
+		z-index: 0;
+		width: 100%;
+		height: 300px;
+		bottom: 0px;
+	}
+	#data--columnWrap {
+		position: absolute;
+		display: block;
+		height: 220px;
+		z-index: 1;
+		bottom: 0px;
+		background-color: black;
+		width: 100%;
+	}
+		#data--column1, #data--column3 {
+			position: relative;
+			display: inline-block;
+			background-color: blue;
+			height: 100%;
+			width: 33.3%;
+		}
+		#data--column2 {
+			position: relative;
+			display: inline-block;
+			background-color: red;
+			height: 100%;
+			width: 33.4%;
+		}
 
 #recent {
 	position: absolute;
