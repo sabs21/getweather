@@ -499,91 +499,119 @@ nav {
 			background-color: red;
 			width: 33.4%;
 		}
-		#data--column1 {
+		/*#data--column1 {
 			padding-left: 70px;
 		}
 		#data--column3 {
 			padding-right: 70px;
-		}
+		}*/
 		#data--column1-top {
 			position: relative;
-			display: block;
+			display: flex;
+			flex-direction: row-reverse;
+			justify-content: space-around;
 			overflow: hidden;
 			height: 118px;
-			width: 100%;
-			border: 1px solid yellow;
+			width: 80%;
+			float: right;	/* Float column1 innards to the right and column3 innards to the left. */
+			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+			-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+			box-sizing: border-box;         /* Opera/IE 8+ */
 		}
 			#data--column1-top span {
 				position: relative;
-				display: inline-block;
-				vertical-align: top;
-				white-space: normal;
+				display: flex;
 				width: 2px;
 				height: 100%;
 				background-color: black;
+				margin-left: 10px;
+				margin-right: 10px;
 			}
-			#data--value-temp {
-				display: inline-block;
-				vertical-align: top;
-				white-space: normal;
+			#data--column1-temp {
+				display: flex;
 				font-family: 'Acari Sans', sans-serif;
 				font-weight: 300;
 				font-style: normal;
-				font-size: 54px;
-				-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-				-moz-box-sizing: border-box;    /* Firefox, other Gecko */
-				box-sizing: border-box;         /* Opera/IE 8+ */
+				font-size: 50px;
 				color: black;
-				width: 45%;
-				text-align: center;
-				margin-top: 25px;
-				/*border: 1px solid green;*/
+				align-items: center;
 			}
 			#data--column1-other {
-				position: relative;
-				display: inline-block;
-				vertical-align: top;
-				white-space: normal;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
 				font-family: 'Acari Sans', sans-serif;
 				font-weight: 300;
 				font-style: italic;
-				font-size: 22px;
+				font-size: 19px;
 				color: black;
 				overflow: hidden;
-				-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-				-moz-box-sizing: border-box;    /* Firefox, other Gecko */
-				box-sizing: border-box;         /* Opera/IE 8+ */
-				width: 54%;
 				height: 100%;
-				padding-left: 34px;
-				/*border: 1px solid purple;*/
 			}
-				#data--value-humidity {
-					display: block;
-					position: absolute;
-					top: 0;
-					width: 100%;
-					vertical-align: top;
-				}
-				#data--value-pressure {
-					display: block;
-					position: absolute;
-					top: 50%;
-					transform: translateY(-50%);
-					width: 100%;
-				}
-				#data--value-clouds {
-					display: block;
-					position: absolute;
-					width: 100%;
-					bottom: 0;
-				}
 		#data--column1-bottom {
+			float: right;
 			height: 60px;
-			width: 100%;
+			width: 80%;
 			margin-top: 6px;
-			border: 1px solid red;
+			overflow: hidden;
+			/*border: 1px solid red;*/
+			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+			-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+			box-sizing: border-box;         /* Opera/IE 8+ */
 		}
+			#data--highLow-values {
+				height: 49px;
+				font-family: 'Acari Sans', sans-serif;
+				font-weight: 500;
+				font-style: normal;
+				font-size: 26px;
+				color: black;
+			}
+				#data--highLow-values p {
+					height: 49px;
+					line-height: 49px;
+					white-space: nowrap;
+				}
+				#data--highLow-low {
+					float: left;
+				}
+				#data--highLow-high {
+					float: right;
+				}
+			#data--highLow-meter {
+				display: block;
+				position: relative;
+				height: 11px;
+			}
+				#data--highLow-bar {
+					display: block;
+					position: absolute;
+					width: 100%;
+					height: 4px;
+					bottom: 0px;
+					background-color: black;
+				}
+				#data--highLow-notches {
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					width: 100%;
+					height: 10px;
+					font-size: 0px;
+					-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+					-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+					box-sizing: border-box;         /* Opera/IE 8+ */
+				}
+				#data--highLow-notches span {
+					width: 2px;
+					height: 6px;
+					background-color: black;
+				}
+				#data--highLow-notches span:first-child, #data--highLow-notches span:last-child {
+					width: 4px;
+					height: 10px;
+				}
+
 
 #recent {
 	position: absolute;

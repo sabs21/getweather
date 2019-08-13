@@ -43,6 +43,7 @@ draw.closePath();
 // We will work on the elements from left to right.
 // First, lets add an event to detect when to pull data from document.cookie
 var onCookieCreation = document.getElementById("recent--addResult");
+
 onCookieCreation.addEventListener("click", function() {
   var cookies = splitCookies();
   var inputValue = document.getElementById("search--form-input").value;
@@ -61,6 +62,11 @@ onCookieCreation.addEventListener("click", function() {
     }
   }
 });
+
+// On window resize, adjusts the spacing of the notches for the highLow bar.
+/*window.addEventListener("resize", function() {
+
+});*/
 
 function displayData(cookieSplit)
 {
