@@ -186,6 +186,8 @@ function cookieHandler(key, city, url) {
 			+ apidata.weather[0].description + "|"
 			+ (apidata.main.pressure * 0.7500616827).toPrecision(4) + "|"  // A hpa to mm Hg conversion.
 			+ apidata.main.temp.toFixed(1) + "|"
+			+ apidata.main.temp_max.toFixed(1) + "|"
+			+ apidata.main.temp_min.toFixed(1) + "|"
 			+ apidata.main.humidity + "|"
 			+ apidata.clouds.all + "|"
 			+ apidata.wind.speed + "|"
@@ -206,12 +208,14 @@ function cookieHandler(key, city, url) {
 																						// [4]: Description of Current Weather Condition
 																						// [5]: Barometric pressure
 																						// [6]: Temperature (Fahrenheit)
-																						// [7]: Humidity (in percentage)
-																						// [8]: Cloudiness (in percentage) (if no clouds, result is 1)
-																						// [9]: Wind speed (in MPH)
-																						// [10]: Wind direction (in degrees)
-																						// [11]: Latitude
-																						// [12]: Longitude
+																						// [7]: Temperature High (Fahrenheit)
+																						// [8]: Temperature Low (Fahrenheit)
+																						// [9]: Humidity (in percentage)
+																						// [10]: Cloudiness (in percentage) (if no clouds, result is 1)
+																						// [11]: Wind speed (in MPH)
+																						// [12]: Wind direction (in degrees)
+																						// [13]: Latitude
+																						// [14]: Longitude
 		});
 	}
 	// Instead of calling openweathermap, we can use data that was already obtained if a cookie for the city already exists.

@@ -572,10 +572,10 @@ nav {
 					line-height: 49px;
 					white-space: nowrap;
 				}
-				#data--highLow-low {
+				#data--value-low {
 					float: left;
 				}
-				#data--highLow-high {
+				#data--value-high {
 					float: right;
 				}
 			#data--highLow-meter {
@@ -611,6 +611,14 @@ nav {
 					width: 4px;
 					height: 10px;
 				}
+			#data--highLow-marker {
+				position: absolute;
+				/*left: 95%;*/
+				top: 0;
+				width: 6px;
+				height: 7px;
+				background-color: red;
+			}
 
 
 #recent {

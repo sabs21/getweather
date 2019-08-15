@@ -40,8 +40,16 @@ draw.fill();
 draw.stroke();
 draw.closePath();
 
-// We will work on the elements from left to right.
-// First, lets add an event to detect when to pull data from document.cookie
+// Once the data is retrieved, the css will be edited accordingly for the .
+// CSS elements are assigned to 'style' innerHTML.
+var style = document.createElement("style");
+// Then the style tag is appended to the head of the HTML document.
+var ref = document.querySelector("head");
+// Finally, we add the element to the HTML.
+ref.appendChild(style);
+
+// An event listener is added to this since it guarentees that the data is
+// ready to be used.
 var onCookieCreation = document.getElementById("recent--addResult");
 
 onCookieCreation.addEventListener("click", function() {
@@ -63,24 +71,73 @@ onCookieCreation.addEventListener("click", function() {
   }
 });
 
-// On window resize, adjusts the spacing of the notches for the highLow bar.
-/*window.addEventListener("resize", function() {
+// This places the marker for the high/low temp bar in the correct position.
+function getMarkerPos(high, low, currentTemp) {
+  // First, parse each string for integers (the cookie data offers strings)
+  var high = parseInt(high);
+  var low = parseInt(low);
+  var currentTemp = parseInt(currentTemp);
 
-});*/
+  // Next, find the difference between the min and max/current and max.
+  var maxDifference = high - low;
+  var currentDifference = high - currentTemp;
+
+  // Finally return the percentage value to assign to the marker's 'left' value.
+  return (currentDifference / maxDifference) * 100;
+}
+
+// This places the marker for the high/low temp bar.
+function placeMarker(leftPercentage) {
+style.innerHTML +=
+"#data--highLow-marker {" +
+  "left: " + leftPercentage + "%;" +
+"}";
+}
 
 function displayData(cookieSplit)
 {
-  var id = ["time", "city", "state", "weather", "weatherDesc", "pressure", "temp", "humidity", "clouds", "lat", "lon"];
+  var id = ["time", "city", "state", "weather", "weatherDesc", "pressure", "temp", "high", "low", "humidity", "clouds", "lat", "lon"];
   var idPrefix = "data--value-";
 
 	// Replaces the getTime() value with a more useful and readable one.
 	//cookieSplit[0] = timeSince(cookieSplit[0]);
 	//cookieSplit[5] = cookieSplit[5] + " mm Hg";
 	cookieSplit[6] = cookieSplit[6] + "&deg;F";
-  cookieSplit[7] = "Humidity: " + cookieSplit[7] + "%";
+  cookieSplit[9] = "Humidity: " + cookieSplit[9] + "%";
   cookieSplit[5] = "Pressure: " + cookieSplit[5] + " mm Hg";
-  cookieSplit[8] = "Cloudiness: " + cookieSplit[8] + "%";
+  if (cookieSplit[10] == 1)
+  {
+    cookieSplit[10] = "Cloudiness: 0%";
+  }
+  else
+  {
+    cookieSplit[10] = "Cloudiness: " + cookieSplit[10] + "%";
+  }
 	//cookieSplit[7] = cookieSplit[7] + "%";
+
+  /*
+  // Remember, the array of data will be structured as follows:
+  // [0]: Timestamp in seconds since Jan 1, 1970.
+  // [1]: City Name
+  // [2]: State
+  // [3]: Current Weather Conditions
+  // [4]: Description of Current Weather Condition
+  // [5]: Barometric pressure
+  // [6]: Temperature (Fahrenheit)
+  // [7]: Temperature High (Fahrenheit)
+  // [8]: Temperature Low (Fahrenheit)
+  // [9]: Humidity (in percentage)
+  // [10]: Cloudiness (in percentage) (if no clouds, result is 1)
+  // [11]: Wind speed (in MPH)
+  // [12]: Wind direction (in degrees)
+  // [13]: Latitude
+  // [14]: Longitude
+  */
+
+  // Places the high/low temp meter's marker in the correct position.
+  var markerPos = getMarkerPos(cookieSplit[7], cookieSplit[8], cookieSplit[6]);
+  console.log(markerPos);
+  placeMarker(markerPos);
 
 	//for (var i = 0; i < cookieSplit.length; i++)
 	//{
@@ -89,6 +146,9 @@ function displayData(cookieSplit)
 		document.getElementById(idPrefix + id[6]).innerHTML = cookieSplit[6];
     document.getElementById(idPrefix + id[7]).innerHTML = cookieSplit[7];
     document.getElementById(idPrefix + id[8]).innerHTML = cookieSplit[8];
+    document.getElementById(idPrefix + id[9]).innerHTML = cookieSplit[9];
+    document.getElementById(idPrefix + id[10]).innerHTML = cookieSplit[10];
+
 	//}
 }
 
@@ -147,8 +207,13 @@ function splitCookieData(cookieStr) {
   // [4]: Description of Current Weather Condition
   // [5]: Barometric pressure
   // [6]: Temperature (Fahrenheit)
-  // [7]: Humidity (in percentage)
-  // [8]: Latitude
-  // [9]: Longitude
+  // [7]: Temperature High (Fahrenheit)
+  // [8]: Temperature Low (Fahrenheit)
+  // [9]: Humidity (in percentage)
+  // [10]: Cloudiness (in percentage) (if no clouds, result is 1)
+  // [11]: Wind speed (in MPH)
+  // [12]: Wind direction (in degrees)
+  // [13]: Latitude
+  // [14]: Longitude
   */
 }
