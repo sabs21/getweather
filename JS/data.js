@@ -96,7 +96,7 @@ style.innerHTML +=
 
 function displayData(cookieSplit)
 {
-  var id = ["time", "city", "state", "weather", "weatherDesc", "pressure", "temp", "high", "low", "humidity", "clouds", "lat", "lon"];
+  var id = ["time", "city", "state", "weather", "desc", "pressure", "temp", "high", "low", "humidity", "clouds", "lat", "lon"];
   var idPrefix = "data--value-";
 
 	// Replaces the getTime() value with a more useful and readable one.
@@ -113,6 +113,7 @@ function displayData(cookieSplit)
   {
     cookieSplit[10] = "Cloudiness: " + cookieSplit[10] + "%";
   }
+  cookieSplit[4] = capitalize(cookieSplit[4]);
 	//cookieSplit[7] = cookieSplit[7] + "%";
 
   /*
@@ -141,7 +142,9 @@ function displayData(cookieSplit)
 
 	//for (var i = 0; i < cookieSplit.length; i++)
 	//{
+    document.getElementById(idPrefix + id[0]).innerHTML = getFormalTime(cookieSplit[0]);
     document.getElementById(idPrefix + "address").innerHTML = cookieSplit[1] + ", " + cookieSplit[2];
+    document.getElementById(idPrefix + id[4]).innerHTML = cookieSplit[4];
     document.getElementById(idPrefix + id[5]).innerHTML = cookieSplit[5];
 		document.getElementById(idPrefix + id[6]).innerHTML = cookieSplit[6];
     document.getElementById(idPrefix + id[7]).innerHTML = cookieSplit[7];
@@ -216,4 +219,37 @@ function splitCookieData(cookieStr) {
   // [13]: Latitude
   // [14]: Longitude
   */
+}
+
+function getFormalTime(milliseconds = null) {
+  var date = new Date();
+
+  if (milliseconds != null)
+  {
+    date.setTime(milliseconds);
+  }
+
+  // Converts military time to 12 hour format.
+  var hours = date.getHours();
+  var morningOrEvening = " AM";
+  if (hours > 12)
+  {
+    hours = hours - 12;
+    morningOrEvening = " PM";
+  }
+
+  var minutes = date.getMinutes();
+  if (minutes < 10)
+  {
+    minutes = "0" + minutes;
+  }
+
+  var timestamp = hours + ":" + minutes + morningOrEvening;
+  return timestamp;
+}
+
+function capitalize(str) {
+  return str.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+  });
 }
