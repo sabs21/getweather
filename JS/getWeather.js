@@ -192,6 +192,8 @@ function cookieHandler(key, city, url) {
 			+ apidata.clouds.all + "|"
 			+ apidata.wind.speed + "|"
 			+ apidata.wind.deg + "|"
+			+ apidata.sys.sunrise + "|"
+			+ apidata.sys.sunset + "|"
 			+ apidata.coord.lat + "|"
 			+ apidata.coord.lon, 10);
 
@@ -214,8 +216,10 @@ function cookieHandler(key, city, url) {
 																						// [10]: Cloudiness (in percentage) (if no clouds, result is 1)
 																						// [11]: Wind speed (in MPH)
 																						// [12]: Wind direction (in degrees)
-																						// [13]: Latitude
-																						// [14]: Longitude
+																						// [13]: Sunrise time
+																						// [14]: Sunset time
+																						// [15]: Latitude
+																						// [16]: Longitude
 		});
 	}
 	// Instead of calling openweathermap, we can use data that was already obtained if a cookie for the city already exists.

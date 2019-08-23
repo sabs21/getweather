@@ -96,7 +96,9 @@ style.innerHTML +=
 
 function displayData(cookieSplit)
 {
-  var id = ["time", "city", "state", "weather", "desc", "pressure", "temp", "high", "low", "humidity", "clouds", "lat", "lon"];
+  var id = ["time", "city", "state", "weather", "desc", "pressure",
+  "temp", "high", "low", "humidity", "clouds", "speed", "deg",
+  "sunrise", "sunset", "lat", "lon"];
   var idPrefix = "data--value-";
 
 	// Replaces the getTime() value with a more useful and readable one.
@@ -114,7 +116,16 @@ function displayData(cookieSplit)
     cookieSplit[10] = "Cloudiness: " + cookieSplit[10] + "%";
   }
   cookieSplit[4] = capitalize(cookieSplit[4]);
-	//cookieSplit[7] = cookieSplit[7] + "%";
+
+  // For the wind speed and direction
+  cookieSplit[11] = cookieSplit[11] + " MPH";
+  setGaugeNeedle(cookieSplit[12]);
+
+  // For sunrise and sunset
+  var sunriseTime = getFormalTime(cookieSplit[13], true);
+  var sunsetTime = getFormalTime(cookieSplit[14], true);
+  cookieSplit[13] = "Sunrise at " + sunriseTime;
+  cookieSplit[14] = "Sunset at " + sunsetTime;
 
   /*
   // Remember, the array of data will be structured as follows:
@@ -131,13 +142,14 @@ function displayData(cookieSplit)
   // [10]: Cloudiness (in percentage) (if no clouds, result is 1)
   // [11]: Wind speed (in MPH)
   // [12]: Wind direction (in degrees)
-  // [13]: Latitude
-  // [14]: Longitude
+  // [13]: Sunrise time
+  // [14]: Sunset time
+  // [15]: Latitude
+  // [16]: Longitude
   */
 
   // Places the high/low temp meter's marker in the correct position.
   var markerPos = getMarkerPos(cookieSplit[7], cookieSplit[8], cookieSplit[6]);
-  console.log(markerPos);
   placeMarker(markerPos);
 
 	//for (var i = 0; i < cookieSplit.length; i++)
@@ -151,7 +163,9 @@ function displayData(cookieSplit)
     document.getElementById(idPrefix + id[8]).innerHTML = cookieSplit[8];
     document.getElementById(idPrefix + id[9]).innerHTML = cookieSplit[9];
     document.getElementById(idPrefix + id[10]).innerHTML = cookieSplit[10];
-
+    document.getElementById(idPrefix + id[11]).innerHTML = cookieSplit[11];
+    document.getElementById(idPrefix + id[13]).innerHTML = cookieSplit[13];
+    document.getElementById(idPrefix + id[14]).innerHTML = cookieSplit[14];
 	//}
 }
 
@@ -192,7 +206,6 @@ function splitCookies() {
   var decodedCookie = decodeURIComponent(document.cookie);
   // Create an array of all cookies by seperating them by semi-colons.
   var cookies = decodedCookie.split(";");
-  console.log(cookies);
   return cookies;
 }
 
@@ -221,13 +234,23 @@ function splitCookieData(cookieStr) {
   */
 }
 
-function getFormalTime(milliseconds = null) {
+function getFormalTime(milliseconds = null, isSeconds = false) {
   var date = new Date();
 
   if (milliseconds != null)
   {
-    date.setTime(milliseconds);
+    if (isSeconds)
+    {
+      date.setTime(milliseconds * 1000);
+    }
+    else
+    {
+      date.setTime(milliseconds);
+    }
+    //console.log(milliseconds);
   }
+
+  console.log(date);
 
   // Converts military time to 12 hour format.
   var hours = date.getHours();
@@ -245,7 +268,16 @@ function getFormalTime(milliseconds = null) {
   }
 
   var timestamp = hours + ":" + minutes + morningOrEvening;
+  console.log("Timestamp: " + timestamp);
   return timestamp;
+}
+
+// Turns the wind gauge needle according to the current wind direction.
+function setGaugeNeedle(deg) {
+  style.innerHTML +=
+  "#data--windGaugeNeedle {" +
+    "transform: rotate(" + deg + "deg);" +
+  "}";
 }
 
 function capitalize(str) {
