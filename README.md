@@ -1,4 +1,4 @@
-Getweather is coded with simplicity in mind, where the user can obtain weather data with ease.
+getWeather is coded with simplicity in mind, where the user can obtain weather data with ease.
 
 Goals for Functionality:
 - Adding a recent searches tab with animated blocks to visually indicate what the weather was like x minutes ago.
