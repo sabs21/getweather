@@ -121,6 +121,12 @@ function displayData(cookieSplit)
   cookieSplit[11] = cookieSplit[11] + " MPH";
   setGaugeNeedle(cookieSplit[12]);
 
+  // For showing how long until next sun event.
+  verboseTime(cookieSplit[13], cookieSplit[14], function(callback) {
+    document.getElementById("data--timeUntil-time").innerHTML = callback.timeUntil;
+    document.getElementById("data--timeUntil-nextEvent").innerHTML = callback.nextEvent;
+  });
+
   // For sunrise and sunset
   var sunriseTime = getFormalTime(cookieSplit[13], true);
   var sunsetTime = getFormalTime(cookieSplit[14], true);
@@ -167,6 +173,77 @@ function displayData(cookieSplit)
     document.getElementById(idPrefix + id[13]).innerHTML = cookieSplit[13];
     document.getElementById(idPrefix + id[14]).innerHTML = cookieSplit[14];
 	//}
+}
+
+function verboseTime(sunriseAPIData, sunsetAPIData, callback) {
+  var d = new Date();
+  // Counts up until 86400 seconds, then will go down to 0 (new day)
+  var secondsToday = Math.ceil(d.getTime() / 1000) % 86400;
+  var sunriseToday = sunriseAPIData % 86400;
+  var sunsetToday = sunsetAPIData % 86400;
+  console.log("secondsToday = " + secondsToday + "\nsunriseToday = " + sunriseToday + "\nsunsetToday = " + sunsetToday);
+
+  if (secondsToday > sunsetToday)
+  {
+    // The next 'event' will be a sunrise.
+    var difference = (secondsToday - 86400) + sunriseToday;
+    var nextEvent = "sunrise";
+    console.log("sunrise (1) math done.\ndifference = " + difference);
+  }
+  else if (secondsToday < sunriseToday)
+  {
+    // The next 'event' will be a sunrise.
+    var difference = sunriseToday - secondsToday;
+    var nextEvent = "sunrise";
+    console.log("sunrise (2) math done.\ndifference = " + difference);
+  }
+  else if (secondsToday > sunriseToday)
+  {
+    // The next 'event' will be a sunset.
+    var difference = sunsetToday - secondsToday;
+    var nextEvent = "sunset";
+    console.log("sunset math done.\ndifference = " + difference);
+  }
+
+  var hoursUntil = Math.floor(difference / 3600);
+  var minutesUntil = Math.floor(difference % 60);
+  console.log("hoursUntil = " + hoursUntil + "\nminutesUntil = " + minutesUntil);
+
+  if (hoursUntil > 1)
+  {
+    var hourStr = hoursUntil + " hours";
+  }
+  else if (hoursUntil == 1)
+  {
+    var hourStr = hoursUntil + " hour";
+  }
+  else
+  {
+    var hourStr = "";
+  }
+
+  if (minutesUntil > 1)
+  {
+    var minuteStr = minutesUntil + " minutes";
+  }
+  else if (minutesUntil == 1)
+  {
+    var minuteStr = minutesUntil + " minute";
+  }
+  else
+  {
+    var minuteStr = "";
+  }
+
+  var timeUntilStr = hourStr + " and " + minuteStr;
+  var nextEventStr = "until " + nextEvent;
+
+  var returnObj = {
+    timeUntil: timeUntilStr,
+    nextEvent: nextEventStr
+  };
+  console.log("timeUntil = " + returnObj.timeUntil + "\nnextEvent = " + returnObj.nextEvent);
+  callback(returnObj);
 }
 
 // Retrieves the requested cookie's data.

@@ -758,6 +758,7 @@ nav {
 		left: 66px;
 		color: black;
 		top: 2px;
+		white-space: nowrap;
 	}
 	#data--sunset {
 		position: relative;
@@ -776,6 +777,7 @@ nav {
 		left: 66px;
 		color: black;
 		top: -2px;
+		white-space: nowrap;
 	}
 	#data--timeUntil {
 		position: relative;
@@ -784,6 +786,30 @@ nav {
 		height: 80px;
 		margin-top: 16px;
 		background-color: yellow;
+	}
+	#data--timeUntil-time {
+		position: absolute;
+		font-family: 'Acari Sans', sans-serif;
+		font-weight: 400;
+		font-style: normal;
+		font-size: 24px;
+		width: 80%;
+		white-space: nowrap;
+		text-align: center;
+		color: black;
+		top: 2px;
+	}
+	#data--timeUntil-nextEvent {
+		position: absolute;
+		font-family: 'Acari Sans', sans-serif;
+		font-weight: 300;
+		font-style: italic;
+		font-size: 18px;
+		width: 80%;
+		text-align: center;
+		white-space: nowrap;
+		color: black;
+		top: 30px;
 	}
 
 #recent {
