@@ -439,6 +439,10 @@ nav {
 	width: 100%;
 	height: 400px;
 	bottom: 0px;
+	transition: bottom ease-out 300ms;
+}
+#data.collapsed {
+	bottom: -500px;
 }
 	#data--bg {
 		position: absolute;

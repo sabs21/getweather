@@ -61,13 +61,21 @@ onCookieCreation.addEventListener("click", function() {
 
   for (var i = 1; i < cookies.length; i++)
   {
-    var data = splitCookieData(cookies[i]);
-    var address = data[1] + ", " + data[2];
-    if (address == inputValue && (currentTime - data[0]) < tenMinutes)
+    var cookieData = splitCookieData(cookies[i]);
+    var address = cookieData[1] + ", " + cookieData[2];
+    if (address == inputValue && (currentTime - cookieData[0]) < tenMinutes)
     {
-      displayData(data);
+      displayData(cookieData);
       i = cookies.length;
     }
+  }
+
+  // Below is unrelated to the recent tab.
+  // This displays the data div on city search.
+  var data = document.getElementById("data");
+  if (data.className == "collapsed")
+  {
+    data.className = "";
   }
 });
 
@@ -182,6 +190,11 @@ function verboseTime(sunriseAPIData, sunsetAPIData, callback) {
   var sunriseToday = sunriseAPIData % 86400;
   var sunsetToday = sunsetAPIData % 86400;
   console.log("secondsToday = " + secondsToday + "\nsunriseToday = " + sunriseToday + "\nsunsetToday = " + sunsetToday);
+
+  if (sunsetToday < sunriseToday)
+  {
+    sunsetToday += 86400;
+  }
 
   if (secondsToday > sunsetToday)
   {
