@@ -29,6 +29,18 @@ document.getElementById("nav--settings").addEventListener("click", function() {
   }
 });
 
+document.getElementById("slider").addEventListener("click", function() {
+	var sliderToggle = document.getElementById("ball");
+  if (sliderToggle.className == "")
+  {
+  	sliderToggle.className = "off";
+  }
+  else
+  {
+  	sliderToggle.className = "";
+  }
+});
+
 document.getElementById("settings--close").addEventListener("click", function() {
   document.getElementById("settings").className = "collapsed";
 });
