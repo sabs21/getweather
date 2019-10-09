@@ -1035,13 +1035,39 @@ nav {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	overflow: auto;
-	border: 1px solid yellow;
+	/*border: 1px solid yellow;*/
 }
-	#settings--options-units {
+	#settings--options-unit	 {
 		width: 100%;
 		height: 140px;
 	}
+	#settings--options-unit p {
+		display: inline-block;
+		position: relative;
+		margin-top: 15px;
+		font-family: 'Acari Sans', Arial, sans-serif;
+		font-weight: 400;
+		font-style: normal;
+		font-size: 30px;
+		padding-left: 40px;
+		box-sizing: border-box;
+		/*border: 1px solid pink;*/
+		width: 78%;
+	}
+	.settings-bg {
+		position: absolute;
+		display: block;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		border-radius: 35px;
+		background-color: rgb(54, 63, 76);
+	}
 	#slider {
+		display: inline-block;
+		position: absolute;
+		margin-top: 17px;
 		border-radius: 15px;
 		height: 30px;
 		width: 70px;
@@ -1052,6 +1078,7 @@ nav {
 		width: 100%;
 		height: 100%;
 		border-radius: 15px;
+		border: none;
 	}
 	#slider-path {
 		position: relative;
@@ -1065,15 +1092,16 @@ nav {
 		position: absolute;
 		display: block;
 		border-radius: 50%;
-		height: 24px;
-		width: 24px;
+		height: 26px;
+		width: 26px;
 		background-color: #291BE4;
-		left: 4px;
-		top: 3px;
+		border: 2px solid #dddddd;
+		left: 0px;
+		top: 0px;
 		transition: left ease-in-out 200ms, background-color linear 200ms;
 	}
 	#ball.off {
-		left: 42px;
+		left: 40px;
 		background-color: #908f9f;
 	}
 

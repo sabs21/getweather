@@ -34,10 +34,12 @@ document.getElementById("slider").addEventListener("click", function() {
   if (sliderToggle.className == "")
   {
   	sliderToggle.className = "off";
+    document.getElementById("temp-setting").innerHTML = "Temperature Unit: C";
   }
   else
   {
   	sliderToggle.className = "";
+    document.getElementById("temp-setting").innerHTML = "Temperature Unit: F";
   }
 });
 
