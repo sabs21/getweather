@@ -187,7 +187,7 @@ function verboseTime(sunriseAPIData, sunsetAPIData, callback) {
   var secondsToday = Math.ceil(d.getTime() / 1000) % 86400;
   var sunriseToday = sunriseAPIData % 86400;
   var sunsetToday = sunsetAPIData % 86400;
-  console.log("secondsToday = " + secondsToday + "\nsunriseToday = " + sunriseToday + "\nsunsetToday = " + sunsetToday);
+  // console.log("secondsToday = " + secondsToday + "\nsunriseToday = " + sunriseToday + "\nsunsetToday = " + sunsetToday);
 
   if (sunsetToday < sunriseToday)
   {
@@ -199,26 +199,26 @@ function verboseTime(sunriseAPIData, sunsetAPIData, callback) {
     // The next 'event' will be a sunrise.
     var difference = (secondsToday - 86400) + sunriseToday;
     var nextEvent = "sunrise";
-    console.log("sunrise (1) math done.\ndifference = " + difference);
+    // console.log("sunrise (1) math done.\ndifference = " + difference);
   }
   else if (secondsToday < sunriseToday)
   {
     // The next 'event' will be a sunrise.
     var difference = sunriseToday - secondsToday;
     var nextEvent = "sunrise";
-    console.log("sunrise (2) math done.\ndifference = " + difference);
+    // console.log("sunrise (2) math done.\ndifference = " + difference);
   }
   else if (secondsToday > sunriseToday)
   {
     // The next 'event' will be a sunset.
     var difference = sunsetToday - secondsToday;
     var nextEvent = "sunset";
-    console.log("sunset math done.\ndifference = " + difference);
+    // console.log("sunset math done.\ndifference = " + difference);
   }
 
   var hoursUntil = Math.floor(difference / 3600);
   var minutesUntil = Math.floor(difference % 60);
-  console.log("hoursUntil = " + hoursUntil + "\nminutesUntil = " + minutesUntil);
+  //console.log("hoursUntil = " + hoursUntil + "\nminutesUntil = " + minutesUntil);
 
   if (hoursUntil > 1)
   {
@@ -337,7 +337,7 @@ function getFormalTime(milliseconds = null, isSeconds = false) {
     }
   }
 
-  console.log(date);
+  // console.log(date);
 
   // Converts military time to 12 hour format.
   var hours = date.getHours();
