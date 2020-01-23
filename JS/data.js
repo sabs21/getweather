@@ -166,23 +166,21 @@ function displayData(cookieSplit)
   var markerPos = getMarkerPos(cookieSplit[7], cookieSplit[8], cookieSplit[6]);
   placeMarker(markerPos);
 
-	//for (var i = 0; i < cookieSplit.length; i++)
-	//{
-    document.getElementById(idPrefix + id[0]).innerHTML = getFormalTime(cookieSplit[0]);
-    document.getElementById(idPrefix + "address").innerHTML = cookieSplit[1] + ", " + cookieSplit[2];
-    document.getElementById(idPrefix + id[4]).innerHTML = cookieSplit[4];
-    document.getElementById(idPrefix + id[5]).innerHTML = cookieSplit[5];
-		document.getElementById(idPrefix + id[6]).innerHTML = cookieSplit[6];
-    document.getElementById(idPrefix + id[7]).innerHTML = cookieSplit[7];
-    document.getElementById(idPrefix + id[8]).innerHTML = cookieSplit[8];
-    document.getElementById(idPrefix + id[9]).innerHTML = cookieSplit[9];
-    document.getElementById(idPrefix + id[10]).innerHTML = cookieSplit[10];
-    document.getElementById(idPrefix + id[11]).innerHTML = cookieSplit[11];
-    document.getElementById(idPrefix + id[13]).innerHTML = cookieSplit[13];
-    document.getElementById(idPrefix + id[14]).innerHTML = cookieSplit[14];
-	//}
+  document.getElementById(idPrefix + id[0]).innerHTML = getFormalTime(cookieSplit[0]);
+  document.getElementById(idPrefix + "address").innerHTML = cookieSplit[1] + ", " + cookieSplit[2];
+  document.getElementById(idPrefix + id[4]).innerHTML = cookieSplit[4];
+  document.getElementById(idPrefix + id[5]).innerHTML = cookieSplit[5];
+	document.getElementById(idPrefix + id[6]).innerHTML = cookieSplit[6];
+  document.getElementById(idPrefix + id[7]).innerHTML = cookieSplit[7];
+  document.getElementById(idPrefix + id[8]).innerHTML = cookieSplit[8];
+  document.getElementById(idPrefix + id[9]).innerHTML = cookieSplit[9];
+  document.getElementById(idPrefix + id[10]).innerHTML = cookieSplit[10];
+  document.getElementById(idPrefix + id[11]).innerHTML = cookieSplit[11];
+  document.getElementById(idPrefix + id[13]).innerHTML = cookieSplit[13];
+  document.getElementById(idPrefix + id[14]).innerHTML = cookieSplit[14];
 }
 
+// Display the time it will take until sunrise or sunset.
 function verboseTime(sunriseAPIData, sunsetAPIData, callback) {
   var d = new Date();
   // Counts up until 86400 seconds, then will go down to 0 (new day)
