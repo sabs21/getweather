@@ -335,7 +335,6 @@ function getFormalTime(milliseconds = null, isSeconds = false) {
     {
       date.setTime(milliseconds);
     }
-    //console.log(milliseconds);
   }
 
   console.log(date);
