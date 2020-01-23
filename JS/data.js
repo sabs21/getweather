@@ -166,6 +166,7 @@ function displayData(cookieSplit)
   var markerPos = getMarkerPos(cookieSplit[7], cookieSplit[8], cookieSplit[6]);
   placeMarker(markerPos);
 
+  // Adds the data to the webpage.
   document.getElementById(idPrefix + id[0]).innerHTML = getFormalTime(cookieSplit[0]);
   document.getElementById(idPrefix + "address").innerHTML = cookieSplit[1] + ", " + cookieSplit[2];
   document.getElementById(idPrefix + id[4]).innerHTML = cookieSplit[4];
