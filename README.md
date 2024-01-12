@@ -10,6 +10,3 @@ Goals for UI:
 - Keeping a clean UI thats absent of clutter in order to streamline the user experience.
 - Will likely reorganise the UI to make room for new functionality.
 
-
--- Copyright --
-The files included within this directory are intended only for use on my personal domain (nicksabia.tech). I do not permit the use of this code elsewhere, especially if used for commercial applications or monetary gain.
